@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uni-Learn USB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-layer" aria-hidden="true"></div>
+    <main class="app" aria-live="polite">
+      <header class="hero">
+        <p class="kicker">Offline Family Learning</p>
+        <h1>Uni-Learn USB</h1>
+        <p class="subtitle">A remote-controlled classroom for ages 3-7</p>
+      </header>
+
+      <div class="layout">
+        <aside class="left-menu" aria-label="Lesson menu">
+          <h2>Lesson Menu</h2>
+          <label for="moduleSelect">Choose activity</label>
+          <select id="moduleSelect" class="module-select">
+            <option value="alphabet">Alphabet A-Z</option>
+            <option value="numbers">Numbers 1-100</option>
+            <option value="next">What's Next?</option>
+            <option value="find">Find the Letter</option>
+          </select>
+          <button id="openFromDropdown" class="open-btn" type="button">Open Selected</button>
+          <p class="left-hint">Tip: Use arrows, then Enter/OK.</p>
+        </aside>
+
+        <section class="main-panel">
+
+          <section class="focus-panel" id="focusPanel">
+            <div class="lesson-card" id="lessonCard">
+              <h2 id="lessonTitle">Welcome</h2>
+              <p id="lessonPrompt">Use your remote arrows and OK to begin.</p>
+              <div class="status-row" id="statusRow" aria-label="Learning progress">
+                <div class="status-pill"><span>Stars</span><strong id="starsValue">0</strong></div>
+                <div class="status-pill"><span>Level</span><strong id="levelValue">1</strong></div>
+                <div class="status-pill"><span>Accuracy</span><strong id="accuracyValue">0%</strong></div>
+                <div class="status-pill"><span>Narration</span><strong id="narrationValue">On</strong></div>
+              </div>
+              <div class="lesson-display" id="lessonDisplay">READY</div>
+              <p class="hint" id="lessonHint">Tip: Left/Right to switch tiles, OK to open.</p>
+            </div>
+          </section>
+
+          <section class="grid" id="tileGrid" aria-label="Learning modules">
+            <button class="tile" data-tile="alphabet">
+              <span class="tile-title">Alphabet A-Z</span>
+              <span class="tile-desc">Letters, sounds, and recognition</span>
+            </button>
+            <button class="tile" data-tile="numbers">
+              <span class="tile-title">Numbers 1-100</span>
+              <span class="tile-desc">Count and compare with confidence</span>
+            </button>
+            <button class="tile" data-tile="next">
+              <span class="tile-title">What's Next?</span>
+              <span class="tile-desc">Logic sequence challenge</span>
+            </button>
+            <button class="tile" data-tile="find">
+              <span class="tile-title">Find the Letter</span>
+              <span class="tile-desc">Spot the correct letter fast</span>
+            </button>
+          </section>
+
+          <footer class="controls" aria-label="Remote controls">
+            <div class="pill">Arrows: Navigate</div>
+            <div class="pill">OK / Enter: Select</div>
+            <div class="pill">Backspace: Return</div>
+            <div class="pill">M: Narration On/Off</div>
+          </footer>
+        </section>
+      </div>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

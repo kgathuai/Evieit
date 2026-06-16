@@ -1,0 +1,1294 @@
+'use client';
+
+import { useRef, useEffect } from 'react';
+import {
+  Box,
+  Typography,
+  Paper,
+  Chip,
+  Stack,
+  IconButton,
+  Divider,
+  Switch,
+  FormControlLabel,
+  Dialog,
+  DialogContent,
+  Button,
+} from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrackChangesIcon from '@mui/icons-material/TrackChanges';
+import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import { LETTER_WORDS, FRUITS, DOMESTIC_ANIMALS, WILD_ANIMALS, VOWELS, SHAPES, COLORS, VEHICLES, FOODS, CLOTHES, FINGER_COUNTS } from '../hooks/useUniLearn';
+
+const UPPERCASE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const LOWERCASE_LETTERS = 'abcdefghijklmnopqrstuvwxyz'.split('');
+const NUMBERS = Array.from({ length: 100 }, (_, i) => i + 1);
+
+/**
+ * A single item tile used in the alphabet / numbers grid.
+ * Tiles use a fixed min-width so they're always large and readable.
+ * `active` = currently selected, `seen` = already visited.
+ */
+function ItemTile({ label, active, seen, activeRef, onClick }) {
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        // Grid handles width — tile just fills its cell
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 4,
+        cursor: 'pointer',
+        userSelect: 'none',
+        fontWeight: active ? 900 : seen ? 800 : 700,
+        fontSize: 'clamp(3rem, 6vw, 7rem)',
+        lineHeight: 1,
+        transition: 'all 0.18s ease',
+        bgcolor: active
+          ? 'primary.main'
+          : seen
+          ? 'success.light'
+          : 'rgba(255,255,255,0.95)',
+        color: active ? '#fff' : seen ? 'success.dark' : 'primary.main',
+        border: '3px solid',
+        borderColor: active ? 'primary.dark' : seen ? 'success.main' : 'primary.light',
+        boxShadow: active ? 8 : 2,
+        transform: active ? 'scale(1.2)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+      }}
+    >
+      {label}
+    </Box>
+  );
+}
+
+/**
+ * Wrapping flex grid of all letters or all numbers.
+ * Tiles grow to fill each row; rows wrap when they run out of width.
+ * The active tile scrolls into view automatically.
+ */
+function ItemGrid({ items, activeIndex, seen, onItemClick }) {
+  const activeRef = useRef(null);
+
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        // 4 columns for larger tiles (was 5) — better for baby hands
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        gap: 2.5,
+        p: 2.5,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {items.map((item, i) => (
+        <ItemTile
+          key={item}
+          label={item}
+          active={i === activeIndex}
+          seen={!!seen[item]}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+/**
+ * A single word tile for "A for Apple" mode.
+ */
+function WordTile({ letter, active, activeRef, onClick }) {
+  const { word, emoji } = LETTER_WORDS[letter.toUpperCase()];
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.5,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'primary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.1)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+        p: 0.5,
+      }}
+    >
+      {/* emoji */}
+      <Typography sx={{ fontSize: 'clamp(1.2rem, 3vw, 3rem)', lineHeight: 1 }}>
+        {emoji}
+      </Typography>
+      {/* big letter */}
+      <Typography sx={{ fontSize: 'clamp(1rem, 2.5vw, 2.5rem)', fontWeight: 900, lineHeight: 1 }}>
+        {letter}
+      </Typography>
+      {/* word */}
+      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.9rem)', fontWeight: 600, lineHeight: 1, opacity: 0.85 }}>
+        {word}
+      </Typography>
+    </Box>
+  );
+}
+
+function WordsGrid({ activeIndex, onItemClick }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: 1.5,
+        p: 2,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {UPPERCASE_LETTERS.map((letter, i) => (
+        <WordTile
+          key={letter}
+          letter={letter}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+/**
+ * Fruits grid — emoji + name tiles.
+ */
+function FruitTile({ fruit, active, activeRef, onClick }) {
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.5,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'primary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.1)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+        p: 0.5,
+      }}
+    >
+      {fruit.imageSrc ? (
+        <Box
+          component="img"
+          src={fruit.imageSrc}
+          alt={fruit.name}
+          sx={{
+            width: 'clamp(4.4rem, 9vw, 7rem)',
+            height: 'clamp(4.4rem, 9vw, 7rem)',
+            objectFit: 'contain',
+            filter: active ? 'drop-shadow(0 8px 12px rgba(0,0,0,0.18))' : 'none',
+          }}
+        />
+      ) : (
+        <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
+          {fruit.emoji}
+        </Typography>
+      )}
+      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
+        {fruit.name}
+      </Typography>
+    </Box>
+  );
+}
+
+function FruitsGrid({ activeIndex, onItemClick }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: 1.5,
+        p: 2,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {FRUITS.map((fruit, i) => (
+        <FruitTile
+          key={fruit.name}
+          fruit={fruit}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+function AnimalTile({ animal, active, activeRef, onClick }) {
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.5,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'primary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.1)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+        p: 0.5,
+      }}
+    >
+      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
+        {animal.emoji}
+      </Typography>
+      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
+        {animal.name}
+      </Typography>
+    </Box>
+  );
+}
+
+function AnimalsGrid({ activeIndex, onItemClick }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: 1.5,
+        p: 2,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {DOMESTIC_ANIMALS.map((animal, i) => (
+        <AnimalTile
+          key={animal.name}
+          animal={animal}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+function WildAnimalTile({ animal, active, activeRef, onClick }) {
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.5,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'primary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.1)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+        p: 0.5,
+      }}
+    >
+      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
+        {animal.emoji}
+      </Typography>
+      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
+        {animal.name}
+      </Typography>
+    </Box>
+  );
+}
+
+function WildAnimalsGrid({ activeIndex, onItemClick }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: 1.5,
+        p: 2,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {WILD_ANIMALS.map((animal, i) => (
+        <WildAnimalTile
+          key={animal.name}
+          animal={animal}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+/**
+ * Vowel syllable tile — displays the syllable text prominently.
+ */
+function VowelTile({ item, active, activeRef, onClick }) {
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.5,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'secondary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'secondary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.15)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+      }}
+    >
+      <Typography sx={{ fontSize: 'clamp(1.8rem, 5vw, 5rem)', fontWeight: 900, lineHeight: 1 }}>
+        {item.syllable}
+      </Typography>
+      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.75rem)', fontWeight: 600, opacity: 0.65, lineHeight: 1 }}>
+        {item.consonant} + {item.vowel}
+      </Typography>
+    </Box>
+  );
+}
+
+function VowelsGrid({ activeIndex, onItemClick }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: 1.5,
+        p: 2,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {VOWELS.map((item, i) => (
+        <VowelTile
+          key={item.syllable}
+          item={item}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+function ShapeTile({ shape, active, activeRef, onClick }) {
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.5,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'primary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.1)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+        p: 0.5,
+      }}
+    >
+      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
+        {shape.symbol}
+      </Typography>
+      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
+        {shape.name}
+      </Typography>
+    </Box>
+  );
+}
+
+function ShapesGrid({ activeIndex, onItemClick }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: 1.5,
+        p: 2,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {SHAPES.map((shape, i) => (
+        <ShapeTile
+          key={shape.name}
+          shape={shape}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+function ColorTile({ colorItem, active, activeRef, onClick }) {
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 1,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'primary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.08)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+        p: 0.5,
+      }}
+    >
+      <Box
+        sx={{
+          width: 'clamp(2.6rem, 5vw, 4.5rem)',
+          height: 'clamp(2.6rem, 5vw, 4.5rem)',
+          borderRadius: '50%',
+          bgcolor: colorItem.swatch,
+          border: '3px solid',
+          borderColor: colorItem.name === 'White' ? 'grey.400' : 'rgba(0,0,0,0.12)',
+        }}
+      />
+      <Typography sx={{ fontSize: 'clamp(0.6rem, 1.1vw, 0.95rem)', fontWeight: 700, textAlign: 'center' }}>
+        {colorItem.name}
+      </Typography>
+    </Box>
+  );
+}
+
+function ColorsGrid({ activeIndex, onItemClick }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: 1.5,
+        p: 2,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {COLORS.map((colorItem, i) => (
+        <ColorTile
+          key={colorItem.name}
+          colorItem={colorItem}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+function VehicleTile({ vehicle, active, activeRef, onClick }) {
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.5,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'primary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.1)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+        p: 0.5,
+      }}
+    >
+      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
+        {vehicle.emoji}
+      </Typography>
+      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
+        {vehicle.name}
+      </Typography>
+    </Box>
+  );
+}
+
+function VehiclesGrid({ activeIndex, onItemClick }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: 1.5,
+        p: 2,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {VEHICLES.map((vehicle, i) => (
+        <VehicleTile
+          key={vehicle.name}
+          vehicle={vehicle}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+function FoodTile({ food, active, activeRef, onClick }) {
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.5,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'primary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.1)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+        p: 0.5,
+      }}
+    >
+      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
+        {food.emoji}
+      </Typography>
+      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
+        {food.name}
+      </Typography>
+    </Box>
+  );
+}
+
+function FoodsGrid({ activeIndex, onItemClick }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: 1.5,
+        p: 2,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {FOODS.map((food, i) => (
+        <FoodTile
+          key={food.name}
+          food={food}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+function ClothTile({ cloth, active, activeRef, onClick }) {
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.5,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'primary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.1)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+        p: 0.5,
+      }}
+    >
+      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
+        {cloth.emoji}
+      </Typography>
+      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
+        {cloth.name}
+      </Typography>
+    </Box>
+  );
+}
+
+function ClothesGrid({ activeIndex, onItemClick }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: 1.5,
+        p: 2,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {CLOTHES.map((cloth, i) => (
+        <ClothTile
+          key={cloth.name}
+          cloth={cloth}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+function FingerCountTile({ item, active, activeRef, onClick }) {
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.25,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'primary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.1)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+        p: 0.5,
+      }}
+    >
+      <Typography sx={{ fontSize: 'clamp(1.65rem, 4vw, 3.4rem)', lineHeight: 1, textAlign: 'center' }}>
+        {item.display}
+      </Typography>
+      <Typography sx={{ fontSize: 'clamp(1.8rem, 4.5vw, 4rem)', fontWeight: 900, lineHeight: 0.95 }}>
+        {item.count}
+      </Typography>
+    </Box>
+  );
+}
+
+function FingerCountGrid({ activeIndex, onItemClick }) {
+  const activeRef = useRef(null);
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: 1.5,
+        p: 2,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {FINGER_COUNTS.map((item, i) => (
+        <FingerCountTile
+          key={item.count}
+          item={item}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onClick={() => onItemClick(i)}
+        />
+      ))}
+    </Box>
+  );
+}
+
+/**
+ * Game display for "What's Next?" and "Find the Letter".
+ */
+function GameDisplay({ options, selectedIndex, result, prompt, onOptionClick, onNextRound }) {
+  const isCorrect = result === 'Correct!' || result === 'Great job!';
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3, height: '100%' }}>
+      <Typography variant="h4" fontWeight={800} color="primary.dark" textAlign="center">
+        {prompt}
+      </Typography>
+
+      <Stack direction="row" spacing={2} flexWrap="wrap" justifyContent="center" useFlexGap>
+        {options.map((opt, i) => {
+          const isSelected = i === selectedIndex;
+          return (
+            <Box
+              key={i}
+              onClick={() => !result && onOptionClick?.(i)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (!result && (e.key === 'Enter' || e.key === ' ')) onOptionClick?.(i); }}
+              sx={{
+                width: 'clamp(5rem, 12vw, 9rem)',
+                height: 'clamp(5rem, 12vw, 9rem)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 3,
+                fontSize: 'clamp(2rem, 5vw, 4rem)',
+                fontWeight: 900,
+                border: '3px solid',
+                borderColor: isSelected ? 'primary.main' : 'divider',
+                bgcolor: isSelected ? 'primary.main' : 'rgba(255,255,255,0.8)',
+                color: isSelected ? '#fff' : 'text.primary',
+                boxShadow: isSelected ? 6 : 1,
+                transform: isSelected ? 'scale(1.12)' : 'scale(1)',
+                transition: 'all 0.15s ease',
+                userSelect: 'none',
+                cursor: result ? 'default' : 'pointer',
+              }}
+            >
+              {opt}
+            </Box>
+          );
+        })}
+      </Stack>
+
+      {/* Result popup */}
+      <Dialog
+        open={!!result}
+        onClose={onNextRound}
+        PaperProps={{ sx: { borderRadius: 4, textAlign: 'center', px: 4, py: 3, minWidth: 260 } }}
+      >
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, p: 0 }}>
+          <Typography sx={{ fontSize: '4rem', lineHeight: 1 }}>
+            {isCorrect ? '🎉' : '💪'}
+          </Typography>
+          <Typography variant="h4" fontWeight={900} color={isCorrect ? 'success.main' : 'warning.main'}>
+            {result}
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={onNextRound}
+            sx={{ mt: 1, px: 4, borderRadius: 3, fontSize: '1.1rem', fontWeight: 700 }}
+          >
+            Next →
+          </Button>
+        </DialogContent>
+      </Dialog>
+    </Box>
+  );
+}
+
+/**
+ * LessonPanel — left column, full height.
+ * Renders the right content based on `mode`.
+ */
+export default function LessonPanel({
+  mode,
+  alphabetIndex,
+  uppercase,
+  onUppercaseChange,
+  numberValue,
+  wordsIndex,
+  fruitsIndex,
+  animalsIndex,
+  wildAnimalsIndex,
+  vowelsIndex,
+  shapesIndex,
+  colorsIndex,
+  vehiclesIndex,
+  foodsIndex,
+  clothesIndex,
+  fingerCountIndex,
+  nextState,
+  findState,
+  displayData,
+  progress,
+  speechEnabled,
+  accuracy,
+  onToggleNarration,
+  onLetterClick,
+  onNumberClick,
+  onWordClick,
+  onFruitClick,
+  onAnimalClick,
+  onWildAnimalClick,
+  onVowelClick,
+  onShapeClick,
+  onColorClick,
+  onVehicleClick,
+  onFoodClick,
+  onClothClick,
+  onFingerCountClick,
+  onFindOptionClick,
+  onNextOptionClick,
+  onNextFindRound,
+  onNextNextRound,
+}) {
+  const { title, prompt, hint } = displayData;
+  const LETTERS = uppercase ? UPPERCASE_LETTERS : LOWERCASE_LETTERS;
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 1 }}>
+
+      {/* ── Header ── */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+        <Box>
+          <Typography variant="h5" fontWeight={900} color="primary.main" lineHeight={1.1}>
+            {title}
+          </Typography>
+          <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 700 }}>
+            {prompt}
+          </Typography>
+        </Box>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          {mode === 'alphabet' && (
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={uppercase}
+                  onChange={(e) => onUppercaseChange(e.target.checked)}
+                  color="primary"
+                  size="small"
+                />
+              }
+              label={
+                <Typography variant="caption" fontWeight={700} color="text.secondary">
+                  {uppercase ? 'ABC' : 'abc'}
+                </Typography>
+              }
+              labelPlacement="start"
+              sx={{ mr: 0, ml: 0 }}
+            />
+          )}
+          <IconButton
+            size="large"
+            onClick={onToggleNarration}
+            aria-label={speechEnabled ? 'Turn narration off' : 'Turn narration on'}
+            sx={{ color: speechEnabled ? 'primary.main' : 'text.disabled', fontSize: '2rem' }}
+          >
+            {speechEnabled ? <RecordVoiceOverIcon fontSize="large" /> : <VolumeOffIcon fontSize="large" />}
+          </IconButton>
+        </Stack>
+      </Box>
+
+      {/* ── Main content area ── */}
+      <Paper
+        elevation={0}
+        sx={{
+          flex: 1,
+          overflow: 'hidden',
+          background: 'linear-gradient(135deg, #e8f5e9 0%, #e3f2fd 100%)',
+          border: '2px dashed',
+          borderColor: 'primary.light',
+          borderRadius: 4,
+        }}
+      >
+        {/* ALPHABET — full A-Z grid */}
+        {mode === 'alphabet' && (
+          <ItemGrid
+            items={LETTERS}
+            activeIndex={alphabetIndex}
+            seen={progress.alphabetSeen}
+            onItemClick={onLetterClick}
+          />
+        )}
+
+        {/* NUMBERS — full 1-100 grid */}
+        {mode === 'numbers' && (
+          <ItemGrid
+            items={NUMBERS}
+            activeIndex={numberValue - 1}
+            seen={progress.numbersSeen}
+            onItemClick={(i) => onNumberClick(i + 1)}
+          />
+        )}
+
+        {/* WORDS — A for Apple grid */}
+        {mode === 'words' && (
+          <WordsGrid
+            activeIndex={wordsIndex}
+            onItemClick={onWordClick}
+          />
+        )}
+
+        {/* FRUITS — fruit name and emoji grid */}
+        {mode === 'fruits' && (
+          <FruitsGrid
+            activeIndex={fruitsIndex}
+            onItemClick={onFruitClick}
+          />
+        )}
+
+        {mode === 'animals' && (
+          <AnimalsGrid
+            activeIndex={animalsIndex}
+            onItemClick={onAnimalClick}
+          />
+        )}
+
+        {mode === 'wild-animals' && (
+          <WildAnimalsGrid
+            activeIndex={wildAnimalsIndex}
+            onItemClick={onWildAnimalClick}
+          />
+        )}
+
+        {mode === 'vowels' && (
+          <VowelsGrid
+            activeIndex={vowelsIndex}
+            onItemClick={onVowelClick}
+          />
+        )}
+
+        {mode === 'shapes' && (
+          <ShapesGrid
+            activeIndex={shapesIndex}
+            onItemClick={onShapeClick}
+          />
+        )}
+
+        {mode === 'colors' && (
+          <ColorsGrid
+            activeIndex={colorsIndex}
+            onItemClick={onColorClick}
+          />
+        )}
+
+        {mode === 'vehicles' && (
+          <VehiclesGrid
+            activeIndex={vehiclesIndex}
+            onItemClick={onVehicleClick}
+          />
+        )}
+
+        {mode === 'foods' && (
+          <FoodsGrid
+            activeIndex={foodsIndex}
+            onItemClick={onFoodClick}
+          />
+        )}
+
+        {mode === 'clothes' && (
+          <ClothesGrid
+            activeIndex={clothesIndex}
+            onItemClick={onClothClick}
+          />
+        )}
+
+        {mode === 'finger-count' && (
+          <FingerCountGrid
+            activeIndex={fingerCountIndex}
+            onItemClick={onFingerCountClick}
+          />
+        )}
+
+        {/* WHAT'S NEXT game */}
+        {mode === 'next' && nextState && (
+          <GameDisplay
+            options={nextState.options}
+            selectedIndex={nextState.selected}
+            result={nextState.result}
+            prompt={nextState.question}
+            onOptionClick={onNextOptionClick}
+            onNextRound={onNextNextRound}
+          />
+        )}
+
+        {/* FIND THE LETTER game */}
+        {mode === 'find' && findState && (
+          <GameDisplay
+            options={findState.options}
+            selectedIndex={findState.selected}
+            result={findState.result}
+            prompt={`Find: ${findState.target}`}
+            onOptionClick={onFindOptionClick}
+            onNextRound={onNextFindRound}
+          />
+        )}
+
+        {/* MENU / welcome */}
+        {mode === 'menu' && (
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+            <Typography
+              sx={{
+                fontSize: 'clamp(2rem, 10vw, 8rem)',
+                fontWeight: 900,
+                color: 'primary.dark',
+                opacity: 0.25,
+                userSelect: 'none',
+              }}
+            >
+              READY
+            </Typography>
+          </Box>
+        )}
+      </Paper>
+
+      {/* ── Hint ── */}
+      <Typography variant="caption" color="text.secondary" textAlign="center" sx={{ flexShrink: 0 }}>
+        {hint}
+      </Typography>
+    </Box>
+  );
+}
