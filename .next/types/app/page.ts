@@ -1,4 +1,4 @@
-// File: /Users/eknjoroge/Kush/totoLearn/app/page.jsx
+// File: D:\work\Evieit\app\page.jsx
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

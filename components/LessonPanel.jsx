@@ -198,9 +198,11 @@ function WordsGrid({ activeIndex, onItemClick }) {
 }
 
 /**
- * Fruits grid — emoji + name tiles.
+ * Generic tile for simple "glyph + name" modules (fruits, animals,
+ * wild-animals, shapes, vehicles, foods, clothes). Colors reuses this too
+ * via glyphField={null} (no emoji shown) plus a renderExtra swatch.
  */
-function FruitTile({ fruit, active, activeRef, onClick }) {
+function SimpleTile({ item, glyphField, labelField, active, activeRef, onClick, renderExtra, gap = 0.5, scaleActive = 1.1 }) {
   return (
     <Box
       ref={active ? activeRef : null}
@@ -216,7 +218,7 @@ function FruitTile({ fruit, active, activeRef, onClick }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 0.5,
+        gap,
         borderRadius: 3,
         cursor: 'pointer',
         userSelect: 'none',
@@ -226,36 +228,39 @@ function FruitTile({ fruit, active, activeRef, onClick }) {
         border: '2px solid',
         borderColor: active ? 'primary.dark' : 'divider',
         boxShadow: active ? 6 : 1,
-        transform: active ? 'scale(1.1)' : 'scale(1)',
+        transform: active ? `scale(${scaleActive})` : 'scale(1)',
         zIndex: active ? 1 : 0,
         p: 0.5,
       }}
     >
-      {fruit.imageSrc ? (
-        <Box
-          component="img"
-          src={fruit.imageSrc}
-          alt={fruit.name}
-          sx={{
-            width: 'clamp(4.4rem, 9vw, 7rem)',
-            height: 'clamp(4.4rem, 9vw, 7rem)',
-            objectFit: 'contain',
-            filter: active ? 'drop-shadow(0 8px 12px rgba(0,0,0,0.18))' : 'none',
-          }}
-        />
-      ) : (
-        <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
-          {fruit.emoji}
-        </Typography>
+      {renderExtra ? renderExtra(item) : null}
+      {glyphField && (
+        item.imageSrc ? (
+          <Box
+            component="img"
+            src={item.imageSrc}
+            alt={item[labelField]}
+            sx={{
+              width: 'clamp(4.4rem, 9vw, 7rem)',
+              height: 'clamp(4.4rem, 9vw, 7rem)',
+              objectFit: 'contain',
+              filter: active ? 'drop-shadow(0 8px 12px rgba(0,0,0,0.18))' : 'none',
+            }}
+          />
+        ) : (
+          <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
+            {item[glyphField]}
+          </Typography>
+        )
       )}
       <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
-        {fruit.name}
+        {item[labelField]}
       </Typography>
     </Box>
   );
 }
 
-function FruitsGrid({ activeIndex, onItemClick }) {
+function SimpleGrid({ data, glyphField, labelField = 'name', activeIndex, onItemClick, renderExtra, gap, scaleActive }) {
   const activeRef = useRef(null);
   useEffect(() => {
     if (activeRef.current) {
@@ -275,161 +280,18 @@ function FruitsGrid({ activeIndex, onItemClick }) {
         alignContent: 'flex-start',
       }}
     >
-      {FRUITS.map((fruit, i) => (
-        <FruitTile
-          key={fruit.name}
-          fruit={fruit}
+      {data.map((item, i) => (
+        <SimpleTile
+          key={item[labelField]}
+          item={item}
+          glyphField={glyphField}
+          labelField={labelField}
           active={i === activeIndex}
           activeRef={activeRef}
           onClick={() => onItemClick(i)}
-        />
-      ))}
-    </Box>
-  );
-}
-
-function AnimalTile({ animal, active, activeRef, onClick }) {
-  return (
-    <Box
-      ref={active ? activeRef : null}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
-      aria-pressed={active}
-      sx={{
-        width: '100%',
-        aspectRatio: '1 / 1',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 0.5,
-        borderRadius: 3,
-        cursor: 'pointer',
-        userSelect: 'none',
-        transition: 'all 0.15s ease',
-        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
-        color: active ? '#fff' : 'text.primary',
-        border: '2px solid',
-        borderColor: active ? 'primary.dark' : 'divider',
-        boxShadow: active ? 6 : 1,
-        transform: active ? 'scale(1.1)' : 'scale(1)',
-        zIndex: active ? 1 : 0,
-        p: 0.5,
-      }}
-    >
-      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
-        {animal.emoji}
-      </Typography>
-      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
-        {animal.name}
-      </Typography>
-    </Box>
-  );
-}
-
-function AnimalsGrid({ activeIndex, onItemClick }) {
-  const activeRef = useRef(null);
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 1.5,
-        p: 2,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {DOMESTIC_ANIMALS.map((animal, i) => (
-        <AnimalTile
-          key={animal.name}
-          animal={animal}
-          active={i === activeIndex}
-          activeRef={activeRef}
-          onClick={() => onItemClick(i)}
-        />
-      ))}
-    </Box>
-  );
-}
-
-function WildAnimalTile({ animal, active, activeRef, onClick }) {
-  return (
-    <Box
-      ref={active ? activeRef : null}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
-      aria-pressed={active}
-      sx={{
-        width: '100%',
-        aspectRatio: '1 / 1',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 0.5,
-        borderRadius: 3,
-        cursor: 'pointer',
-        userSelect: 'none',
-        transition: 'all 0.15s ease',
-        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
-        color: active ? '#fff' : 'text.primary',
-        border: '2px solid',
-        borderColor: active ? 'primary.dark' : 'divider',
-        boxShadow: active ? 6 : 1,
-        transform: active ? 'scale(1.1)' : 'scale(1)',
-        zIndex: active ? 1 : 0,
-        p: 0.5,
-      }}
-    >
-      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
-        {animal.emoji}
-      </Typography>
-      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
-        {animal.name}
-      </Typography>
-    </Box>
-  );
-}
-
-function WildAnimalsGrid({ activeIndex, onItemClick }) {
-  const activeRef = useRef(null);
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 1.5,
-        p: 2,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {WILD_ANIMALS.map((animal, i) => (
-        <WildAnimalTile
-          key={animal.name}
-          animal={animal}
-          active={i === activeIndex}
-          activeRef={activeRef}
-          onClick={() => onItemClick(i)}
+          renderExtra={renderExtra}
+          gap={gap}
+          scaleActive={scaleActive}
         />
       ))}
     </Box>
@@ -503,383 +365,6 @@ function VowelsGrid({ activeIndex, onItemClick }) {
         <VowelTile
           key={item.syllable}
           item={item}
-          active={i === activeIndex}
-          activeRef={activeRef}
-          onClick={() => onItemClick(i)}
-        />
-      ))}
-    </Box>
-  );
-}
-
-function ShapeTile({ shape, active, activeRef, onClick }) {
-  return (
-    <Box
-      ref={active ? activeRef : null}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
-      aria-pressed={active}
-      sx={{
-        width: '100%',
-        aspectRatio: '1 / 1',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 0.5,
-        borderRadius: 3,
-        cursor: 'pointer',
-        userSelect: 'none',
-        transition: 'all 0.15s ease',
-        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
-        color: active ? '#fff' : 'text.primary',
-        border: '2px solid',
-        borderColor: active ? 'primary.dark' : 'divider',
-        boxShadow: active ? 6 : 1,
-        transform: active ? 'scale(1.1)' : 'scale(1)',
-        zIndex: active ? 1 : 0,
-        p: 0.5,
-      }}
-    >
-      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
-        {shape.symbol}
-      </Typography>
-      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
-        {shape.name}
-      </Typography>
-    </Box>
-  );
-}
-
-function ShapesGrid({ activeIndex, onItemClick }) {
-  const activeRef = useRef(null);
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 1.5,
-        p: 2,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {SHAPES.map((shape, i) => (
-        <ShapeTile
-          key={shape.name}
-          shape={shape}
-          active={i === activeIndex}
-          activeRef={activeRef}
-          onClick={() => onItemClick(i)}
-        />
-      ))}
-    </Box>
-  );
-}
-
-function ColorTile({ colorItem, active, activeRef, onClick }) {
-  return (
-    <Box
-      ref={active ? activeRef : null}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
-      aria-pressed={active}
-      sx={{
-        width: '100%',
-        aspectRatio: '1 / 1',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 1,
-        borderRadius: 3,
-        cursor: 'pointer',
-        userSelect: 'none',
-        transition: 'all 0.15s ease',
-        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
-        color: active ? '#fff' : 'text.primary',
-        border: '2px solid',
-        borderColor: active ? 'primary.dark' : 'divider',
-        boxShadow: active ? 6 : 1,
-        transform: active ? 'scale(1.08)' : 'scale(1)',
-        zIndex: active ? 1 : 0,
-        p: 0.5,
-      }}
-    >
-      <Box
-        sx={{
-          width: 'clamp(2.6rem, 5vw, 4.5rem)',
-          height: 'clamp(2.6rem, 5vw, 4.5rem)',
-          borderRadius: '50%',
-          bgcolor: colorItem.swatch,
-          border: '3px solid',
-          borderColor: colorItem.name === 'White' ? 'grey.400' : 'rgba(0,0,0,0.12)',
-        }}
-      />
-      <Typography sx={{ fontSize: 'clamp(0.6rem, 1.1vw, 0.95rem)', fontWeight: 700, textAlign: 'center' }}>
-        {colorItem.name}
-      </Typography>
-    </Box>
-  );
-}
-
-function ColorsGrid({ activeIndex, onItemClick }) {
-  const activeRef = useRef(null);
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 1.5,
-        p: 2,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {COLORS.map((colorItem, i) => (
-        <ColorTile
-          key={colorItem.name}
-          colorItem={colorItem}
-          active={i === activeIndex}
-          activeRef={activeRef}
-          onClick={() => onItemClick(i)}
-        />
-      ))}
-    </Box>
-  );
-}
-
-function VehicleTile({ vehicle, active, activeRef, onClick }) {
-  return (
-    <Box
-      ref={active ? activeRef : null}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
-      aria-pressed={active}
-      sx={{
-        width: '100%',
-        aspectRatio: '1 / 1',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 0.5,
-        borderRadius: 3,
-        cursor: 'pointer',
-        userSelect: 'none',
-        transition: 'all 0.15s ease',
-        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
-        color: active ? '#fff' : 'text.primary',
-        border: '2px solid',
-        borderColor: active ? 'primary.dark' : 'divider',
-        boxShadow: active ? 6 : 1,
-        transform: active ? 'scale(1.1)' : 'scale(1)',
-        zIndex: active ? 1 : 0,
-        p: 0.5,
-      }}
-    >
-      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
-        {vehicle.emoji}
-      </Typography>
-      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
-        {vehicle.name}
-      </Typography>
-    </Box>
-  );
-}
-
-function VehiclesGrid({ activeIndex, onItemClick }) {
-  const activeRef = useRef(null);
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 1.5,
-        p: 2,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {VEHICLES.map((vehicle, i) => (
-        <VehicleTile
-          key={vehicle.name}
-          vehicle={vehicle}
-          active={i === activeIndex}
-          activeRef={activeRef}
-          onClick={() => onItemClick(i)}
-        />
-      ))}
-    </Box>
-  );
-}
-
-function FoodTile({ food, active, activeRef, onClick }) {
-  return (
-    <Box
-      ref={active ? activeRef : null}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
-      aria-pressed={active}
-      sx={{
-        width: '100%',
-        aspectRatio: '1 / 1',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 0.5,
-        borderRadius: 3,
-        cursor: 'pointer',
-        userSelect: 'none',
-        transition: 'all 0.15s ease',
-        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
-        color: active ? '#fff' : 'text.primary',
-        border: '2px solid',
-        borderColor: active ? 'primary.dark' : 'divider',
-        boxShadow: active ? 6 : 1,
-        transform: active ? 'scale(1.1)' : 'scale(1)',
-        zIndex: active ? 1 : 0,
-        p: 0.5,
-      }}
-    >
-      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
-        {food.emoji}
-      </Typography>
-      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
-        {food.name}
-      </Typography>
-    </Box>
-  );
-}
-
-function FoodsGrid({ activeIndex, onItemClick }) {
-  const activeRef = useRef(null);
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 1.5,
-        p: 2,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {FOODS.map((food, i) => (
-        <FoodTile
-          key={food.name}
-          food={food}
-          active={i === activeIndex}
-          activeRef={activeRef}
-          onClick={() => onItemClick(i)}
-        />
-      ))}
-    </Box>
-  );
-}
-
-function ClothTile({ cloth, active, activeRef, onClick }) {
-  return (
-    <Box
-      ref={active ? activeRef : null}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
-      aria-pressed={active}
-      sx={{
-        width: '100%',
-        aspectRatio: '1 / 1',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 0.5,
-        borderRadius: 3,
-        cursor: 'pointer',
-        userSelect: 'none',
-        transition: 'all 0.15s ease',
-        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
-        color: active ? '#fff' : 'text.primary',
-        border: '2px solid',
-        borderColor: active ? 'primary.dark' : 'divider',
-        boxShadow: active ? 6 : 1,
-        transform: active ? 'scale(1.1)' : 'scale(1)',
-        zIndex: active ? 1 : 0,
-        p: 0.5,
-      }}
-    >
-      <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
-        {cloth.emoji}
-      </Typography>
-      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
-        {cloth.name}
-      </Typography>
-    </Box>
-  );
-}
-
-function ClothesGrid({ activeIndex, onItemClick }) {
-  const activeRef = useRef(null);
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 1.5,
-        p: 2,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {CLOTHES.map((cloth, i) => (
-        <ClothTile
-          key={cloth.name}
-          cloth={cloth}
           active={i === activeIndex}
           activeRef={activeRef}
           onClick={() => onItemClick(i)}
@@ -1088,6 +573,18 @@ export default function LessonPanel({
   const { title, prompt, hint } = displayData;
   const LETTERS = uppercase ? UPPERCASE_LETTERS : LOWERCASE_LETTERS;
 
+  // Modules that are all "glyph + name" tiles, differing only in data/glyph field.
+  const simpleModules = [
+    { key: 'fruits', data: FRUITS, glyphField: 'emoji', activeIndex: fruitsIndex, onItemClick: onFruitClick },
+    { key: 'animals', data: DOMESTIC_ANIMALS, glyphField: 'emoji', activeIndex: animalsIndex, onItemClick: onAnimalClick },
+    { key: 'wild-animals', data: WILD_ANIMALS, glyphField: 'emoji', activeIndex: wildAnimalsIndex, onItemClick: onWildAnimalClick },
+    { key: 'shapes', data: SHAPES, glyphField: 'symbol', activeIndex: shapesIndex, onItemClick: onShapeClick },
+    { key: 'vehicles', data: VEHICLES, glyphField: 'emoji', activeIndex: vehiclesIndex, onItemClick: onVehicleClick },
+    { key: 'foods', data: FOODS, glyphField: 'emoji', activeIndex: foodsIndex, onItemClick: onFoodClick },
+    { key: 'clothes', data: CLOTHES, glyphField: 'emoji', activeIndex: clothesIndex, onItemClick: onClothClick },
+  ];
+  const activeSimpleModule = simpleModules.find((m) => m.key === mode);
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 1 }}>
 
@@ -1172,25 +669,14 @@ export default function LessonPanel({
           />
         )}
 
-        {/* FRUITS — fruit name and emoji grid */}
-        {mode === 'fruits' && (
-          <FruitsGrid
-            activeIndex={fruitsIndex}
-            onItemClick={onFruitClick}
-          />
-        )}
-
-        {mode === 'animals' && (
-          <AnimalsGrid
-            activeIndex={animalsIndex}
-            onItemClick={onAnimalClick}
-          />
-        )}
-
-        {mode === 'wild-animals' && (
-          <WildAnimalsGrid
-            activeIndex={wildAnimalsIndex}
-            onItemClick={onWildAnimalClick}
+        {/* FRUITS, ANIMALS, WILD ANIMALS, SHAPES, VEHICLES, FOODS, CLOTHES —
+            all simple "glyph + name" grids, driven by simpleModules above */}
+        {activeSimpleModule && (
+          <SimpleGrid
+            data={activeSimpleModule.data}
+            glyphField={activeSimpleModule.glyphField}
+            activeIndex={activeSimpleModule.activeIndex}
+            onItemClick={activeSimpleModule.onItemClick}
           />
         )}
 
@@ -1201,38 +687,27 @@ export default function LessonPanel({
           />
         )}
 
-        {mode === 'shapes' && (
-          <ShapesGrid
-            activeIndex={shapesIndex}
-            onItemClick={onShapeClick}
-          />
-        )}
-
+        {/* COLORS — swatch-only variant of the simple grid (no emoji glyph) */}
         {mode === 'colors' && (
-          <ColorsGrid
+          <SimpleGrid
+            data={COLORS}
+            glyphField={null}
             activeIndex={colorsIndex}
             onItemClick={onColorClick}
-          />
-        )}
-
-        {mode === 'vehicles' && (
-          <VehiclesGrid
-            activeIndex={vehiclesIndex}
-            onItemClick={onVehicleClick}
-          />
-        )}
-
-        {mode === 'foods' && (
-          <FoodsGrid
-            activeIndex={foodsIndex}
-            onItemClick={onFoodClick}
-          />
-        )}
-
-        {mode === 'clothes' && (
-          <ClothesGrid
-            activeIndex={clothesIndex}
-            onItemClick={onClothClick}
+            gap={1}
+            scaleActive={1.08}
+            renderExtra={(item) => (
+              <Box
+                sx={{
+                  width: 'clamp(2.6rem, 5vw, 4.5rem)',
+                  height: 'clamp(2.6rem, 5vw, 4.5rem)',
+                  borderRadius: '50%',
+                  bgcolor: item.swatch,
+                  border: '3px solid',
+                  borderColor: item.name === 'White' ? 'grey.400' : 'rgba(0,0,0,0.12)',
+                }}
+              />
+            )}
           />
         )}
 

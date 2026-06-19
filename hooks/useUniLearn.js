@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 
 const STORAGE_KEY = 'uniLearnProgressV1';
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -18,35 +18,35 @@ export const LETTER_SOUNDS = {
 
 // ── Fruits ────────────────────────────────────────────────
 export const FRUITS = [
-  { name: 'Apple',      emoji: '🍎' },
-  { name: 'Banana',     emoji: '🍌' },
-  { name: 'Blackberry', emoji: '🫐' },
-  { name: 'Cherry',     emoji: '🍒' },
+  { name: 'Apple',      emoji: '🍎', imageSrc: '/images/fruits/apple.jpg' },
+  { name: 'Banana',     emoji: '🍌', imageSrc: '/images/fruits/banana.jpg' },
+  { name: 'Blackberry', emoji: '🫐', imageSrc: '/images/fruits/blackberry.jpg' },
+  { name: 'Cherry',     emoji: '🍒', imageSrc: '/images/fruits/cherry.jpg' },
   { name: 'Dragonfruit',emoji: '🐉', imageSrc: '/images/dragonfruit.svg' },
-  { name: 'Grapefruit', emoji: '🍊' },
-  { name: 'Grape',      emoji: '🍇' },
-  { name: 'Guava',      emoji: '🍐' },
-  { name: 'Lemon',      emoji: '🍋' },
-  { name: 'Lime',       emoji: '🍋' },
-  { name: 'Mango',      emoji: '🥭' },
-  { name: 'Orange',     emoji: '🍊' },
-  { name: 'Papaya',     emoji: '🥭' },
-  { name: 'Passionfruit', emoji: '🥭' },
-  { name: 'Peach',      emoji: '🍑' },
-  { name: 'Pear',       emoji: '🍐' },
-  { name: 'Pineapple',  emoji: '🍍' },
-  { name: 'Plum',       emoji: '🍑' },
-  { name: 'Pomegranate',emoji: '🍎' },
-  { name: 'Raspberry',  emoji: '🍓' },
-  { name: 'Strawberry', emoji: '🍓' },
-  { name: 'Tangerine',  emoji: '🍊' },
-  { name: 'Watermelon', emoji: '🍉' },
-  { name: 'Kiwi',       emoji: '🥝' },
-  { name: 'Coconut',    emoji: '🥥' },
-  { name: 'Blueberry',  emoji: '🫐' },
-  { name: 'Melon',      emoji: '🍈' },
-  { name: 'Avocado',    emoji: '🥑' },
-  { name: 'Tomato',     emoji: '🍅' },
+  { name: 'Grapefruit', emoji: '🍊', imageSrc: '/images/fruits/grapefruit.jpg' },
+  { name: 'Grape',      emoji: '🍇', imageSrc: '/images/fruits/grape.jpg' },
+  { name: 'Guava',      emoji: '🍐', imageSrc: '/images/fruits/guava.jpg' },
+  { name: 'Lemon',      emoji: '🍋', imageSrc: '/images/fruits/lemon.jpg' },
+  { name: 'Lime',       emoji: '🍋', imageSrc: '/images/fruits/lime.jpg' },
+  { name: 'Mango',      emoji: '🥭', imageSrc: '/images/fruits/mango.jpg' },
+  { name: 'Orange',     emoji: '🍊', imageSrc: '/images/fruits/orange.jpg' },
+  { name: 'Papaya',     emoji: '🥭', imageSrc: '/images/fruits/papaya.jpg' },
+  { name: 'Passionfruit', emoji: '🥭', imageSrc: '/images/fruits/passionfruit.jpg' },
+  { name: 'Peach',      emoji: '🍑', imageSrc: '/images/fruits/peach.jpg' },
+  { name: 'Pear',       emoji: '🍐', imageSrc: '/images/fruits/pear.jpg' },
+  { name: 'Pineapple',  emoji: '🍍', imageSrc: '/images/fruits/pineapple.jpg' },
+  { name: 'Plum',       emoji: '🍑', imageSrc: '/images/fruits/plum.jpg' },
+  { name: 'Pomegranate',emoji: '🍎', imageSrc: '/images/fruits/pomegranate.jpg' },
+  { name: 'Raspberry',  emoji: '🍓', imageSrc: '/images/fruits/raspberry.jpg' },
+  { name: 'Strawberry', emoji: '🍓', imageSrc: '/images/fruits/strawberry.jpg' },
+  { name: 'Tangerine',  emoji: '🍊', imageSrc: '/images/fruits/tangerine.jpg' },
+  { name: 'Watermelon', emoji: '🍉', imageSrc: '/images/fruits/watermelon.jpg' },
+  { name: 'Kiwi',       emoji: '🥝', imageSrc: '/images/fruits/kiwi.jpg' },
+  { name: 'Coconut',    emoji: '🥥', imageSrc: '/images/fruits/coconut.jpg' },
+  { name: 'Blueberry',  emoji: '🫐', imageSrc: '/images/fruits/blueberry.jpg' },
+  { name: 'Melon',      emoji: '🍈', imageSrc: '/images/fruits/melon.jpg' },
+  { name: 'Avocado',    emoji: '🥑', imageSrc: '/images/fruits/avocado.jpg' },
+  { name: 'Tomato',     emoji: '🍅', imageSrc: '/images/fruits/tomato.jpg' },
 ];
 
 // ── Domestic animals ─────────────────────────────────────
@@ -274,16 +274,26 @@ export const VEHICLES = [
 
 // ── Foods ───────────────────────────────────────────────
 export const FOODS = [
-  { name: 'Pizza', emoji: '🍕' },
-  { name: 'Burger', emoji: '🍔' },
-  { name: 'Fries', emoji: '🍟' },
-  { name: 'Rice', emoji: '🍚' },
-  { name: 'Bread', emoji: '🍞' },
-  { name: 'Egg', emoji: '🥚' },
-  { name: 'Noodles', emoji: '🍜' },
-  { name: 'Fish', emoji: '🐟' },
-  { name: 'Chicken', emoji: '🍗' },
-  { name: 'Cake', emoji: '🍰' },
+  { name: 'Pizza', emoji: '🍕', imageSrc: '/images/foods/pizza.jpg' },
+  { name: 'Burger', emoji: '🍔', imageSrc: '/images/foods/burger.jpg' },
+  { name: 'Fries', emoji: '🍟', imageSrc: '/images/foods/fries.jpg' },
+  { name: 'Rice', emoji: '🍚', imageSrc: '/images/foods/rice.jpg' },
+  { name: 'Bread', emoji: '🍞', imageSrc: '/images/foods/bread.jpg' },
+  { name: 'Egg', emoji: '🥚', imageSrc: '/images/foods/egg.jpg' },
+  { name: 'Noodles', emoji: '🍜', imageSrc: '/images/foods/noodles.jpg' },
+  { name: 'Fish', emoji: '🐟', imageSrc: '/images/foods/fish.jpg' },
+  { name: 'Chicken', emoji: '🍗', imageSrc: '/images/foods/chicken.jpg' },
+  { name: 'Cake', emoji: '🍰', imageSrc: '/images/foods/cake.jpg' },
+  { name: 'Pancake', emoji: '🥞', imageSrc: '/images/foods/pancake.jpg' },
+  { name: 'Sandwich', emoji: '🥪', imageSrc: '/images/foods/sandwich.jpg' },
+  { name: 'Hot Dog', emoji: '🌭', imageSrc: '/images/foods/hotdog.png' },
+  { name: 'Pasta', emoji: '🍝', imageSrc: '/images/foods/pasta.jpg' },
+  { name: 'Soup', emoji: '🍲', imageSrc: '/images/foods/soup.jpg' },
+  { name: 'Ice Cream', emoji: '🍨', imageSrc: '/images/foods/icecream.jpg' },
+  { name: 'Donut', emoji: '🍩', imageSrc: '/images/foods/donut.jpg' },
+  { name: 'Cookie', emoji: '🍪', imageSrc: '/images/foods/cookie.png' },
+  { name: 'Popcorn', emoji: '🍿', imageSrc: '/images/foods/popcorn.jpg' },
+  { name: 'Cheese', emoji: '🧀', imageSrc: '/images/foods/cheese.jpg' },
 ];
 
 // ── Clothes ─────────────────────────────────────────────
@@ -345,6 +355,114 @@ export const LETTER_WORDS = {
   Z: { word: 'Zebra',    emoji: '🦓' },
 };
 
+// ── Generic module configuration ──────────────────────────
+// Every module below follows the exact same interaction: pick an item from
+// `data` (by index), speak `getLabel(item)`, and render `getDisplay(item)`
+// in the lesson panel. `alphabet` and `numbers` are NOT here — they track
+// extra progress/star state and stay bespoke in the hook below.
+const GENERIC_MODULES = {
+  words: {
+    data: LETTERS,
+    getLabel: (letter) => `${letter} for ${LETTER_WORDS[letter].word}`,
+    title: 'A for Apple',
+    hint: 'Left/Right: next letter. Click a tile. Backspace: menu.',
+    getDisplay: (letter) => {
+      const { word, emoji } = LETTER_WORDS[letter];
+      return { prompt: `${letter} for ${word}`, display: emoji };
+    },
+  },
+  fruits: {
+    data: FRUITS,
+    getLabel: (item) => item.name,
+    title: 'Fruits',
+    hint: 'Left/Right: next fruit. Click a tile. Backspace: menu.',
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji, imageSrc: item.imageSrc }),
+  },
+  animals: {
+    data: DOMESTIC_ANIMALS,
+    getLabel: (item) => item.name,
+    title: 'Domestic Animals',
+    hint: 'Left/Right: next animal. Click a tile. Backspace: menu.',
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+  },
+  'wild-animals': {
+    data: WILD_ANIMALS,
+    getLabel: (item) => item.name,
+    title: 'Wild Animals',
+    hint: 'Left/Right: next wild animal. Click a tile. Backspace: menu.',
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+  },
+  vowels: {
+    data: VOWELS,
+    getLabel: (item) => item.syllable,
+    title: 'Vowels & Syllables',
+    hint: 'Left/Right: next syllable. Click a tile. Backspace: menu.',
+    getDisplay: (item) => ({ prompt: `Syllable: ${item.syllable.toUpperCase()}`, display: item.syllable }),
+  },
+  shapes: {
+    data: SHAPES,
+    getLabel: (item) => item.name,
+    title: 'Shapes',
+    hint: 'Left/Right: next shape. Click a tile. Backspace: menu.',
+    getDisplay: (item) => ({ prompt: item.name, display: item.symbol }),
+  },
+  colors: {
+    data: COLORS,
+    getLabel: (item) => item.name,
+    title: 'Colors',
+    hint: 'Left/Right: next color. Click a tile. Backspace: menu.',
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+  },
+  vehicles: {
+    data: VEHICLES,
+    getLabel: (item) => item.name,
+    title: 'Vehicles',
+    hint: 'Left/Right: next vehicle. Click a tile. Backspace: menu.',
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+  },
+  foods: {
+    data: FOODS,
+    getLabel: (item) => item.name,
+    title: 'Foods',
+    hint: 'Left/Right: next food. Click a tile. Backspace: menu.',
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+  },
+  clothes: {
+    data: CLOTHES,
+    getLabel: (item) => item.name,
+    title: 'Clothes',
+    hint: 'Left/Right: next clothing item. Click a tile. Backspace: menu.',
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+  },
+  'finger-count': {
+    data: FINGER_COUNTS,
+    getLabel: (item) => String(item.count),
+    title: 'Finger Count',
+    hint: 'Left/Right: next count. Click a tile. Backspace: menu.',
+    getDisplay: (item) => ({ prompt: `Count: ${item.count}`, display: item.display, imageSrc: item.imageSrc }),
+  },
+};
+const GENERIC_MODULE_KEYS = Object.keys(GENERIC_MODULES);
+
+// Maps each generic module to the flat property/function names the rest of
+// the app already expects (e.g. `fruitsIndex` / `jumpToFruit`), so call
+// sites in app/page.jsx and components/LessonPanel.jsx need no changes.
+const FLAT_NAME_MAP = {
+  words:          { indexProp: 'wordsIndex',        jumpFn: 'jumpToWord' },
+  fruits:         { indexProp: 'fruitsIndex',        jumpFn: 'jumpToFruit' },
+  animals:        { indexProp: 'animalsIndex',       jumpFn: 'jumpToAnimal' },
+  'wild-animals': { indexProp: 'wildAnimalsIndex',   jumpFn: 'jumpToWildAnimal' },
+  vowels:         { indexProp: 'vowelsIndex',        jumpFn: 'jumpToVowel' },
+  shapes:         { indexProp: 'shapesIndex',        jumpFn: 'jumpToShape' },
+  colors:         { indexProp: 'colorsIndex',        jumpFn: 'jumpToColor' },
+  vehicles:       { indexProp: 'vehiclesIndex',      jumpFn: 'jumpToVehicle' },
+  foods:          { indexProp: 'foodsIndex',         jumpFn: 'jumpToFood' },
+  clothes:        { indexProp: 'clothesIndex',       jumpFn: 'jumpToCloth' },
+  'finger-count': { indexProp: 'fingerCountIndex',   jumpFn: 'jumpToFingerCount' },
+};
+
+const INITIAL_MODULE_INDICES = Object.fromEntries(GENERIC_MODULE_KEYS.map((k) => [k, 0]));
+
 const SEQUENCE_PATTERNS = [
   { question: '2, 4, 6, ?', options: ['7', '8', '10'], answer: 1 },
   { question: 'A, C, E, ?', options: ['F', 'G', 'H'], answer: 1 },
@@ -381,17 +499,7 @@ export function useUniLearn() {
   const [alphabetIndex, setAlphabetIndex] = useState(0);
   const [uppercase, setUppercase] = useState(true);
   const [numberValue, setNumberValue] = useState(1);
-  const [wordsIndex, setWordsIndex] = useState(0);
-  const [fruitsIndex, setFruitsIndex] = useState(0);
-  const [animalsIndex, setAnimalsIndex] = useState(0);
-  const [wildAnimalsIndex, setWildAnimalsIndex] = useState(0);
-  const [vowelsIndex, setVowelsIndex] = useState(0);
-  const [shapesIndex, setShapesIndex] = useState(0);
-  const [colorsIndex, setColorsIndex] = useState(0);
-  const [vehiclesIndex, setVehiclesIndex] = useState(0);
-  const [foodsIndex, setFoodsIndex] = useState(0);
-  const [clothesIndex, setClothesIndex] = useState(0);
-  const [fingerCountIndex, setFingerCountIndex] = useState(0);
+  const [moduleIndices, setModuleIndices] = useState(INITIAL_MODULE_INDICES);
   const [nextState, setNextState] = useState(null);
   const [findState, setFindState] = useState(null);
   const [speechEnabled, setSpeechEnabled] = useState(true);
@@ -508,223 +616,25 @@ export function useUniLearn() {
     [speak, saveProgress, speechEnabled, uppercase]
   );
 
-  // ── WORDS (A for Apple) ───────────────────────────────────
-  const jumpToWord = useCallback(
-    (index) => {
-      setWordsIndex(index);
-      const letter = LETTERS[index];
-      speak(`${letter} for ${LETTER_WORDS[letter].word}`);
+  // ── GENERIC MODULES (words, fruits, animals, wild-animals, vowels,
+  //    shapes, colors, vehicles, foods, clothes, finger-count) ─────────
+  const jumpToGeneric = useCallback(
+    (moduleKey, index) => {
+      const { data, getLabel } = GENERIC_MODULES[moduleKey];
+      setModuleIndices((prev) => ({ ...prev, [moduleKey]: index }));
+      speak(getLabel(data[index]));
     },
     [speak]
   );
 
-  const moveWords = useCallback(
-    (dir) => {
-      setWordsIndex((prev) => {
-        const next = (prev + dir + LETTERS.length) % LETTERS.length;
-        const letter = LETTERS[next];
-        speak(`${letter} for ${LETTER_WORDS[letter].word}`);
-        return next;
-      });
-    },
-    [speak]
-  );
-
-  // ── FRUITS ───────────────────────────────────────────────
-  const jumpToFruit = useCallback(
-    (index) => {
-      setFruitsIndex(index);
-      speak(FRUITS[index].name);
-    },
-    [speak]
-  );
-
-  const moveFruits = useCallback(
-    (dir) => {
-      setFruitsIndex((prev) => {
-        const next = (prev + dir + FRUITS.length) % FRUITS.length;
-        speak(FRUITS[next].name);
-        return next;
-      });
-    },
-    [speak]
-  );
-
-  // ── DOMESTIC ANIMALS ───────────────────────────────────
-  const jumpToAnimal = useCallback(
-    (index) => {
-      setAnimalsIndex(index);
-      speak(DOMESTIC_ANIMALS[index].name);
-    },
-    [speak]
-  );
-
-  const moveAnimals = useCallback(
-    (dir) => {
-      setAnimalsIndex((prev) => {
-        const next = (prev + dir + DOMESTIC_ANIMALS.length) % DOMESTIC_ANIMALS.length;
-        speak(DOMESTIC_ANIMALS[next].name);
-        return next;
-      });
-    },
-    [speak]
-  );
-
-  // ── WILD ANIMALS ───────────────────────────────────────
-  const jumpToWildAnimal = useCallback(
-    (index) => {
-      setWildAnimalsIndex(index);
-      speak(WILD_ANIMALS[index].name);
-    },
-    [speak]
-  );
-
-  const moveWildAnimals = useCallback(
-    (dir) => {
-      setWildAnimalsIndex((prev) => {
-        const next = (prev + dir + WILD_ANIMALS.length) % WILD_ANIMALS.length;
-        speak(WILD_ANIMALS[next].name);
-        return next;
-      });
-    },
-    [speak]
-  );
-
-  // ── VOWELS / SYLLABLES ──────────────────────────────────
-  const jumpToVowel = useCallback(
-    (index) => {
-      setVowelsIndex(index);
-      speak(VOWELS[index].syllable);
-    },
-    [speak]
-  );
-
-  const moveVowels = useCallback(
-    (dir) => {
-      setVowelsIndex((prev) => {
-        const next = (prev + dir + VOWELS.length) % VOWELS.length;
-        speak(VOWELS[next].syllable);
-        return next;
-      });
-    },
-    [speak]
-  );
-
-  // ── SHAPES ─────────────────────────────────────────────
-  const jumpToShape = useCallback(
-    (index) => {
-      setShapesIndex(index);
-      speak(SHAPES[index].name);
-    },
-    [speak]
-  );
-
-  const moveShapes = useCallback(
-    (dir) => {
-      setShapesIndex((prev) => {
-        const next = (prev + dir + SHAPES.length) % SHAPES.length;
-        speak(SHAPES[next].name);
-        return next;
-      });
-    },
-    [speak]
-  );
-
-  // ── COLORS ─────────────────────────────────────────────
-  const jumpToColor = useCallback(
-    (index) => {
-      setColorsIndex(index);
-      speak(COLORS[index].name);
-    },
-    [speak]
-  );
-
-  const moveColors = useCallback(
-    (dir) => {
-      setColorsIndex((prev) => {
-        const next = (prev + dir + COLORS.length) % COLORS.length;
-        speak(COLORS[next].name);
-        return next;
-      });
-    },
-    [speak]
-  );
-
-  // ── VEHICLES ───────────────────────────────────────────
-  const jumpToVehicle = useCallback(
-    (index) => {
-      setVehiclesIndex(index);
-      speak(VEHICLES[index].name);
-    },
-    [speak]
-  );
-
-  const moveVehicles = useCallback(
-    (dir) => {
-      setVehiclesIndex((prev) => {
-        const next = (prev + dir + VEHICLES.length) % VEHICLES.length;
-        speak(VEHICLES[next].name);
-        return next;
-      });
-    },
-    [speak]
-  );
-
-  // ── FOODS ──────────────────────────────────────────────
-  const jumpToFood = useCallback(
-    (index) => {
-      setFoodsIndex(index);
-      speak(FOODS[index].name);
-    },
-    [speak]
-  );
-
-  const moveFoods = useCallback(
-    (dir) => {
-      setFoodsIndex((prev) => {
-        const next = (prev + dir + FOODS.length) % FOODS.length;
-        speak(FOODS[next].name);
-        return next;
-      });
-    },
-    [speak]
-  );
-
-  // ── CLOTHES ────────────────────────────────────────────
-  const jumpToCloth = useCallback(
-    (index) => {
-      setClothesIndex(index);
-      speak(CLOTHES[index].name);
-    },
-    [speak]
-  );
-
-  const moveClothes = useCallback(
-    (dir) => {
-      setClothesIndex((prev) => {
-        const next = (prev + dir + CLOTHES.length) % CLOTHES.length;
-        speak(CLOTHES[next].name);
-        return next;
-      });
-    },
-    [speak]
-  );
-
-  // ── FINGER COUNT ─────────────────────────────────────
-  const jumpToFingerCount = useCallback(
-    (index) => {
-      setFingerCountIndex(index);
-      speak(String(FINGER_COUNTS[index].count));
-    },
-    [speak]
-  );
-
-  const moveFingerCount = useCallback(
-    (dir) => {
-      setFingerCountIndex((prev) => {
-        const next = (prev + dir + FINGER_COUNTS.length) % FINGER_COUNTS.length;
-        speak(String(FINGER_COUNTS[next].count));
-        return next;
+  const moveGeneric = useCallback(
+    (moduleKey, dir) => {
+      setModuleIndices((prev) => {
+        const { data, getLabel } = GENERIC_MODULES[moduleKey];
+        const len = data.length;
+        const next = (prev[moduleKey] + dir + len) % len;
+        speak(getLabel(data[next]));
+        return { ...prev, [moduleKey]: next };
       });
     },
     [speak]
@@ -932,50 +842,15 @@ export function useUniLearn() {
         setFindState(f);
         speak(`Find the letter ${f.target}`);
       } else if (tileKey === 'alphabet') {
-        speak(LETTER_SOUNDS[alphabetIndex]);
+        speak(LETTER_SOUNDS[LETTERS[alphabetIndex]]);
       } else if (tileKey === 'numbers') {
         speak(String(numberValue));
-      } else if (tileKey === 'words') {
-        const letter = LETTERS[wordsIndex];
-        speak(`${letter} for ${LETTER_WORDS[letter].word}`);
-      } else if (tileKey === 'fruits') {
-        speak(FRUITS[fruitsIndex].name);
-      } else if (tileKey === 'animals') {
-        speak(DOMESTIC_ANIMALS[animalsIndex].name);
-      } else if (tileKey === 'wild-animals') {
-        speak(WILD_ANIMALS[wildAnimalsIndex].name);
-      } else if (tileKey === 'vowels') {
-        speak(VOWELS[vowelsIndex].syllable);
-      } else if (tileKey === 'shapes') {
-        speak(SHAPES[shapesIndex].name);
-      } else if (tileKey === 'colors') {
-        speak(COLORS[colorsIndex].name);
-      } else if (tileKey === 'vehicles') {
-        speak(VEHICLES[vehiclesIndex].name);
-      } else if (tileKey === 'foods') {
-        speak(FOODS[foodsIndex].name);
-      } else if (tileKey === 'clothes') {
-        speak(CLOTHES[clothesIndex].name);
-      } else if (tileKey === 'finger-count') {
-        speak(String(FINGER_COUNTS[fingerCountIndex].count));
+      } else if (GENERIC_MODULES[tileKey]) {
+        const { data, getLabel } = GENERIC_MODULES[tileKey];
+        speak(getLabel(data[moduleIndices[tileKey]]));
       }
     },
-    [
-      speak,
-      alphabetIndex,
-      numberValue,
-      wordsIndex,
-      fruitsIndex,
-      animalsIndex,
-      wildAnimalsIndex,
-      vowelsIndex,
-      shapesIndex,
-      colorsIndex,
-      vehiclesIndex,
-      foodsIndex,
-      clothesIndex,
-      fingerCountIndex,
-    ]
+    [speak, alphabetIndex, numberValue, moduleIndices]
   );
 
   const toMenu = useCallback(() => {
@@ -1007,59 +882,9 @@ export function useUniLearn() {
         else if (key === 'ArrowLeft' || key === 'ArrowUp') moveAlphabet(-1);
         return;
       }
-      if (mode === 'words') {
-        if (key === 'ArrowRight' || key === 'ArrowDown') moveWords(1);
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveWords(-1);
-        return;
-      }
-      if (mode === 'fruits') {
-        if (key === 'ArrowRight' || key === 'ArrowDown') moveFruits(1);
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveFruits(-1);
-        return;
-      }
-      if (mode === 'animals') {
-        if (key === 'ArrowRight' || key === 'ArrowDown') moveAnimals(1);
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveAnimals(-1);
-        return;
-      }
-      if (mode === 'wild-animals') {
-        if (key === 'ArrowRight' || key === 'ArrowDown') moveWildAnimals(1);
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveWildAnimals(-1);
-        return;
-      }
-      if (mode === 'vowels') {
-        if (key === 'ArrowRight' || key === 'ArrowDown') moveVowels(1);
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveVowels(-1);
-        return;
-      }
-      if (mode === 'shapes') {
-        if (key === 'ArrowRight' || key === 'ArrowDown') moveShapes(1);
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveShapes(-1);
-        return;
-      }
-      if (mode === 'colors') {
-        if (key === 'ArrowRight' || key === 'ArrowDown') moveColors(1);
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveColors(-1);
-        return;
-      }
-      if (mode === 'vehicles') {
-        if (key === 'ArrowRight' || key === 'ArrowDown') moveVehicles(1);
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveVehicles(-1);
-        return;
-      }
-      if (mode === 'foods') {
-        if (key === 'ArrowRight' || key === 'ArrowDown') moveFoods(1);
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveFoods(-1);
-        return;
-      }
-      if (mode === 'clothes') {
-        if (key === 'ArrowRight' || key === 'ArrowDown') moveClothes(1);
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveClothes(-1);
-        return;
-      }
-      if (mode === 'finger-count') {
-        if (key === 'ArrowRight' || key === 'ArrowDown') moveFingerCount(1);
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveFingerCount(-1);
+      if (GENERIC_MODULES[mode]) {
+        if (key === 'ArrowRight' || key === 'ArrowDown') moveGeneric(mode, 1);
+        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveGeneric(mode, -1);
         return;
       }
       if (mode === 'numbers') {
@@ -1079,8 +904,7 @@ export function useUniLearn() {
         else if (key === 'ArrowLeft' || key === 'ArrowUp') moveFindSelected(-1);
       }
     },
-    [mode, toggleNarration, openTile, toMenu,
-      moveAlphabet, moveWords, moveFruits, moveAnimals, moveWildAnimals, moveVowels, moveShapes, moveColors, moveVehicles, moveFoods, moveClothes, moveFingerCount, moveNumber,
+    [mode, toggleNarration, openTile, toMenu, moveAlphabet, moveGeneric, moveNumber,
      submitNext, moveNextSelected, submitFind, moveFindSelected]
   );
 
@@ -1089,137 +913,69 @@ export function useUniLearn() {
     ? Math.round((progress.correctAnswers / progress.totalAnswers) * 100)
     : 0;
 
-  let displayData = {
-    title: 'Welcome',
-    prompt: 'Use your remote arrows and OK to begin.',
-    display: 'READY',
-    hint: 'Tip: Left/Right to switch tiles, OK to open. Press M for narration.',
-  };
+  const displayData = useMemo(() => {
+    if (mode === 'alphabet') {
+      return {
+        title: 'Alphabet A-Z',
+        prompt: `Letter ${alphabetIndex + 1} of 26`,
+        display: uppercase ? LETTERS[alphabetIndex] : LETTERS[alphabetIndex].toLowerCase(),
+        hint: 'Left/Right: previous/next letter. Backspace: menu.',
+      };
+    }
+    if (GENERIC_MODULES[mode]) {
+      const cfg = GENERIC_MODULES[mode];
+      const item = cfg.data[moduleIndices[mode]];
+      return { title: cfg.title, hint: cfg.hint, ...cfg.getDisplay(item) };
+    }
+    if (mode === 'numbers') {
+      return {
+        title: 'Learn Maths',
+        prompt: `Number ${numberValue} of 100`,
+        display: String(numberValue),
+        hint: 'Left/Right: minus/plus one. Backspace: menu.',
+      };
+    }
+    if (mode === 'next' && nextState) {
+      const marker = nextState.options
+        .map((o, i) => (i === nextState.selected ? `[${o}]` : o)).join('   ');
+      return {
+        title: "What's Next?",
+        prompt: nextState.question,
+        display: marker,
+        hint: nextState.result || 'Left/Right: move choice. OK: submit. Backspace: menu.',
+      };
+    }
+    if (mode === 'find' && findState) {
+      const optionText = findState.options
+        .map((o, i) => (i === findState.selected ? `[${o}]` : o)).join('   ');
+      return {
+        title: 'Find the Letter',
+        prompt: `Find letter: ${findState.target}`,
+        display: optionText,
+        hint: findState.result || 'Left/Right: choose. OK: confirm. Backspace: menu.',
+      };
+    }
+    return {
+      title: 'Welcome',
+      prompt: 'Use your remote arrows and OK to begin.',
+      display: 'READY',
+      hint: 'Tip: Left/Right to switch tiles, OK to open. Press M for narration.',
+    };
+  }, [mode, alphabetIndex, uppercase, numberValue, moduleIndices, nextState, findState]);
 
-  if (mode === 'alphabet') {
-    displayData = {
-      title: 'Alphabet A-Z',
-      prompt: `Letter ${alphabetIndex + 1} of 26`,
-      display: uppercase ? LETTERS[alphabetIndex] : LETTERS[alphabetIndex].toLowerCase(),
-      hint: 'Left/Right: previous/next letter. Backspace: menu.',
-    };
-  } else if (mode === 'words') {
-    const letter = LETTERS[wordsIndex];
-    const { word, emoji } = LETTER_WORDS[letter];
-    displayData = {
-      title: 'A for Apple',
-      prompt: `${letter} for ${word}`,
-      display: emoji,
-      hint: 'Left/Right: next letter. Click a tile. Backspace: menu.',
-    };
-  } else if (mode === 'fruits') {
-    const fruit = FRUITS[fruitsIndex];
-    displayData = {
-      title: 'Fruits',
-      prompt: fruit.name,
-      display: fruit.emoji,
-      imageSrc: fruit.imageSrc,
-      hint: 'Left/Right: next fruit. Click a tile. Backspace: menu.',
-    };
-  } else if (mode === 'animals') {
-    const animal = DOMESTIC_ANIMALS[animalsIndex];
-    displayData = {
-      title: 'Domestic Animals',
-      prompt: animal.name,
-      display: animal.emoji,
-      hint: 'Left/Right: next animal. Click a tile. Backspace: menu.',
-    };
-  } else if (mode === 'wild-animals') {
-    const animal = WILD_ANIMALS[wildAnimalsIndex];
-    displayData = {
-      title: 'Wild Animals',
-      prompt: animal.name,
-      display: animal.emoji,
-      hint: 'Left/Right: next wild animal. Click a tile. Backspace: menu.',
-    };
-  } else if (mode === 'vowels') {
-    const v = VOWELS[vowelsIndex];
-    displayData = {
-      title: 'Vowels & Syllables',
-      prompt: `Syllable: ${v.syllable.toUpperCase()}`,
-      display: v.syllable,
-      hint: 'Left/Right: next syllable. Click a tile. Backspace: menu.',
-    };
-  } else if (mode === 'shapes') {
-    const shape = SHAPES[shapesIndex];
-    displayData = {
-      title: 'Shapes',
-      prompt: shape.name,
-      display: shape.symbol,
-      hint: 'Left/Right: next shape. Click a tile. Backspace: menu.',
-    };
-  } else if (mode === 'colors') {
-    const color = COLORS[colorsIndex];
-    displayData = {
-      title: 'Colors',
-      prompt: color.name,
-      display: color.emoji,
-      hint: 'Left/Right: next color. Click a tile. Backspace: menu.',
-    };
-  } else if (mode === 'vehicles') {
-    const vehicle = VEHICLES[vehiclesIndex];
-    displayData = {
-      title: 'Vehicles',
-      prompt: vehicle.name,
-      display: vehicle.emoji,
-      hint: 'Left/Right: next vehicle. Click a tile. Backspace: menu.',
-    };
-  } else if (mode === 'foods') {
-    const food = FOODS[foodsIndex];
-    displayData = {
-      title: 'Foods',
-      prompt: food.name,
-      display: food.emoji,
-      hint: 'Left/Right: next food. Click a tile. Backspace: menu.',
-    };
-  } else if (mode === 'clothes') {
-    const cloth = CLOTHES[clothesIndex];
-    displayData = {
-      title: 'Clothes',
-      prompt: cloth.name,
-      display: cloth.emoji,
-      hint: 'Left/Right: next clothing item. Click a tile. Backspace: menu.',
-    };
-  } else if (mode === 'finger-count') {
-    const item = FINGER_COUNTS[fingerCountIndex];
-    displayData = {
-      title: 'Finger Count',
-      prompt: `Count: ${item.count}`,
-      display: item.display,
-      imageSrc: item.imageSrc,
-      hint: 'Left/Right: next count. Click a tile. Backspace: menu.',
-    };
-  } else if (mode === 'numbers') {
-    displayData = {
-      title: 'Learn Maths',
-      prompt: `Number ${numberValue} of 100`,
-      display: String(numberValue),
-      hint: 'Left/Right: minus/plus one. Backspace: menu.',
-    };
-  } else if (mode === 'next' && nextState) {
-    const marker = nextState.options
-      .map((o, i) => (i === nextState.selected ? `[${o}]` : o)).join('   ');
-    displayData = {
-      title: "What's Next?",
-      prompt: nextState.question,
-      display: marker,
-      hint: nextState.result || 'Left/Right: move choice. OK: submit. Backspace: menu.',
-    };
-  } else if (mode === 'find' && findState) {
-    const optionText = findState.options
-      .map((o, i) => (i === findState.selected ? `[${o}]` : o)).join('   ');
-    displayData = {
-      title: 'Find the Letter',
-      prompt: `Find letter: ${findState.target}`,
-      display: optionText,
-      hint: findState.result || 'Left/Right: choose. OK: confirm. Backspace: menu.',
-    };
+  // Back-compat flat accessors: { fruitsIndex, jumpToFruit, ... } for every
+  // generic module, so existing call sites need no changes.
+  const genericIndexProps = {};
+  for (const key of GENERIC_MODULE_KEYS) {
+    genericIndexProps[FLAT_NAME_MAP[key].indexProp] = moduleIndices[key];
   }
+  const genericJumpFns = useMemo(() => {
+    const fns = {};
+    for (const key of GENERIC_MODULE_KEYS) {
+      fns[FLAT_NAME_MAP[key].jumpFn] = (index) => jumpToGeneric(key, index);
+    }
+    return fns;
+  }, [jumpToGeneric]);
 
   return {
     mode,
@@ -1228,17 +984,7 @@ export function useUniLearn() {
     uppercase,
     setUppercase,
     numberValue,
-    wordsIndex,
-    fruitsIndex,
-    animalsIndex,
-    wildAnimalsIndex,
-    vowelsIndex,
-    shapesIndex,
-    colorsIndex,
-    vehiclesIndex,
-    foodsIndex,
-    clothesIndex,
-    fingerCountIndex,
+    ...genericIndexProps,
     nextState,
     findState,
     displayData,
@@ -1253,17 +999,7 @@ export function useUniLearn() {
     updateFocusedIndex,
     jumpToLetter,
     jumpToNumber,
-    jumpToWord,
-    jumpToFruit,
-    jumpToAnimal,
-    jumpToWildAnimal,
-    jumpToVowel,
-    jumpToShape,
-    jumpToColor,
-    jumpToVehicle,
-    jumpToFood,
-    jumpToCloth,
-    jumpToFingerCount,
+    ...genericJumpFns,
     clickFindOption,
     clickNextOption,
     nextFindRound,
