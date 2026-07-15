@@ -2,7 +2,7 @@ import './globals.css';
 import ThemeRegistry from './ThemeRegistry';
 
 export const metadata = {
-  title: 'Evie-nana',
+  title: 'Nana',
   description: 'Offline educational interface for children ages 3-7',
 };
 

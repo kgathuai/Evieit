@@ -2,16 +2,20 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+EXPORT_DIR="$ROOT_DIR/out"
 BUILD_DIR="$ROOT_DIR/tizen/.build"
 DIST_DIR="$ROOT_DIR/tizen/dist"
 UNSIGNED_WGT="$DIST_DIR/UniLearnUSB-unsigned.wgt"
 
+if [ ! -f "$EXPORT_DIR/index.html" ]; then
+  echo "No static export found at $EXPORT_DIR — run 'npm run build' first." >&2
+  exit 1
+fi
+
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR" "$DIST_DIR"
 
-cp "$ROOT_DIR/index.html" "$BUILD_DIR/"
-cp "$ROOT_DIR/styles.css" "$BUILD_DIR/"
-cp "$ROOT_DIR/app.js" "$BUILD_DIR/"
+cp -R "$EXPORT_DIR/." "$BUILD_DIR/"
 cp "$ROOT_DIR/tizen/config.xml" "$BUILD_DIR/"
 
 # A simple placeholder icon for packaging. Replace with branded art later.

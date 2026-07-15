@@ -1,44 +1,69 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback, memo } from 'react';
 import {
-  Box,
-  Typography,
-  Paper,
-  Chip,
-  Stack,
-  IconButton,
-  Divider,
-  Switch,
-  FormControlLabel,
-  Dialog,
-  DialogContent,
-  Button,
+  Box, Typography, Paper, Stack, IconButton, Switch,
+  FormControlLabel, Dialog, DialogContent, Button,
 } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
-import { LETTER_WORDS, FRUITS, DOMESTIC_ANIMALS, WILD_ANIMALS, VOWELS, SHAPES, COLORS, VEHICLES, FOODS, CLOTHES, FINGER_COUNTS } from '../hooks/useUniLearn';
+import { LETTER_WORDS, FRUITS, DOMESTIC_ANIMALS, WILD_ANIMALS, ANIMAL_SOUNDS, VOWELS, SHAPES, COLORS, VEHICLES, FOODS, CLOTHES, FINGER_COUNTS, FRACTION_WORDS } from '../hooks/useUniLearn';
 
 const UPPERCASE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const LOWERCASE_LETTERS = 'abcdefghijklmnopqrstuvwxyz'.split('');
 const NUMBERS = Array.from({ length: 100 }, (_, i) => i + 1);
 
 /**
+ * Shared grid container for every lesson module: grid layout + auto-scroll
+ * to the active tile. Tile rendering is left to the caller (render-prop)
+ * since each module's tile markup differs; this only collapses the
+ * boilerplate that used to be copy-pasted across six sibling components.
+ */
+function LessonGrid({ columns, gap, padding, activeIndex, children }) {
+  const activeRef = useRef(null);
+
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+        gap,
+        p: padding,
+        overflowY: 'auto',
+        height: '100%',
+        alignContent: 'flex-start',
+      }}
+    >
+      {children(activeRef)}
+    </Box>
+  );
+}
+
+/**
  * A single item tile used in the alphabet / numbers grid.
  * Tiles use a fixed min-width so they're always large and readable.
  * `active` = currently selected, `seen` = already visited.
+ *
+ * Memoized: the alphabet/numbers grids render up to 100 of these, and only
+ * the previously-active and newly-active tile actually need to re-render
+ * when the user navigates. `onItemClick` must stay referentially stable
+ * (it does — it's a useCallback from the hook) for this bail-out to work.
  */
-function ItemTile({ label, active, seen, activeRef, onClick }) {
+const ItemTile = memo(function ItemTile({ label, index, active, seen, activeRef, onItemClick }) {
+  const handleClick = () => onItemClick(index);
   return (
     <Box
       ref={active ? activeRef : null}
-      onClick={onClick}
+      onClick={handleClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(); }}
       aria-pressed={active}
       sx={{
         // Grid handles width — tile just fills its cell
@@ -70,61 +95,43 @@ function ItemTile({ label, active, seen, activeRef, onClick }) {
       {label}
     </Box>
   );
-}
+});
 
 /**
- * Wrapping flex grid of all letters or all numbers.
- * Tiles grow to fill each row; rows wrap when they run out of width.
- * The active tile scrolls into view automatically.
+ * Wrapping grid of all letters or all numbers. The active tile scrolls into
+ * view automatically (handled by LessonGrid).
  */
 function ItemGrid({ items, activeIndex, seen, onItemClick }) {
-  const activeRef = useRef(null);
-
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        // 4 columns for larger tiles (was 5) — better for baby hands
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: 2.5,
-        p: 2.5,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {items.map((item, i) => (
+    <LessonGrid columns={4} gap={2.5} padding={2.5} activeIndex={activeIndex}>
+      {(activeRef) => items.map((item, i) => (
         <ItemTile
           key={item}
           label={item}
+          index={i}
           active={i === activeIndex}
           seen={!!seen[item]}
           activeRef={activeRef}
-          onClick={() => onItemClick(i)}
+          onItemClick={onItemClick}
         />
       ))}
-    </Box>
+    </LessonGrid>
   );
 }
 
 /**
  * A single word tile for "A for Apple" mode.
  */
-function WordTile({ letter, active, activeRef, onClick }) {
+const WordTile = memo(function WordTile({ letter, index, active, activeRef, onItemClick }) {
   const { word, emoji } = LETTER_WORDS[letter.toUpperCase()];
+  const handleClick = () => onItemClick(index);
   return (
     <Box
       ref={active ? activeRef : null}
-      onClick={onClick}
+      onClick={handleClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(); }}
       aria-pressed={active}
       sx={{
         width: '100%',
@@ -162,38 +169,41 @@ function WordTile({ letter, active, activeRef, onClick }) {
       </Typography>
     </Box>
   );
-}
+});
 
 function WordsGrid({ activeIndex, onItemClick }) {
-  const activeRef = useRef(null);
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 1.5,
-        p: 2,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {UPPERCASE_LETTERS.map((letter, i) => (
+    <LessonGrid columns={5} gap={1.5} padding={2} activeIndex={activeIndex}>
+      {(activeRef) => UPPERCASE_LETTERS.map((letter, i) => (
         <WordTile
           key={letter}
           letter={letter}
+          index={i}
           active={i === activeIndex}
           activeRef={activeRef}
-          onClick={() => onItemClick(i)}
+          onItemClick={onItemClick}
         />
       ))}
-    </Box>
+    </LessonGrid>
+  );
+}
+
+/** Swatch shown above the label in the Colors grid (SimpleGrid's renderExtra).
+ * Hoisted to module scope so it's referentially stable across renders —
+ * otherwise every SimpleTile in the Colors grid would get a "new" prop
+ * each render and never bail out of re-rendering. */
+function renderColorSwatch(item) {
+  return (
+    <Box
+      sx={{
+        width: 'clamp(2.6rem, 5vw, 4.5rem)',
+        height: 'clamp(2.6rem, 5vw, 4.5rem)',
+        borderRadius: '50%',
+        bgcolor: item.swatch,
+        border: '3px solid',
+        borderColor: item.name === 'White' ? 'grey.400' : 'rgba(0,0,0,0.12)',
+      }}
+    />
   );
 }
 
@@ -202,14 +212,15 @@ function WordsGrid({ activeIndex, onItemClick }) {
  * wild-animals, shapes, vehicles, foods, clothes). Colors reuses this too
  * via glyphField={null} (no emoji shown) plus a renderExtra swatch.
  */
-function SimpleTile({ item, glyphField, labelField, active, activeRef, onClick, renderExtra, gap = 0.5, scaleActive = 1.1 }) {
+const SimpleTile = memo(function SimpleTile({ item, index, glyphField, labelField, active, activeRef, onItemClick, renderExtra, gap = 0.5, scaleActive = 1.1 }) {
+  const handleClick = () => onItemClick(index);
   return (
     <Box
       ref={active ? activeRef : null}
-      onClick={onClick}
+      onClick={handleClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(); }}
       aria-pressed={active}
       sx={{
         width: '100%',
@@ -258,57 +269,42 @@ function SimpleTile({ item, glyphField, labelField, active, activeRef, onClick, 
       </Typography>
     </Box>
   );
-}
+});
 
 function SimpleGrid({ data, glyphField, labelField = 'name', activeIndex, onItemClick, renderExtra, gap, scaleActive }) {
-  const activeRef = useRef(null);
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 1.5,
-        p: 2,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {data.map((item, i) => (
+    <LessonGrid columns={5} gap={1.5} padding={2} activeIndex={activeIndex}>
+      {(activeRef) => data.map((item, i) => (
         <SimpleTile
           key={item[labelField]}
           item={item}
+          index={i}
           glyphField={glyphField}
           labelField={labelField}
           active={i === activeIndex}
           activeRef={activeRef}
-          onClick={() => onItemClick(i)}
+          onItemClick={onItemClick}
           renderExtra={renderExtra}
           gap={gap}
           scaleActive={scaleActive}
         />
       ))}
-    </Box>
+    </LessonGrid>
   );
 }
 
 /**
  * Vowel syllable tile — displays the syllable text prominently.
  */
-function VowelTile({ item, active, activeRef, onClick }) {
+const VowelTile = memo(function VowelTile({ item, index, active, activeRef, onItemClick }) {
+  const handleClick = () => onItemClick(index);
   return (
     <Box
       ref={active ? activeRef : null}
-      onClick={onClick}
+      onClick={handleClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(); }}
       aria-pressed={active}
       sx={{
         width: '100%',
@@ -339,49 +335,38 @@ function VowelTile({ item, active, activeRef, onClick }) {
       </Typography>
     </Box>
   );
-}
+});
 
 function VowelsGrid({ activeIndex, onItemClick }) {
-  const activeRef = useRef(null);
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 1.5,
-        p: 2,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {VOWELS.map((item, i) => (
+    <LessonGrid columns={5} gap={1.5} padding={2} activeIndex={activeIndex}>
+      {(activeRef) => VOWELS.map((item, i) => (
         <VowelTile
           key={item.syllable}
           item={item}
+          index={i}
           active={i === activeIndex}
           activeRef={activeRef}
-          onClick={() => onItemClick(i)}
+          onItemClick={onItemClick}
         />
       ))}
-    </Box>
+    </LessonGrid>
   );
 }
 
-function FingerCountTile({ item, active, activeRef, onClick }) {
+/**
+ * Animal sound tile — glyph on top, name in the middle, the sound the
+ * animal makes (e.g. "Moo") as a quoted caption underneath.
+ */
+const AnimalSoundTile = memo(function AnimalSoundTile({ item, index, active, activeRef, onItemClick }) {
+  const handleClick = () => onItemClick(index);
   return (
     <Box
       ref={active ? activeRef : null}
-      onClick={onClick}
+      onClick={handleClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(); }}
       aria-pressed={active}
       sx={{
         width: '100%',
@@ -405,45 +390,250 @@ function FingerCountTile({ item, active, activeRef, onClick }) {
         p: 0.5,
       }}
     >
-      <Typography sx={{ fontSize: 'clamp(1.65rem, 4vw, 3.4rem)', lineHeight: 1, textAlign: 'center' }}>
-        {item.display}
+      <Typography sx={{ fontSize: 'clamp(2rem, 5vw, 4rem)', lineHeight: 1 }}>
+        {item.emoji}
       </Typography>
+      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
+        {item.name}
+      </Typography>
+      <Typography sx={{ fontSize: 'clamp(0.45rem, 0.9vw, 0.75rem)', fontWeight: 600, fontStyle: 'italic', opacity: 0.75, lineHeight: 1 }}>
+        "{item.sound}"
+      </Typography>
+    </Box>
+  );
+});
+
+function AnimalSoundsGrid({ activeIndex, onItemClick }) {
+  return (
+    <LessonGrid columns={5} gap={1.5} padding={2} activeIndex={activeIndex}>
+      {(activeRef) => ANIMAL_SOUNDS.map((item, i) => (
+        <AnimalSoundTile
+          key={item.name}
+          item={item}
+          index={i}
+          active={i === activeIndex}
+          activeRef={activeRef}
+          onItemClick={onItemClick}
+        />
+      ))}
+    </LessonGrid>
+  );
+}
+
+const FingerCountTile = memo(function FingerCountTile({ item, index, active, activeRef, onItemClick }) {
+  const handleClick = () => onItemClick(index);
+  return (
+    <Box
+      ref={active ? activeRef : null}
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(); }}
+      aria-pressed={active}
+      sx={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.25,
+        borderRadius: 3,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.15s ease',
+        bgcolor: active ? 'primary.main' : 'rgba(255,255,255,0.85)',
+        color: active ? '#fff' : 'text.primary',
+        border: '2px solid',
+        borderColor: active ? 'primary.dark' : 'divider',
+        boxShadow: active ? 6 : 1,
+        transform: active ? 'scale(1.1)' : 'scale(1)',
+        zIndex: active ? 1 : 0,
+        p: 0.5,
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.25 }}>
+        {item.imageSrc && (
+          <Box
+            component="img"
+            src={item.imageSrc}
+            alt={`Count ${item.count}`}
+            sx={{
+              width: 'clamp(1.5rem, 3.6vw, 3rem)',
+              height: 'clamp(1.5rem, 3.6vw, 3rem)',
+              objectFit: 'contain',
+            }}
+          />
+        )}
+        <Typography sx={{ fontSize: 'clamp(1.65rem, 4vw, 3.4rem)', lineHeight: 1, textAlign: 'center' }}>
+          {item.display}
+        </Typography>
+      </Box>
       <Typography sx={{ fontSize: 'clamp(1.8rem, 4.5vw, 4rem)', fontWeight: 900, lineHeight: 0.95 }}>
         {item.count}
       </Typography>
     </Box>
   );
-}
+});
 
 function FingerCountGrid({ activeIndex, onItemClick }) {
-  const activeRef = useRef(null);
-  useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeIndex]);
-
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 1.5,
-        p: 2,
-        overflowY: 'auto',
-        height: '100%',
-        alignContent: 'flex-start',
-      }}
-    >
-      {FINGER_COUNTS.map((item, i) => (
+    <LessonGrid columns={5} gap={1.5} padding={2} activeIndex={activeIndex}>
+      {(activeRef) => FINGER_COUNTS.map((item, i) => (
         <FingerCountTile
           key={item.count}
           item={item}
+          index={i}
           active={i === activeIndex}
           activeRef={activeRef}
-          onClick={() => onItemClick(i)}
+          onItemClick={onItemClick}
         />
       ))}
+    </LessonGrid>
+  );
+}
+
+/**
+ * SVG path helpers for the Fraction Puzzle — slices a circle into equal pie
+ * sectors, or a square/rectangle into equal vertical strips.
+ */
+function polarToCartesian(cx, cy, r, angleDeg) {
+  const rad = ((angleDeg - 90) * Math.PI) / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+function describeSector(cx, cy, r, startDeg, endDeg) {
+  const start = polarToCartesian(cx, cy, r, startDeg);
+  const end = polarToCartesian(cx, cy, r, endDeg);
+  const largeArc = endDeg - startDeg > 180 ? 1 : 0;
+  return `M ${cx} ${cy} L ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 1 ${end.x} ${end.y} Z`;
+}
+
+function describeStrip(index, count) {
+  const stripWidth = 180 / count;
+  const x = 10 + index * stripWidth;
+  return `M ${x} 10 h ${stripWidth} v 180 h ${-stripWidth} Z`;
+}
+
+function slicePath(shape, index, count) {
+  return shape === 'circle'
+    ? describeSector(100, 100, 90, (index * 360) / count, ((index + 1) * 360) / count)
+    : describeStrip(index, count);
+}
+
+/**
+ * Fraction Puzzle — break a shape (bread, pizza, chocolate bar...) into N
+ * equal pieces, then collect them from the tray and drop each one into its
+ * empty slot in the outline until the whole shape is rebuilt.
+ */
+function FractionPuzzleDisplay({ state, onPickPiece, onPlacePiece, onNextRound }) {
+  const { theme, denominator, filledSlots, remaining, heldPiece, focusZone, focusIndex, result } = state;
+  const isComplete = result === 'complete';
+  const words = FRACTION_WORDS[denominator];
+  const trayPiecePath = slicePath(theme.shape, 0, denominator);
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2.5, height: '100%', p: 2 }}>
+      <Typography variant="h5" fontWeight={800} color="primary.dark" textAlign="center">
+        Build the whole {theme.name}!
+      </Typography>
+
+      {/* Shape outline — denominator equal slots, dashed until filled */}
+      <Box sx={{ width: 'clamp(10rem, 24vw, 16rem)', height: 'clamp(10rem, 24vw, 16rem)' }}>
+        <svg viewBox="0 0 200 200" width="100%" height="100%">
+          {Array.from({ length: denominator }, (_, i) => {
+            const filled = filledSlots[i];
+            const focused = heldPiece && focusZone === 'slot' && focusIndex === i && !filled;
+            return (
+              <path
+                key={i}
+                d={slicePath(theme.shape, i, denominator)}
+                fill={filled ? theme.color : 'rgba(255,255,255,0.5)'}
+                stroke={focused ? '#ff6b6b' : '#bbb'}
+                strokeWidth={focused ? 4 : 2}
+                strokeDasharray={filled ? '0' : '6 4'}
+                onClick={() => heldPiece && !filled && onPlacePiece(i)}
+                onDragOver={(e) => !filled && e.preventDefault()}
+                onDrop={(e) => { e.preventDefault(); if (!filled) onPlacePiece(i); }}
+                style={{
+                  cursor: heldPiece && !filled ? 'pointer' : 'default',
+                  transition: 'fill 0.2s ease, stroke 0.15s ease',
+                }}
+              />
+            );
+          })}
+        </svg>
+      </Box>
+
+      {/* Tray — pieces waiting to be collected and dropped into the shape */}
+      {!isComplete && (
+        <Stack direction="row" spacing={2} flexWrap="wrap" justifyContent="center" useFlexGap>
+          {Array.from({ length: remaining }, (_, i) => {
+            const focused = !heldPiece && focusIndex === i;
+            return (
+              <Box
+                key={i}
+                draggable
+                onDragStart={(e) => { e.dataTransfer.setData('text/plain', 'piece'); onPickPiece(); }}
+                onClick={onPickPiece}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onPickPiece(); }}
+                sx={{
+                  width: 'clamp(3.2rem, 7vw, 4.5rem)',
+                  height: 'clamp(3.2rem, 7vw, 4.5rem)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'grab',
+                  borderRadius: 2,
+                  border: '3px solid',
+                  borderColor: focused ? 'primary.main' : 'transparent',
+                  boxShadow: focused ? 6 : 1,
+                  transform: focused ? 'scale(1.12)' : 'scale(1)',
+                  transition: 'all 0.15s ease',
+                  bgcolor: 'rgba(255,255,255,0.6)',
+                  opacity: heldPiece ? 0.45 : 1,
+                }}
+              >
+                <svg viewBox="0 0 200 200" width="70%" height="70%">
+                  <path d={trayPiecePath} fill={theme.color} stroke="#fff" strokeWidth={4} />
+                </svg>
+              </Box>
+            );
+          })}
+        </Stack>
+      )}
+
+      <Typography variant="body1" fontWeight={700} color="text.secondary">
+        {denominator - remaining}/{denominator} {words.plural} placed
+      </Typography>
+
+      {/* Result popup */}
+      <Dialog
+        open={isComplete}
+        onClose={onNextRound}
+        PaperProps={{ sx: { borderRadius: 4, textAlign: 'center', px: 4, py: 3, minWidth: 260 } }}
+      >
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, p: 0 }}>
+          <Typography sx={{ fontSize: '4rem', lineHeight: 1 }}>🎉</Typography>
+          <Typography variant="h5" fontWeight={900} color="success.main" textAlign="center">
+            You built the whole {theme.name}!
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {denominator} equal {words.plural} make one whole.
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={onNextRound}
+            sx={{ mt: 1, px: 4, borderRadius: 3, fontSize: '1.1rem', fontWeight: 700 }}
+          >
+            Next shape →
+          </Button>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }
@@ -528,7 +718,7 @@ function GameDisplay({ options, selectedIndex, result, prompt, onOptionClick, on
  * LessonPanel — left column, full height.
  * Renders the right content based on `mode`.
  */
-export default function LessonPanel({
+function LessonPanel({
   mode,
   alphabetIndex,
   uppercase,
@@ -538,6 +728,7 @@ export default function LessonPanel({
   fruitsIndex,
   animalsIndex,
   wildAnimalsIndex,
+  animalSoundsIndex,
   vowelsIndex,
   shapesIndex,
   colorsIndex,
@@ -547,6 +738,7 @@ export default function LessonPanel({
   fingerCountIndex,
   nextState,
   findState,
+  fractionState,
   displayData,
   progress,
   speechEnabled,
@@ -558,6 +750,7 @@ export default function LessonPanel({
   onFruitClick,
   onAnimalClick,
   onWildAnimalClick,
+  onAnimalSoundClick,
   onVowelClick,
   onShapeClick,
   onColorClick,
@@ -569,9 +762,17 @@ export default function LessonPanel({
   onNextOptionClick,
   onNextFindRound,
   onNextNextRound,
+  onPickFractionPiece,
+  onPlaceFractionPiece,
+  onNextFractionRound,
 }) {
   const { title, prompt, hint } = displayData;
   const LETTERS = uppercase ? UPPERCASE_LETTERS : LOWERCASE_LETTERS;
+
+  // The Numbers grid is 1-indexed (jumpToNumber expects a value, not a grid
+  // index); wrap it once via useCallback so every ItemTile in that 100-item
+  // grid keeps receiving the same onItemClick reference across renders.
+  const handleNumberItemClick = useCallback((i) => onNumberClick(i + 1), [onNumberClick]);
 
   // Modules that are all "glyph + name" tiles, differing only in data/glyph field.
   const simpleModules = [
@@ -657,7 +858,7 @@ export default function LessonPanel({
             items={NUMBERS}
             activeIndex={numberValue - 1}
             seen={progress.numbersSeen}
-            onItemClick={(i) => onNumberClick(i + 1)}
+            onItemClick={handleNumberItemClick}
           />
         )}
 
@@ -687,6 +888,14 @@ export default function LessonPanel({
           />
         )}
 
+        {/* ANIMAL SOUNDS — glyph + name + the sound it makes */}
+        {mode === 'animal-sounds' && (
+          <AnimalSoundsGrid
+            activeIndex={animalSoundsIndex}
+            onItemClick={onAnimalSoundClick}
+          />
+        )}
+
         {/* COLORS — swatch-only variant of the simple grid (no emoji glyph) */}
         {mode === 'colors' && (
           <SimpleGrid
@@ -696,18 +905,7 @@ export default function LessonPanel({
             onItemClick={onColorClick}
             gap={1}
             scaleActive={1.08}
-            renderExtra={(item) => (
-              <Box
-                sx={{
-                  width: 'clamp(2.6rem, 5vw, 4.5rem)',
-                  height: 'clamp(2.6rem, 5vw, 4.5rem)',
-                  borderRadius: '50%',
-                  bgcolor: item.swatch,
-                  border: '3px solid',
-                  borderColor: item.name === 'White' ? 'grey.400' : 'rgba(0,0,0,0.12)',
-                }}
-              />
-            )}
+            renderExtra={renderColorSwatch}
           />
         )}
 
@@ -715,6 +913,16 @@ export default function LessonPanel({
           <FingerCountGrid
             activeIndex={fingerCountIndex}
             onItemClick={onFingerCountClick}
+          />
+        )}
+
+        {/* FRACTION PUZZLE — break a shape into equal pieces, then rebuild it */}
+        {mode === 'fractions' && fractionState && (
+          <FractionPuzzleDisplay
+            state={fractionState}
+            onPickPiece={onPickFractionPiece}
+            onPlacePiece={onPlaceFractionPiece}
+            onNextRound={onNextFractionRound}
           />
         )}
 
@@ -767,3 +975,5 @@ export default function LessonPanel({
     </Box>
   );
 }
+
+export default memo(LessonPanel);

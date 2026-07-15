@@ -1,19 +1,20 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 const STORAGE_KEY = 'uniLearnProgressV1';
+const CHILD_NAME_KEY = 'uniLearnChildName';
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-export const MODULE_ORDER = ['alphabet', 'numbers', 'words', 'fruits', 'animals', 'wild-animals', 'vowels', 'shapes', 'colors', 'vehicles', 'foods', 'clothes', 'finger-count', 'next', 'find'];
+export const MODULE_ORDER = ['alphabet', 'numbers', 'words', 'fruits', 'animals', 'wild-animals', 'animal-sounds', 'vowels', 'shapes', 'colors', 'vehicles', 'foods', 'clothes', 'finger-count', 'fractions', 'next', 'find'];
 
 // Phonetic sounds — how each letter actually sounds, not its name
 export const LETTER_SOUNDS = {
   A: 'ah',   B: 'buh',  C: 'kuh',  D: 'duh',  E: 'eh',
   F: 'fuh',  G: 'guh',  H: 'huh',  I: 'ih',   J: 'juh',
   K: 'kuh',  L: 'luh',  M: 'muh',  N: 'nuh',  O: 'oh',
-  P: 'puh',  Q: 'kwuh', R: 'ruh',  S: 'sss',  T: 'tuh',
-  U: 'uh',   V: 'vuh',  W: 'wuh',  X: 'ks',   Y: 'yuh',
-  Z: 'zzz',
+  P: 'puh',  Q: 'kwuh', R: 'ruh',  S: 's',  T: 'tuh',
+  U: 'uh',   V: 'vuh',  W: 'wuh',  X: 'x',   Y: 'yuh',
+  Z: 'z',
 };
 
 // ── Fruits ────────────────────────────────────────────────
@@ -59,10 +60,9 @@ export const DOMESTIC_ANIMALS = [
   { name: 'Sheep',    emoji: '🐑' },
   { name: 'Pig',      emoji: '🐷' },
   { name: 'Horse',    emoji: '🐴' },
-  { name: 'Mule',     emoji: '🫏' },
+  { name: 'Mule',     emoji: '🐎' },
   { name: 'Rabbit',   emoji: '🐰' },
   { name: 'Hamster',  emoji: '🐹' },
-  { name: 'Guinea Pig', emoji: '🐹' },
   { name: 'Chicken',  emoji: '🐔' },
   { name: 'Duck',     emoji: '🦆' },
   { name: 'Goose',    emoji: '🪿' },
@@ -110,6 +110,43 @@ export const WILD_ANIMALS = [
   { name: 'Shark',     emoji: '🦈' },
   { name: 'Whale',     emoji: '🐋' },
   { name: 'Dolphin',   emoji: '🐬' },
+];
+
+// ── Animal sounds (domestic + wild) ───────────────────────
+export const ANIMAL_SOUNDS = [
+  // Domestic
+  { name: 'Cat',      emoji: '🐱', sound: 'Meow' },
+  { name: 'Dog',      emoji: '🐶', sound: 'Woof' },
+  { name: 'Cow',      emoji: '🐮', sound: 'Moo' },
+  { name: 'Goat',     emoji: '🐐', sound: 'Baa' },
+  { name: 'Sheep',    emoji: '🐑', sound: 'Baa' },
+  { name: 'Pig',      emoji: '🐷', sound: 'Oink' },
+  { name: 'Horse',    emoji: '🐴', sound: 'Neigh' },
+  { name: 'Donkey',   emoji: '🫏', sound: 'Hee-haw' },
+  { name: 'Rabbit',   emoji: '🐰', sound: 'Squeak' },
+  { name: 'Chicken',  emoji: '🐔', sound: 'Cluck' },
+  { name: 'Duck',     emoji: '🦆', sound: 'Quack' },
+  { name: 'Goose',    emoji: '🪿', sound: 'Honk' },
+  { name: 'Camel',    emoji: '🐪', sound: 'Grunt' },
+  { name: 'Turkey',   emoji: '🦃', sound: 'Gobble' },
+  { name: 'Rooster',  emoji: '🐓', sound: 'Cock-a-doodle-doo' },
+  { name: 'Pigeon',   emoji: '🕊️', sound: 'Coo' },
+  // Wild
+  { name: 'Lion',      emoji: '🦁', sound: 'Roar' },
+  { name: 'Tiger',     emoji: '🐯', sound: 'Growl' },
+  { name: 'Elephant',  emoji: '🐘', sound: 'Trumpet' },
+  { name: 'Zebra',     emoji: '🦓', sound: 'Bray' },
+  { name: 'Monkey',    emoji: '🐒', sound: 'Ooh-ooh-aah-aah' },
+  { name: 'Bear',      emoji: '🐻', sound: 'Growl' },
+  { name: 'Wolf',      emoji: '🐺', sound: 'Howl' },
+  { name: 'Fox',       emoji: '🦊', sound: 'Yip' },
+  { name: 'Crocodile', emoji: '🐊', sound: 'Hiss' },
+  { name: 'Gorilla',   emoji: '🦍', sound: 'Grunt' },
+  { name: 'Snake',     emoji: '🐍', sound: 'Hiss' },
+  { name: 'Owl',       emoji: '🦉', sound: 'Hoot' },
+  { name: 'Eagle',     emoji: '🦅', sound: 'Screech' },
+  { name: 'Whale',     emoji: '🐋', sound: 'Song' },
+  { name: 'Dolphin',   emoji: '🐬', sound: 'Click' },
 ];
 
 // ── Vowels / syllables ───────────────────────────────────
@@ -315,12 +352,12 @@ export const FINGER_COUNTS = [
   { count: 0, display: '✊' },
   { count: 1, display: '☝️' },
   { count: 2, display: '✌️' },
-  { count: 3, display: '', imageSrc: '/images/3imoji.png' },
+  { count: 3, display: '', imageSrc: '/images/three.png' },
   { count: 4, display: '🖖' },
   { count: 5, display: '🖐️' },
   { count: 6, display: '☝️ + 🖐️' },
   { count: 7, display: '✌️ + 🖐️' },
-  { count: 8, display: ' + 🖐️', imageSrc: '/images/3imoji.png' },
+  { count: 8, display: ' + 🖐️', imageSrc: '/images/three.png' },
   { count: 9, display: '🖖 + 🖐️' },
   { count: 10, display: '🖐️ + 🖐️' },
 ];
@@ -392,6 +429,13 @@ const GENERIC_MODULES = {
     hint: 'Left/Right: next wild animal. Click a tile. Backspace: menu.',
     getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
   },
+  'animal-sounds': {
+    data: ANIMAL_SOUNDS,
+    getLabel: (item) => `${item.name} ${item.sound}`,
+    title: 'Animal Sounds',
+    hint: 'Left/Right: next animal. Click a tile. Backspace: menu.',
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji, sound: item.sound }),
+  },
   vowels: {
     data: VOWELS,
     getLabel: (item) => item.syllable,
@@ -452,6 +496,7 @@ const FLAT_NAME_MAP = {
   fruits:         { indexProp: 'fruitsIndex',        jumpFn: 'jumpToFruit' },
   animals:        { indexProp: 'animalsIndex',       jumpFn: 'jumpToAnimal' },
   'wild-animals': { indexProp: 'wildAnimalsIndex',   jumpFn: 'jumpToWildAnimal' },
+  'animal-sounds': { indexProp: 'animalSoundsIndex', jumpFn: 'jumpToAnimalSound' },
   vowels:         { indexProp: 'vowelsIndex',        jumpFn: 'jumpToVowel' },
   shapes:         { indexProp: 'shapesIndex',        jumpFn: 'jumpToShape' },
   colors:         { indexProp: 'colorsIndex',        jumpFn: 'jumpToColor' },
@@ -462,6 +507,43 @@ const FLAT_NAME_MAP = {
 };
 
 const INITIAL_MODULE_INDICES = Object.fromEntries(GENERIC_MODULE_KEYS.map((k) => [k, 0]));
+
+// ── Fraction Puzzle ───────────────────────────────────────
+// Real-world shapes a child breaks into N equal pieces, then rebuilds by
+// collecting pieces from the tray and dropping them into the outline.
+export const FRACTION_SHAPES = [
+  { name: 'Bread',     shape: 'circle',    color: '#d8a35a' },
+  { name: 'Pizza',     shape: 'circle',    color: '#f2a93c' },
+  { name: 'Cookie',    shape: 'circle',    color: '#8d5a3b' },
+  { name: 'Cracker',   shape: 'rectangle', color: '#e8c373' },
+  { name: 'Chocolate', shape: 'rectangle', color: '#5a3825' },
+  { name: 'Cake',      shape: 'rectangle', color: '#f6c8d8' },
+];
+
+const FRACTION_DENOMINATORS = [2, 3, 4, 5, 6];
+
+export const FRACTION_WORDS = {
+  2: { singular: 'half',    plural: 'halves' },
+  3: { singular: 'third',   plural: 'thirds' },
+  4: { singular: 'quarter', plural: 'quarters' },
+  5: { singular: 'fifth',   plural: 'fifths' },
+  6: { singular: 'sixth',   plural: 'sixths' },
+};
+
+function buildFractionPuzzle() {
+  const theme = FRACTION_SHAPES[Math.floor(Math.random() * FRACTION_SHAPES.length)];
+  const denominator = FRACTION_DENOMINATORS[Math.floor(Math.random() * FRACTION_DENOMINATORS.length)];
+  return {
+    theme,
+    denominator,
+    filledSlots: Array(denominator).fill(false),
+    remaining: denominator,
+    heldPiece: false,
+    focusZone: 'tray',   // 'tray' while picking a piece, 'slot' while placing it
+    focusIndex: 0,
+    result: '',          // '' | 'complete'
+  };
+}
 
 const SEQUENCE_PATTERNS = [
   { question: '2, 4, 6, ?', options: ['7', '8', '10'], answer: 1 },
@@ -496,12 +578,26 @@ function clamp(v, min, max) {
 export function useUniLearn() {
   const [mode, setMode] = useState('menu');
   const [focusedIndex, setFocusedIndex] = useState(0);
+  const [childName, setChildNameState] = useState('');
+  const [childNameLoaded, setChildNameLoaded] = useState(false);
   const [alphabetIndex, setAlphabetIndex] = useState(0);
   const [uppercase, setUppercase] = useState(true);
   const [numberValue, setNumberValue] = useState(1);
   const [moduleIndices, setModuleIndices] = useState(INITIAL_MODULE_INDICES);
+
+  // Mirrors of the latest index state, read (not subscribed to) by callbacks
+  // like `openTile` below. This keeps those callbacks referentially stable
+  // across renders — required for React.memo on TileGrid/tile components to
+  // actually skip re-renders instead of always seeing a "new" handler prop.
+  const alphabetIndexRef = useRef(alphabetIndex);
+  useEffect(() => { alphabetIndexRef.current = alphabetIndex; }, [alphabetIndex]);
+  const numberValueRef = useRef(numberValue);
+  useEffect(() => { numberValueRef.current = numberValue; }, [numberValue]);
+  const moduleIndicesRef = useRef(moduleIndices);
+  useEffect(() => { moduleIndicesRef.current = moduleIndices; }, [moduleIndices]);
   const [nextState, setNextState] = useState(null);
   const [findState, setFindState] = useState(null);
+  const [fractionState, setFractionState] = useState(null);
   const [speechEnabled, setSpeechEnabled] = useState(true);
   const [progress, setProgress] = useState({
     stars: 0,
@@ -530,6 +626,28 @@ export function useUniLearn() {
     } catch (e) {
       console.warn('Could not load progress', e);
     }
+  }, []);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(CHILD_NAME_KEY);
+      if (stored) setChildNameState(stored);
+    } catch (e) {
+      console.warn('Could not load child name', e);
+    } finally {
+      setChildNameLoaded(true);
+    }
+  }, []);
+
+  const setChildName = useCallback((name) => {
+    const trimmed = name.trim();
+    if (!trimmed) return;
+    try {
+      localStorage.setItem(CHILD_NAME_KEY, trimmed);
+    } catch (e) {
+      console.warn('Could not save child name', e);
+    }
+    setChildNameState(trimmed);
   }, []);
 
   const saveProgress = useCallback((prog, narration) => {
@@ -589,7 +707,7 @@ export function useUniLearn() {
       });
       speak(LETTER_SOUNDS[letter]);   // speak phonetic sound
     },
-    [speak, saveProgress, speechEnabled, uppercase]
+    [speak, saveProgress, speechEnabled]
   );
 
   const moveAlphabet = useCallback(
@@ -613,7 +731,7 @@ export function useUniLearn() {
         return next;
       });
     },
-    [speak, saveProgress, speechEnabled, uppercase]
+    [speak, saveProgress, speechEnabled]
   );
 
   // ── GENERIC MODULES (words, fruits, animals, wild-animals, vowels,
@@ -814,6 +932,61 @@ export function useUniLearn() {
     }, 0);
   }, [speak, saveProgress, speechEnabled]);
 
+  // ── FRACTION PUZZLE ───────────────────────────────────────
+  // Pieces of a given puzzle are all equal (congruent) fractions of the
+  // whole, so "picking" just needs a held/not-held flag — any tray piece
+  // can fill any empty slot.
+  const pickFractionPiece = useCallback(() => {
+    setFractionState((prev) => {
+      if (!prev || prev.result || prev.heldPiece || prev.remaining === 0) return prev;
+      const firstEmpty = prev.filledSlots.findIndex((f) => !f);
+      return { ...prev, heldPiece: true, focusZone: 'slot', focusIndex: firstEmpty };
+    });
+  }, []);
+
+  const placeFractionPiece = useCallback(
+    (slotIndex) => {
+      setFractionState((prev) => {
+        if (!prev || prev.result || !prev.heldPiece || prev.filledSlots[slotIndex]) return prev;
+        const filledSlots = [...prev.filledSlots];
+        filledSlots[slotIndex] = true;
+        const remaining = prev.remaining - 1;
+        if (remaining === 0) {
+          const words = FRACTION_WORDS[prev.denominator];
+          speak(`You made a whole ${prev.theme.name}! ${prev.denominator} equal ${words.plural} make one whole.`);
+          setProgress((p) => {
+            const newStars = p.stars + prev.denominator;
+            const updated = { ...p, stars: newStars, level: 1 + Math.floor(newStars / 10) };
+            saveProgress(updated, speechEnabled);
+            return updated;
+          });
+          return { ...prev, filledSlots, remaining, heldPiece: false, result: 'complete' };
+        }
+        return { ...prev, filledSlots, remaining, heldPiece: false, focusZone: 'tray', focusIndex: 0 };
+      });
+    },
+    [speak, saveProgress, speechEnabled]
+  );
+
+  const moveFractionFocus = useCallback((dir) => {
+    setFractionState((prev) => {
+      if (!prev || prev.result) return prev;
+      if (prev.heldPiece) {
+        const emptySlots = prev.filledSlots.reduce((acc, f, i) => (f ? acc : [...acc, i]), []);
+        const pos = emptySlots.indexOf(prev.focusIndex);
+        const nextPos = (pos + dir + emptySlots.length) % emptySlots.length;
+        return { ...prev, focusIndex: emptySlots[nextPos] };
+      }
+      if (prev.remaining <= 1) return prev;
+      const nextIndex = (prev.focusIndex + dir + prev.remaining) % prev.remaining;
+      return { ...prev, focusIndex: nextIndex };
+    });
+  }, []);
+
+  const nextFractionRound = useCallback(() => {
+    setFractionState(buildFractionPuzzle());
+  }, []);
+
   // ── NEXT ROUND helpers (called from popup Next button) ───
   const nextFindRound = useCallback(() => {
     const fresh = buildFind();
@@ -841,16 +1014,18 @@ export function useUniLearn() {
         const f = buildFind();
         setFindState(f);
         speak(`Find the letter ${f.target}`);
+      } else if (tileKey === 'fractions') {
+        setFractionState(buildFractionPuzzle());
       } else if (tileKey === 'alphabet') {
-        speak(LETTER_SOUNDS[LETTERS[alphabetIndex]]);
+        speak(LETTER_SOUNDS[LETTERS[alphabetIndexRef.current]]);
       } else if (tileKey === 'numbers') {
-        speak(String(numberValue));
+        speak(String(numberValueRef.current));
       } else if (GENERIC_MODULES[tileKey]) {
         const { data, getLabel } = GENERIC_MODULES[tileKey];
-        speak(getLabel(data[moduleIndices[tileKey]]));
+        speak(getLabel(data[moduleIndicesRef.current[tileKey]]));
       }
     },
-    [speak, alphabetIndex, numberValue, moduleIndices]
+    [speak]
   );
 
   const toMenu = useCallback(() => {
@@ -902,10 +1077,20 @@ export function useUniLearn() {
         if (key === 'Enter' || key === ' ') submitFind();
         else if (key === 'ArrowRight' || key === 'ArrowDown') moveFindSelected(1);
         else if (key === 'ArrowLeft' || key === 'ArrowUp') moveFindSelected(-1);
+        return;
+      }
+      if (mode === 'fractions') {
+        if (key === 'Enter' || key === ' ') {
+          if (fractionState?.result === 'complete') nextFractionRound();
+          else if (fractionState?.heldPiece) placeFractionPiece(fractionState.focusIndex);
+          else pickFractionPiece();
+        } else if (key === 'ArrowRight' || key === 'ArrowDown') moveFractionFocus(1);
+        else if (key === 'ArrowLeft' || key === 'ArrowUp') moveFractionFocus(-1);
       }
     },
     [mode, toggleNarration, openTile, toMenu, moveAlphabet, moveGeneric, moveNumber,
-     submitNext, moveNextSelected, submitFind, moveFindSelected]
+     submitNext, moveNextSelected, submitFind, moveFindSelected,
+     fractionState, nextFractionRound, placeFractionPiece, pickFractionPiece, moveFractionFocus]
   );
 
   // ── DERIVED DISPLAY DATA ──────────────────────────────────
@@ -955,13 +1140,24 @@ export function useUniLearn() {
         hint: findState.result || 'Left/Right: choose. OK: confirm. Backspace: menu.',
       };
     }
+    if (mode === 'fractions' && fractionState) {
+      const words = FRACTION_WORDS[fractionState.denominator];
+      return {
+        title: 'Fraction Puzzle',
+        prompt: `Build the whole ${fractionState.theme.name} from ${fractionState.denominator} equal ${words.plural}`,
+        display: `${fractionState.denominator - fractionState.remaining}/${fractionState.denominator}`,
+        hint: fractionState.heldPiece
+          ? 'Arrows: choose an empty piece of the shape. OK: drop it there.'
+          : 'Click or arrow + OK to pick up a piece, then drop it into the shape.',
+      };
+    }
     return {
       title: 'Welcome',
       prompt: 'Use your remote arrows and OK to begin.',
       display: 'READY',
       hint: 'Tip: Left/Right to switch tiles, OK to open. Press M for narration.',
     };
-  }, [mode, alphabetIndex, uppercase, numberValue, moduleIndices, nextState, findState]);
+  }, [mode, alphabetIndex, uppercase, numberValue, moduleIndices, nextState, findState, fractionState]);
 
   // Back-compat flat accessors: { fruitsIndex, jumpToFruit, ... } for every
   // generic module, so existing call sites need no changes.
@@ -980,6 +1176,9 @@ export function useUniLearn() {
   return {
     mode,
     focusedIndex,
+    childName,
+    childNameLoaded,
+    setChildName,
     alphabetIndex,
     uppercase,
     setUppercase,
@@ -987,6 +1186,7 @@ export function useUniLearn() {
     ...genericIndexProps,
     nextState,
     findState,
+    fractionState,
     displayData,
     progress,
     speechEnabled,
@@ -1004,5 +1204,8 @@ export function useUniLearn() {
     clickNextOption,
     nextFindRound,
     nextNextRound,
+    pickFractionPiece,
+    placeFractionPiece,
+    nextFractionRound,
   };
 }

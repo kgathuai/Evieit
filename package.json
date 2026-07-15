@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "python3 -m http.server 3000 --directory out",
+    "package-tizen": "next build && tizen/package-tizen.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

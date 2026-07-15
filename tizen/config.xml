@@ -7,6 +7,7 @@
   <name>Uni-Learn USB</name>
   <content src="index.html" />
   <feature name="http://tizen.org/feature/screen.size.all" />
+  <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice" />
   <tizen:application id="7f9u0WJ2fM.UniLearnUSB" package="7f9u0WJ2fM" required_version="5.5" />
   <tizen:profile name="tv" />
   <icon src="icon.png" />
