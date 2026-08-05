@@ -1,0 +1,25 @@
+{
+  "id": "com.example.unilearn",
+  "version": "0.1.0",
+  "vendor": "Uni-Learn",
+  "type": "web",
+  "main": "index.html",
+  "title": "Uni-Learn",
+  "subtitle": "Educational Interface for Ages 3-7",
+  "icon": "icon.png",
+  "largeIcon": "icon-large.png",
+  "bgImage": "",
+  "appDescription": "Offline educational interface for learning alphabet, numeracy, and logic games on LG TVs",
+  "splashBackground": "",
+  "requestedPermissions": [
+    "time.query"
+  ],
+  "transparent": false,
+  "categories": [
+    "education"
+  ],
+  "requiredMemory": 256,
+  "requiredFeatures": [
+    "com.webos.feature.display.hdmi"
+  ]
+}
