@@ -121,21 +121,23 @@ Produces: `webos/dist/com.example.unilearn_0.1.0_all.ipk`
 
 #### Method B: Offline APK (Recommended for Low-Income Users)
 
-1. Install Android Studio
-2. Create WebView app
-3. Bundle built files:
-   ```bash
-   cp -r out/* android-tv/app/src/main/assets/
-   ```
-4. Build APK:
-   ```bash
-   cd android-tv && ./gradlew assembleRelease && cd ..
-   ```
-5. Sideload:
-   ```bash
-   adb connect <TV_IP>:5555
-   adb install -r android-tv/app/build/outputs/apk/release/app-release.apk
-   ```
+No Android Studio and no Gradle needed. One script builds a signed APK:
+
+```bash
+npm run build
+cd android-tv
+ANDROID_HOME=/path/to/android-sdk ./build.sh
+```
+
+Output: `android-tv/UniLearnTV.apk` — about 13 MB, with the whole web build and
+all 212 images bundled, so it never touches the network.
+
+Install by copying the APK to a USB stick and opening it on the TV, or:
+
+```bash
+adb connect <TV_IP>:5555
+adb install -r android-tv/UniLearnTV.apk
+```
 
 **See [android-tv/README.md](android-tv/README.md) for full details.**
 
