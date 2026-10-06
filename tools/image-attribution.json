@@ -898,5 +898,775 @@
     "licence": "CC BY-SA 2.0",
     "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0",
     "source": "https://commons.wikimedia.org/wiki/File%3A7_For_All_Mankind_Denim_Skirt_%283182146721%29.jpg"
+  },
+  {
+    "item": "Antelope",
+    "module": "animals",
+    "file": "images/animals/antelope.jpg",
+    "title": "File:Common_impala_(Aepyceros_melampus_melampus)_male_Serengeti.jpg",
+    "author": "Charles J. Sharp",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACommon_impala_%28Aepyceros_melampus_melampus%29_male_Serengeti.jpg"
+  },
+  {
+    "item": "Bat",
+    "module": "animals",
+    "file": "images/animals/bat.jpg",
+    "title": "File:Big-eared-townsend-fledermaus.jpg",
+    "author": "PD-USGov, exact author unknown",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABig-eared-townsend-fledermaus.jpg"
+  },
+  {
+    "item": "Buffalo",
+    "module": "animals",
+    "file": "images/animals/buffalo.jpg",
+    "title": "File:African_buffalo_(Syncerus_caffer_caffer)_male_with_cattle_egret.jpg",
+    "author": "Charles J. Sharp",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAfrican_buffalo_%28Syncerus_caffer_caffer%29_male_with_cattle_egret.jpg"
+  },
+  {
+    "item": "Butterfly",
+    "module": "animals",
+    "file": "images/animals/butterfly.jpg",
+    "title": "File:Fesoj_-_Papilio_machaon_(by).jpg",
+    "author": "fesoj",
+    "licence": "CC BY 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFesoj_-_Papilio_machaon_%28by%29.jpg"
+  },
+  {
+    "item": "Chameleon",
+    "module": "animals",
+    "file": "images/animals/chameleon.jpg",
+    "title": "File:Panther_Chameleon_738367_(cropped).jpg",
+    "author": "Rod Waddington",
+    "licence": "CC BY-SA 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3APanther_Chameleon_738367_%28cropped%29.jpg"
+  },
+  {
+    "item": "Chimpanzee",
+    "module": "animals",
+    "file": "images/animals/chimpanzee.jpg",
+    "title": "File:015_Chimpanzee_at_Kibale_forest_National_Park_Photo_by_Giles_Laurent.jpg",
+    "author": "Giles Laurent",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3A015_Chimpanzee_at_Kibale_forest_National_Park_Photo_by_Giles_Laurent.jpg"
+  },
+  {
+    "item": "Dove",
+    "module": "animals",
+    "file": "images/animals/dove.jpg",
+    "title": "File:Mourning_dove_perched_(61179).jpg",
+    "author": "Rhododendrites",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMourning_dove_perched_%2861179%29.jpg"
+  },
+  {
+    "item": "Ferret",
+    "module": "animals",
+    "file": "images/animals/ferret.jpg",
+    "title": "File:Ferret_2008.png",
+    "author": "Alfredo Guti\u00e9rrez",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFerret_2008.png"
+  },
+  {
+    "item": "Frog",
+    "module": "animals",
+    "file": "images/animals/frog.jpg",
+    "title": "File:Red-eyed_Leaf_Frog_(49661076226).jpg",
+    "author": "Charlie Jackson",
+    "licence": "CC BY 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ARed-eyed_Leaf_Frog_%2849661076226%29.jpg"
+  },
+  {
+    "item": "Goldfish",
+    "module": "animals",
+    "file": "images/animals/goldfish.jpg",
+    "title": "File:Gold_fish1.jpg",
+    "author": "\u05dc\u05d9\u05e0\u05d4 \u05d0\u05d1\u05d5\u05d2\u05d5\u05e9",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGold_fish1.jpg"
+  },
+  {
+    "item": "Guinea Pig",
+    "module": "animals",
+    "file": "images/animals/guinea-pig.jpg",
+    "title": "File:George_the_amazing_guinea_pig.jpg",
+    "author": "unknown",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGeorge_the_amazing_guinea_pig.jpg"
+  },
+  {
+    "item": "Hyena",
+    "module": "animals",
+    "file": "images/animals/hyena.jpg",
+    "title": "File:Spotted_hyena_(Crocuta_crocuta).jpg",
+    "author": "Charles J. Sharp",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASpotted_hyena_%28Crocuta_crocuta%29.jpg"
+  },
+  {
+    "item": "Lizard",
+    "module": "animals",
+    "file": "images/animals/lizard.jpg",
+    "title": "File:Hemidactylus_platyurus_(Flat-tailed_House_Gecko)_on_white_background,_focus_stacking.jpg",
+    "author": "Basile Morin",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AHemidactylus_platyurus_%28Flat-tailed_House_Gecko%29_on_white_background%2C_focus_stacking.jpg"
+  },
+  {
+    "item": "Meerkat",
+    "module": "animals",
+    "file": "images/animals/meerkat.jpg",
+    "title": "File:Meerkat_(Suricata_suricatta)_Tswalu.jpg",
+    "author": "Charles J. Sharp",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMeerkat_%28Suricata_suricatta%29_Tswalu.jpg"
+  },
+  {
+    "item": "Otter",
+    "module": "animals",
+    "file": "images/animals/otter.jpg",
+    "title": "File:Fischotter,_Lutra_Lutra.JPG",
+    "author": "Bernard Landgraf",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFischotter%2C_Lutra_Lutra.JPG"
+  },
+  {
+    "item": "Penguin",
+    "module": "animals",
+    "file": "images/animals/penguin.jpg",
+    "title": "File:South_Shetland-2016-Deception_Island\u2013Chinstrap_penguin_(Pygoscelis_antarctica)_04.jpg",
+    "author": "Godot13",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASouth_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg"
+  },
+  {
+    "item": "Porcupine",
+    "module": "animals",
+    "file": "images/animals/porcupine.jpg",
+    "title": "File:Erethizon_dorsatum_-_Prince_Rupert.jpg",
+    "author": "The Cosmonaut",
+    "licence": "CC BY-SA 2.5 ca",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.5/ca/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File%3AErethizon_dorsatum_-_Prince_Rupert.jpg"
+  },
+  {
+    "item": "Quail",
+    "module": "animals",
+    "file": "images/animals/quail.jpg",
+    "title": "File:Coturnix_coturnix,_Fraunberg,_Bayern,_Deutschland_1,_Ausschnitt.jpg",
+    "author": "christoph_moning",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACoturnix_coturnix%2C_Fraunberg%2C_Bayern%2C_Deutschland_1%2C_Ausschnitt.jpg"
+  },
+  {
+    "item": "Seal",
+    "module": "animals",
+    "file": "images/animals/seal.jpg",
+    "title": "File:Seehund.jpg",
+    "author": "Marcel Burkhard",
+    "licence": "CC BY-SA 2.0 de",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0/de/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASeehund.jpg"
+  },
+  {
+    "item": "Squirrel",
+    "module": "animals",
+    "file": "images/animals/squirrel.jpg",
+    "title": "File:EasternGraySquirrel_GAm.jpg",
+    "author": "JeffreyGammon",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AEasternGraySquirrel_GAm.jpg"
+  },
+  {
+    "item": "Tractor",
+    "module": "vehicles",
+    "file": "images/vehicles/tractor.jpg",
+    "title": "File:Ford_8N.jpg",
+    "author": "Mulad",
+    "licence": "CC BY 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFord_8N.jpg"
+  },
+  {
+    "item": "Ambulance",
+    "module": "vehicles",
+    "file": "images/vehicles/ambulance.jpg",
+    "title": "File:Stockholm,_ambulans,_2014,_21.jpg",
+    "author": "AleWi",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AStockholm%2C_ambulans%2C_2014%2C_21.jpg"
+  },
+  {
+    "item": "Fire Engine",
+    "module": "vehicles",
+    "file": "images/vehicles/fire-engine.jpg",
+    "title": "File:Dublin_Fire_Brigade_Pump_Ladder_D32.jpg",
+    "author": "William Murphy",
+    "licence": "CC BY-SA 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADublin_Fire_Brigade_Pump_Ladder_D32.jpg"
+  },
+  {
+    "item": "Police Car",
+    "module": "vehicles",
+    "file": "images/vehicles/police-car.jpg",
+    "title": "File:Washington_DC_Metropolitan_Police_Department_Dodge_Charger_No._1605.jpg",
+    "author": "Raymond Wambsgans",
+    "licence": "CC BY 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AWashington_DC_Metropolitan_Police_Department_Dodge_Charger_No._1605.jpg"
+  },
+  {
+    "item": "Rocket",
+    "module": "vehicles",
+    "file": "images/vehicles/rocket.jpg",
+    "title": "File:Soyuz_TMA-9_launch.jpg",
+    "author": "Bill Ingalls",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASoyuz_TMA-9_launch.jpg"
+  },
+  {
+    "item": "Van",
+    "module": "vehicles",
+    "file": "images/vehicles/van.jpg",
+    "title": "File:2018_Ford_Transit_Custom_300_Base_2.0_facelift.jpg",
+    "author": "Vauxford",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3A2018_Ford_Transit_Custom_300_Base_2.0_facelift.jpg"
+  },
+  {
+    "item": "Skateboard",
+    "module": "vehicles",
+    "file": "images/vehicles/skateboard.jpg",
+    "title": "File:Hainerberg_Skate_Park_Now_Open_(6317086).jpg",
+    "author": "U.S. Army USAGW by Lisa Bishop",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3AHainerberg_Skate_Park_Now_Open_%286317086%29.jpg"
+  },
+  {
+    "item": "Hot Air Balloon",
+    "module": "vehicles",
+    "file": "images/vehicles/hot-air-balloon.jpg",
+    "title": "File:2006_Ojiya_balloon_festival_011.jpg",
+    "author": "Kropsoq",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File%3A2006_Ojiya_balloon_festival_011.jpg"
+  },
+  {
+    "item": "Bulldozer",
+    "module": "vehicles",
+    "file": "images/vehicles/bulldozer.jpg",
+    "title": "File:CatD9T.jpg",
+    "author": "Shaun Greiner",
+    "licence": "CC BY-SA 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACatD9T.jpg"
+  },
+  {
+    "item": "Shorts",
+    "module": "clothes",
+    "file": "images/clothes/shorts.jpg",
+    "title": "File:Bodysuit with opaque cotton front and transparent lace backside - worn with low rise denim shorts ankle boots and over sheer to waist tights - ModelTanja.jpg",
+    "author": "Tobias ToMar Maier",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABodysuit_with_opaque_cotton_front_and_transparent_lace_backside_-_worn_with_low_rise_denim_shorts_ankle_boots_and_over_sheer_to_waist_tights_-_ModelTanja.jpg"
+  },
+  {
+    "item": "Hat",
+    "module": "clothes",
+    "file": "images/clothes/hat.jpg",
+    "title": "File:Chapeaux_en_peau_de_castor.jpg",
+    "author": "Londres, E. Stanford",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3AChapeaux_en_peau_de_castor.jpg"
+  },
+  {
+    "item": "T-shirt",
+    "module": "clothes",
+    "file": "images/clothes/t-shirt.jpg",
+    "title": "File:Woman_in_a_V-Neck_T-Shirt.jpg",
+    "author": "Spreadshirt",
+    "licence": "CC BY 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AWoman_in_a_V-Neck_T-Shirt.jpg"
+  },
+  {
+    "item": "Sweater",
+    "module": "clothes",
+    "file": "images/clothes/sweater.jpg",
+    "title": "File:Selburose-sweater.jpg",
+    "author": "Nils R. Barth",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASelburose-sweater.jpg"
+  },
+  {
+    "item": "Raincoat",
+    "module": "clothes",
+    "file": "images/clothes/raincoat.jpg",
+    "title": "File:David_Julian_Kirchner_(cropped).jpg",
+    "author": "Donni Schoenemond",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADavid_Julian_Kirchner_%28cropped%29.jpg"
+  },
+  {
+    "item": "Boots",
+    "module": "clothes",
+    "file": "images/clothes/boots.jpg",
+    "title": "File:Cliff_Climbers_Combat_boot_Shoes_Blast.png",
+    "author": "Cliff Climbers",
+    "licence": "CC BY-SA 2.5",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACliff_Climbers_Combat_boot_Shoes_Blast.png"
+  },
+  {
+    "item": "Gloves",
+    "module": "clothes",
+    "file": "images/clothes/gloves.jpg",
+    "title": "File:Centre_de_Documentaci\u00f3_Museu_T\u00e8xtil_de_Terrassa-_Reserves-_Teixits-_Guants002.JPG",
+    "author": "Kippelboy",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACentre_de_Documentaci%C3%B3_Museu_T%C3%A8xtil_de_Terrassa-_Reserves-_Teixits-_Guants002.JPG"
+  },
+  {
+    "item": "Belt",
+    "module": "clothes",
+    "file": "images/clothes/belt.jpg",
+    "title": "File:Germany_Belt-and-Buckle-02.jpg",
+    "author": "CEphoto, Uwe Aranas",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGermany_Belt-and-Buckle-02.jpg"
+  },
+  {
+    "item": "Tie",
+    "module": "clothes",
+    "file": "images/clothes/tie.jpg",
+    "title": "File:Memphis_tie_1A.JPG",
+    "author": "Aff\u00e4rside",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMemphis_tie_1A.JPG"
+  },
+  {
+    "item": "Uniform",
+    "module": "clothes",
+    "file": "images/clothes/uniform.jpg",
+    "title": "File:Students_of_Nan_Hua_High_School,_Singapore,_in_the_school_hall_-_20060127.jpg",
+    "author": "mailer_diablo.",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AStudents_of_Nan_Hua_High_School%2C_Singapore%2C_in_the_school_hall_-_20060127.jpg"
+  },
+  {
+    "item": "Dragonfruit",
+    "module": "fruits",
+    "file": "images/fruits/dragonfruit.jpg",
+    "title": "File:Pitaya_cross_section_ed2.jpg",
+    "author": "SMasters",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3APitaya_cross_section_ed2.jpg"
+  },
+  {
+    "item": "Mandarin",
+    "module": "fruits",
+    "file": "images/fruits/mandarin.jpg",
+    "title": "File:Citrus_reticulata_April_2013_Nordbaden.JPG",
+    "author": "4028mdk09",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACitrus_reticulata_April_2013_Nordbaden.JPG"
+  },
+  {
+    "item": "Starfruit",
+    "module": "fruits",
+    "file": "images/fruits/starfruit.jpg",
+    "title": "File:Averrhoa_carambola_ARS_k5735-7.jpg",
+    "author": "unknown",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAverrhoa_carambola_ARS_k5735-7.jpg"
+  },
+  {
+    "item": "Lychee",
+    "module": "fruits",
+    "file": "images/fruits/lychee.jpg",
+    "title": "File:Litchi_chinensis_fruits.JPG",
+    "author": "B.navez",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File%3ALitchi_chinensis_fruits.JPG"
+  },
+  {
+    "item": "Mulberry",
+    "module": "fruits",
+    "file": "images/fruits/mulberry.jpg",
+    "title": "File:Mulberries_on_tree_1.jpg",
+    "author": "malenki",
+    "licence": "CC BY 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMulberries_on_tree_1.jpg"
+  },
+  {
+    "item": "Cranberry",
+    "module": "fruits",
+    "file": "images/fruits/cranberry.jpg",
+    "title": "File:Cranberry_bog.jpg",
+    "author": "Photo by Keith Weller",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACranberry_bog.jpg"
+  },
+  {
+    "item": "Gooseberry",
+    "module": "fruits",
+    "file": "images/fruits/gooseberry.jpg",
+    "title": "File:Stachelbeeren.jpg",
+    "author": "unknown",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File%3AStachelbeeren.jpg"
+  },
+  {
+    "item": "Persimmon",
+    "module": "fruits",
+    "file": "images/fruits/persimmon.jpg",
+    "title": "File:Fuyu_persimmon_fruits,_one_cut_open.jpg",
+    "author": "Frank Schulenburg",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFuyu_persimmon_fruits%2C_one_cut_open.jpg"
+  },
+  {
+    "item": "Plantain",
+    "module": "fruits",
+    "file": "images/fruits/plantain.jpg",
+    "title": "File:Mega_racimos_de_guineos.jpg",
+    "author": "J &amp; E",
+    "licence": "CC BY 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMega_racimos_de_guineos.jpg"
+  },
+  {
+    "item": "Date",
+    "module": "fruits",
+    "file": "images/fruits/date.jpg",
+    "title": "File:Dates005.jpg",
+    "author": "Nepenthes",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADates005.jpg"
+  },
+  {
+    "item": "Currant",
+    "module": "fruits",
+    "file": "images/fruits/currant.jpg",
+    "title": "File:Grape_Rasins_plus_Zante_Currants.jpg",
+    "author": "Marc Kupper",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGrape_Rasins_plus_Zante_Currants.jpg"
+  },
+  {
+    "item": "Hot Dog",
+    "module": "foods",
+    "file": "images/foods/hot-dog.jpg",
+    "title": "File:Hot_dog_with_mustard.png",
+    "author": "Czar, original photographed by Renee Comet",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3AHot_dog_with_mustard.png"
+  },
+  {
+    "item": "Ice Cream",
+    "module": "foods",
+    "file": "images/foods/ice-cream.jpg",
+    "title": "File:Vanilla_Ice_Cream_Cone_at_Camp_Manitoulin.jpg",
+    "author": "Steven Depolo",
+    "licence": "CC BY 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AVanilla_Ice_Cream_Cone_at_Camp_Manitoulin.jpg"
+  },
+  {
+    "item": "Carrot",
+    "module": "foods",
+    "file": "images/foods/carrot.jpg",
+    "title": "File:Vegetable-Carrot-Bundle-wStalks.jpg",
+    "author": "Evan-Amos",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3AVegetable-Carrot-Bundle-wStalks.jpg"
+  },
+  {
+    "item": "Potato",
+    "module": "foods",
+    "file": "images/foods/potato.jpg",
+    "title": "File:Patates.jpg",
+    "author": "Scott Bauer, USDA ARS",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3APatates.jpg"
+  },
+  {
+    "item": "Onion",
+    "module": "foods",
+    "file": "images/foods/onion.jpg",
+    "title": "File:Mixed_onions.jpg",
+    "author": "Colin",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMixed_onions.jpg"
+  },
+  {
+    "item": "Cucumber",
+    "module": "foods",
+    "file": "images/foods/cucumber.jpg",
+    "title": "File:ARS_cucumber.jpg",
+    "author": "Stephen Ausmus, USDA ARS",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3AARS_cucumber.jpg"
+  },
+  {
+    "item": "Pumpkin",
+    "module": "foods",
+    "file": "images/foods/pumpkin.jpg",
+    "title": "File:FrenchMarketPumpkinsB.jpg",
+    "author": "Infrogmation of New Orleans",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFrenchMarketPumpkinsB.jpg"
+  },
+  {
+    "item": "Peas",
+    "module": "foods",
+    "file": "images/foods/peas.jpg",
+    "title": "File:Doperwt_rijserwt_peulen_Pisum_sativum.jpg",
+    "author": "Rasbak",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADoperwt_rijserwt_peulen_Pisum_sativum.jpg"
+  },
+  {
+    "item": "Beans",
+    "module": "foods",
+    "file": "images/foods/beans.jpg",
+    "title": "File:Snijboon_peulen_Phaseolus_vulgaris.jpg",
+    "author": "Rasbak",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASnijboon_peulen_Phaseolus_vulgaris.jpg"
+  },
+  {
+    "item": "Maize",
+    "module": "foods",
+    "file": "images/foods/maize.jpg",
+    "title": "File:Zea_mays_-_K\u00f6hler\u2013s_Medizinal-Pflanzen-283.jpg",
+    "author": "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3AZea_mays_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-283.jpg"
+  },
+  {
+    "item": "Chapati",
+    "module": "foods",
+    "file": "images/foods/chapati.jpg",
+    "title": "File:2_Chapati_warm_and_ready_to_be_eaten.jpg",
+    "author": "KittyKaht from Hong Kong, Hong Kong",
+    "licence": "CC BY-SA 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3A2_Chapati_warm_and_ready_to_be_eaten.jpg"
+  },
+  {
+    "item": "Samosa",
+    "module": "foods",
+    "file": "images/foods/samosa.jpg",
+    "title": "File:Samosas,_snack_food_at_Wikipedia's_16th_Birthday_celebration_in_Chittagong_(01).jpg",
+    "author": "Moheen Reeyad",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASamosas%2C_snack_food_at_Wikipedia%27s_16th_Birthday_celebration_in_Chittagong_%2801%29.jpg"
+  },
+  {
+    "item": "Omelette",
+    "module": "foods",
+    "file": "images/foods/omelette.jpg",
+    "title": "File:Gorgonzola_+_Bacon_Omelette_@_Omelegg_@_Amsterdam_(16600947041).jpg",
+    "author": "Guilhem Vellut from Annecy, France",
+    "licence": "CC BY 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGorgonzola_%2B_Bacon_Omelette_%40_Omelegg_%40_Amsterdam_%2816600947041%29.jpg"
+  },
+  {
+    "item": "Yoghurt",
+    "module": "foods",
+    "file": "images/foods/yoghurt.jpg",
+    "title": "File:Joghurt.jpg",
+    "author": "No machine-readable author provided. Rainer Zenz assumed (based on copyright claims).",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File%3AJoghurt.jpg"
+  },
+  {
+    "item": "Milk",
+    "module": "foods",
+    "file": "images/foods/milk.jpg",
+    "title": "File:Glass_of_Milk_(33657535532).jpg",
+    "author": "NIAID",
+    "licence": "CC BY 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGlass_of_Milk_%2833657535532%29.jpg"
+  },
+  {
+    "item": "Baboon",
+    "module": "animals",
+    "file": "images/animals/baboon.jpg",
+    "title": "File:Hamadryas baboon.jpg",
+    "author": "\u0627\u0644\u0645\u064f\u0635\u0648\u0651\u0631: \u0645\u064f\u0639\u062a\u0632 \u062a\u0648\u0641\u064a\u0642 \u0625\u063a\u0628\u0627\u0631\u064a\u0651\u0629",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AHamadryas_baboon.jpg"
+  },
+  {
+    "item": "Bull",
+    "module": "animals",
+    "file": "images/animals/bull.jpg",
+    "title": "File:Farmer Displaying His Prize Holstein Bull at the Minnesota State Fair - DPLA - 4db24aba706343d8ea1bc1e751ccd105.jpg",
+    "author": "Bromley, Edward A",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFarmer_Displaying_His_Prize_Holstein_Bull_at_the_Minnesota_State_Fair_-_DPLA_-_4db24aba706343d8ea1bc1e751ccd105.jpg"
+  },
+  {
+    "item": "Canoe",
+    "module": "vehicles",
+    "file": "images/vehicles/canoe.jpg",
+    "title": "File:Boat on Euphrates.jpg",
+    "author": "Christiaan Briggs",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABoat_on_Euphrates.jpg"
+  },
+  {
+    "item": "Apricot",
+    "module": "fruits",
+    "file": "images/fruits/apricot.jpg",
+    "title": "File:Ab food 04.jpg",
+    "author": "Andrey Butko",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAb_food_04.jpg"
+  },
+  {
+    "item": "Peach",
+    "module": "fruits",
+    "file": "images/fruits/peach.jpg",
+    "title": "File:02024 0431 Silesian fruit peach cake.jpg",
+    "author": "Silar",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3A02024_0431_Silesian_fruit_peach_cake.jpg"
+  },
+  {
+    "item": "Cookie",
+    "module": "foods",
+    "file": "images/foods/cookie.jpg",
+    "title": "File:Batch of chocolate chip cookies.jpg",
+    "author": "pjmorse",
+    "licence": "CC BY-SA 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABatch_of_chocolate_chip_cookies.jpg"
+  },
+  {
+    "item": "Cabbage",
+    "module": "foods",
+    "file": "images/foods/cabbage.jpg",
+    "title": "File:Brassica oleracea var. capitata (4170722993).jpg",
+    "author": "Dinesh Valke from Thane, India",
+    "licence": "CC BY-SA 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABrassica_oleracea_var._capitata_%284170722993%29.jpg"
+  },
+  {
+    "item": "Broccoli",
+    "module": "foods",
+    "file": "images/foods/broccoli.jpg",
+    "title": "File:Fire-Tuscarora Organic Growers - Broccoli head.jpg",
+    "author": "U.S. Department of Agriculture",
+    "licence": "Public domain",
+    "licenceUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFire-Tuscarora_Organic_Growers_-_Broccoli_head.jpg"
+  },
+  {
+    "item": "Taxi",
+    "module": "vehicles",
+    "file": "images/vehicles/taxi.jpg",
+    "title": "File:2016 LTI TX4 London black cab.jpg",
+    "author": "Oleg Yunakov",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3A2016_LTI_TX4_London_black_cab.jpg"
+  },
+  {
+    "item": "Scooter",
+    "module": "vehicles",
+    "file": "images/vehicles/scooter.jpg",
+    "title": "File:Generic Motors Explorer Speed 50 two-stroke scooter (2016) No.1.jpg",
+    "author": "Pittigrilli",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGeneric_Motors_Explorer_Speed_50_two-stroke_scooter_%282016%29_No.1.jpg"
+  },
+  {
+    "item": "Sandals",
+    "module": "clothes",
+    "file": "images/clothes/sandals.jpg",
+    "title": "File:Chaco Z1 Sandals.JPG",
+    "author": "Johnathlon",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AChaco_Z1_Sandals.JPG"
+  },
+  {
+    "item": "Pyjamas",
+    "module": "clothes",
+    "file": "images/clothes/pyjamas.jpg",
+    "title": "File:A boy in pajamas outdoors in Northern Maracay, Venezuela.jpg",
+    "author": "Bobjgalindo",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3AA_boy_in_pajamas_outdoors_in_Northern_Maracay%2C_Venezuela.jpg"
   }
 ]

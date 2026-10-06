@@ -46,6 +46,18 @@ export const FRUITS = [
   { name: 'Melon',      emoji: '🍈', imageSrc: 'images/fruits/melon.jpg' },
   { name: 'Avocado',    emoji: '🥑', imageSrc: 'images/fruits/avocado.jpg' },
   { name: 'Tomato',     emoji: '🍅', imageSrc: 'images/fruits/tomato.jpg' },
+  { name: 'Apricot', emoji: '🍑', imageSrc: 'images/fruits/apricot.jpg' },
+  { name: 'Nectarine', emoji: '🍑' },
+  { name: 'Mandarin', emoji: '🍊', imageSrc: 'images/fruits/mandarin.jpg' },
+  { name: 'Starfruit', emoji: '⭐', imageSrc: 'images/fruits/starfruit.jpg' },
+  { name: 'Lychee', emoji: '🍇', imageSrc: 'images/fruits/lychee.jpg' },
+  { name: 'Mulberry', emoji: '🫐', imageSrc: 'images/fruits/mulberry.jpg' },
+  { name: 'Cranberry', emoji: '🫐', imageSrc: 'images/fruits/cranberry.jpg' },
+  { name: 'Gooseberry', emoji: '🫐', imageSrc: 'images/fruits/gooseberry.jpg' },
+  { name: 'Persimmon', emoji: '🍅', imageSrc: 'images/fruits/persimmon.jpg' },
+  { name: 'Plantain', emoji: '🍌', imageSrc: 'images/fruits/plantain.jpg' },
+  { name: 'Date', emoji: '🌴', imageSrc: 'images/fruits/date.jpg' },
+  { name: 'Currant', emoji: '🍇', imageSrc: 'images/fruits/currant.jpg' },
 ];
 
 // ── Domestic animals ─────────────────────────────────────
@@ -72,6 +84,12 @@ export const DOMESTIC_ANIMALS = [
   { name: 'Parrot',   emoji: '🦜', imageSrc: 'images/animals/parrot.jpg' },
   { name: 'Pigeon',   emoji: '🕊️', imageSrc: 'images/animals/pigeon.jpg' },
   { name: 'Canary',   emoji: '🐤', imageSrc: 'images/animals/canary.jpg' },
+  { name: 'Guinea Pig', emoji: '🐹', imageSrc: 'images/animals/guinea-pig.jpg' },
+  { name: 'Goldfish', emoji: '🐠', imageSrc: 'images/animals/goldfish.jpg' },
+  { name: 'Ferret', emoji: '🦡', imageSrc: 'images/animals/ferret.jpg' },
+  { name: 'Dove', emoji: '🕊️', imageSrc: 'images/animals/dove.jpg' },
+  { name: 'Quail', emoji: '🐦', imageSrc: 'images/animals/quail.jpg' },
+  { name: 'Bull', emoji: '🐂', imageSrc: 'images/animals/bull.jpg' },
 ];
 
 // ── Wild animals ─────────────────────────────────────────
@@ -108,6 +126,22 @@ export const WILD_ANIMALS = [
   { name: 'Shark',     emoji: '🦈', imageSrc: 'images/animals/shark.jpg' },
   { name: 'Whale',     emoji: '🐋', imageSrc: 'images/animals/whale.jpg' },
   { name: 'Dolphin',   emoji: '🐬', imageSrc: 'images/animals/dolphin.jpg' },
+  { name: 'Penguin', emoji: '🐧', imageSrc: 'images/animals/penguin.jpg' },
+  { name: 'Seal', emoji: '🦭', imageSrc: 'images/animals/seal.jpg' },
+  { name: 'Otter', emoji: '🦦', imageSrc: 'images/animals/otter.jpg' },
+  { name: 'Hyena', emoji: '🐺', imageSrc: 'images/animals/hyena.jpg' },
+  { name: 'Buffalo', emoji: '🐃', imageSrc: 'images/animals/buffalo.jpg' },
+  { name: 'Antelope', emoji: '🦌', imageSrc: 'images/animals/antelope.jpg' },
+  { name: 'Chimpanzee', emoji: '🐵', imageSrc: 'images/animals/chimpanzee.jpg' },
+  { name: 'Baboon', emoji: '🐒', imageSrc: 'images/animals/baboon.jpg' },
+  { name: 'Meerkat', emoji: '🦫', imageSrc: 'images/animals/meerkat.jpg' },
+  { name: 'Porcupine', emoji: '🦔', imageSrc: 'images/animals/porcupine.jpg' },
+  { name: 'Squirrel', emoji: '🐿️', imageSrc: 'images/animals/squirrel.jpg' },
+  { name: 'Bat', emoji: '🦇', imageSrc: 'images/animals/bat.jpg' },
+  { name: 'Chameleon', emoji: '🦎', imageSrc: 'images/animals/chameleon.jpg' },
+  { name: 'Lizard', emoji: '🦎', imageSrc: 'images/animals/lizard.jpg' },
+  { name: 'Butterfly', emoji: '🦋', imageSrc: 'images/animals/butterfly.jpg' },
+  { name: 'Frog', emoji: '🐸', imageSrc: 'images/animals/frog.jpg' },
 ];
 
 // ── Animal sounds (domestic + wild) ───────────────────────
@@ -145,6 +179,21 @@ export const ANIMAL_SOUNDS = [
   { name: 'Eagle',     emoji: '🦅', sound: 'Screech', imageSrc: 'images/animals/eagle.jpg' },
   { name: 'Whale',     emoji: '🐋', sound: 'Song', imageSrc: 'images/animals/whale.jpg' },
   { name: 'Dolphin',   emoji: '🐬', sound: 'Click', imageSrc: 'images/animals/dolphin.jpg' },
+  { name: 'Penguin', emoji: '🐧', sound: 'Honk', imageSrc: 'images/animals/penguin.jpg' },
+  { name: 'Seal', emoji: '🦭', sound: 'Bark', imageSrc: 'images/animals/seal.jpg' },
+  { name: 'Otter', emoji: '🦦', sound: 'Whine', imageSrc: 'images/animals/otter.jpg' },
+  { name: 'Hyena', emoji: '🐺', sound: 'Laugh', imageSrc: 'images/animals/hyena.jpg' },
+  { name: 'Buffalo', emoji: '🐃', sound: 'Moo', imageSrc: 'images/animals/buffalo.jpg' },
+  { name: 'Chimpanzee', emoji: '🐵', sound: 'Hoot', imageSrc: 'images/animals/chimpanzee.jpg' },
+  { name: 'Baboon', emoji: '🐒', sound: 'Bark', imageSrc: 'images/animals/baboon.jpg' },
+  { name: 'Squirrel', emoji: '🐿️', sound: 'Chatter', imageSrc: 'images/animals/squirrel.jpg' },
+  { name: 'Bat', emoji: '🦇', sound: 'Screech', imageSrc: 'images/animals/bat.jpg' },
+  { name: 'Frog', emoji: '🐸', sound: 'Croak', imageSrc: 'images/animals/frog.jpg' },
+  { name: 'Porcupine', emoji: '🦔', sound: 'Rattle', imageSrc: 'images/animals/porcupine.jpg' },
+  { name: 'Meerkat', emoji: '🦫', sound: 'Bark', imageSrc: 'images/animals/meerkat.jpg' },
+  { name: 'Chameleon', emoji: '🦎', sound: 'Hiss', imageSrc: 'images/animals/chameleon.jpg' },
+  { name: 'Lizard', emoji: '🦎', sound: 'Hiss', imageSrc: 'images/animals/lizard.jpg' },
+  { name: 'Antelope', emoji: '🦌', sound: 'Snort', imageSrc: 'images/animals/antelope.jpg' },
 ];
 
 // ── Vowels / syllables ───────────────────────────────────
@@ -277,6 +326,14 @@ export const SHAPES = [
   { name: 'Pentagon', symbol: '⬟' },
   { name: 'Hexagon', symbol: '⬢' },
   { name: 'Oval', symbol: '⬭' },
+  { name: 'Crescent', symbol: '🌙' },
+  { name: 'Arrow', symbol: '➡️' },
+  { name: 'Octagon', symbol: '🛑' },
+  { name: 'Trapezoid', symbol: '⏢' },
+  { name: 'Semicircle', symbol: '◗' },
+  { name: 'Cube', symbol: '🧊' },
+  { name: 'Cylinder', symbol: '🥫' },
+  { name: 'Cone', symbol: '🍦' },
 ];
 
 // ── Colors ───────────────────────────────────────────────
@@ -291,6 +348,16 @@ export const COLORS = [
   { name: 'Brown', swatch: '#8d6e63', emoji: '🟤' },
   { name: 'Black', swatch: '#424242', emoji: '⚫' },
   { name: 'White', swatch: '#f5f5f5', emoji: '⚪' },
+  { name: 'Grey', swatch: '#9e9e9e', emoji: '⚫' },
+  { name: 'Gold', swatch: '#ffd700', emoji: '🟡' },
+  { name: 'Silver', swatch: '#c0c0c0', emoji: '⚪' },
+  { name: 'Turquoise', swatch: '#40e0d0', emoji: '🔵' },
+  { name: 'Navy', swatch: '#1a237e', emoji: '🔵' },
+  { name: 'Maroon', swatch: '#800000', emoji: '🔴' },
+  { name: 'Beige', swatch: '#f5f5dc', emoji: '🟤' },
+  { name: 'Violet', swatch: '#8a2be2', emoji: '🟣' },
+  { name: 'Teal', swatch: '#008080', emoji: '🔵' },
+  { name: 'Lime', swatch: '#cddc39', emoji: '🟢' },
 ];
 
 // ── Vehicles ─────────────────────────────────────────────
@@ -305,6 +372,18 @@ export const VEHICLES = [
   { name: 'Helicopter', emoji: '🚁', imageSrc: 'images/vehicles/helicopter.jpg' },
   { name: 'Boat', emoji: '⛵', imageSrc: 'images/vehicles/boat.jpg' },
   { name: 'Ship', emoji: '🚢', imageSrc: 'images/vehicles/ship.jpg' },
+  { name: 'Tractor', emoji: '🚜', imageSrc: 'images/vehicles/tractor.jpg' },
+  { name: 'Ambulance', emoji: '🚑', imageSrc: 'images/vehicles/ambulance.jpg' },
+  { name: 'Fire Engine', emoji: '🚒', imageSrc: 'images/vehicles/fire-engine.jpg' },
+  { name: 'Police Car', emoji: '🚓', imageSrc: 'images/vehicles/police-car.jpg' },
+  { name: 'Rocket', emoji: '🚀', imageSrc: 'images/vehicles/rocket.jpg' },
+  { name: 'Taxi', emoji: '🚕', imageSrc: 'images/vehicles/taxi.jpg' },
+  { name: 'Van', emoji: '🚐', imageSrc: 'images/vehicles/van.jpg' },
+  { name: 'Scooter', emoji: '🛴', imageSrc: 'images/vehicles/scooter.jpg' },
+  { name: 'Skateboard', emoji: '🛹', imageSrc: 'images/vehicles/skateboard.jpg' },
+  { name: 'Hot Air Balloon', emoji: '🎈', imageSrc: 'images/vehicles/hot-air-balloon.jpg' },
+  { name: 'Bulldozer', emoji: '🚜', imageSrc: 'images/vehicles/bulldozer.jpg' },
+  { name: 'Canoe', emoji: '🛶', imageSrc: 'images/vehicles/canoe.jpg' },
 ];
 
 // ── Foods ───────────────────────────────────────────────
@@ -329,6 +408,21 @@ export const FOODS = [
   { name: 'Cookie', emoji: '🍪', imageSrc: 'images/foods/cookie.png' },
   { name: 'Popcorn', emoji: '🍿', imageSrc: 'images/foods/popcorn.jpg' },
   { name: 'Cheese', emoji: '🧀', imageSrc: 'images/foods/cheese.jpg' },
+  { name: 'Carrot', emoji: '🥕', imageSrc: 'images/foods/carrot.jpg' },
+  { name: 'Potato', emoji: '🥔', imageSrc: 'images/foods/potato.jpg' },
+  { name: 'Onion', emoji: '🧅', imageSrc: 'images/foods/onion.jpg' },
+  { name: 'Cabbage', emoji: '🥬', imageSrc: 'images/foods/cabbage.jpg' },
+  { name: 'Broccoli', emoji: '🥦', imageSrc: 'images/foods/broccoli.jpg' },
+  { name: 'Cucumber', emoji: '🥒', imageSrc: 'images/foods/cucumber.jpg' },
+  { name: 'Pumpkin', emoji: '🎃', imageSrc: 'images/foods/pumpkin.jpg' },
+  { name: 'Peas', emoji: '🫛', imageSrc: 'images/foods/peas.jpg' },
+  { name: 'Beans', emoji: '🫘', imageSrc: 'images/foods/beans.jpg' },
+  { name: 'Maize', emoji: '🌽', imageSrc: 'images/foods/maize.jpg' },
+  { name: 'Chapati', emoji: '🫓', imageSrc: 'images/foods/chapati.jpg' },
+  { name: 'Samosa', emoji: '🥟', imageSrc: 'images/foods/samosa.jpg' },
+  { name: 'Omelette', emoji: '🍳', imageSrc: 'images/foods/omelette.jpg' },
+  { name: 'Yoghurt', emoji: '🥛', imageSrc: 'images/foods/yoghurt.jpg' },
+  { name: 'Milk', emoji: '🥛', imageSrc: 'images/foods/milk.jpg' },
 ];
 
 // ── Clothes ─────────────────────────────────────────────
@@ -336,13 +430,25 @@ export const CLOTHES = [
   { name: 'Shirt', emoji: '👕', imageSrc: 'images/clothes/shirt.jpg' },
   { name: 'Dress', emoji: '👗', imageSrc: 'images/clothes/dress.jpg' },
   { name: 'Pants', emoji: '👖', imageSrc: 'images/clothes/pants.jpg' },
-  { name: 'Shorts', emoji: '🩳' },
+  { name: 'Shorts', emoji: '🩳', imageSrc: 'images/clothes/shorts.jpg' },
   { name: 'Skirt', emoji: '🩱', imageSrc: 'images/clothes/skirt.jpg' },
   { name: 'Jacket', emoji: '🧥', imageSrc: 'images/clothes/jacket.jpg' },
   { name: 'Socks', emoji: '🧦', imageSrc: 'images/clothes/socks.jpg' },
   { name: 'Shoes', emoji: '👟', imageSrc: 'images/clothes/shoes.jpg' },
-  { name: 'Hat', emoji: '🧢' },
+  { name: 'Hat', emoji: '🧢', imageSrc: 'images/clothes/hat.jpg' },
   { name: 'Scarf', emoji: '🧣', imageSrc: 'images/clothes/scarf.jpg' },
+  { name: 'T-shirt', emoji: '👕', imageSrc: 'images/clothes/t-shirt.jpg' },
+  { name: 'Sweater', emoji: '🧶', imageSrc: 'images/clothes/sweater.jpg' },
+  { name: 'Coat', emoji: '🧥' },
+  { name: 'Raincoat', emoji: '🧥', imageSrc: 'images/clothes/raincoat.jpg' },
+  { name: 'Boots', emoji: '👢', imageSrc: 'images/clothes/boots.jpg' },
+  { name: 'Sandals', emoji: '👡', imageSrc: 'images/clothes/sandals.jpg' },
+  { name: 'Gloves', emoji: '🧤', imageSrc: 'images/clothes/gloves.jpg' },
+  { name: 'Belt', emoji: '🧵', imageSrc: 'images/clothes/belt.jpg' },
+  { name: 'Tie', emoji: '👔', imageSrc: 'images/clothes/tie.jpg' },
+  { name: 'Pyjamas', emoji: '🛏️', imageSrc: 'images/clothes/pyjamas.jpg' },
+  { name: 'Uniform', emoji: '🥋', imageSrc: 'images/clothes/uniform.jpg' },
+  { name: 'Cap', emoji: '🧢' },
 ];
 
 // ── Finger count ────────────────────────────────────────
