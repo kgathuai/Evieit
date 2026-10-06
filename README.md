@@ -49,26 +49,28 @@ This version is intentionally offline and dependency-free so it can run in low-c
 
 ## Browser & TV Compatibility
 
-The app is built with **Vite** (`vite.config.js`) and ships two bundles:
+Packaged TV apps are loaded from the **`file://` scheme** (LG documents this for
+webOS; Tizen behaves the same way), and **ES modules are CORS-blocked there** —
+a `type="module"` script never executes. So the build emits **one classic (IIFE)
+bundle** with relative asset paths (see `vite.config.js`): no modules, no dynamic
+import, no SystemJS. That is what a TV package can actually load.
 
-- a modern bundle for current browsers
-- an **ES2015 bundle plus core-js polyfills**, selected automatically on older
-  engines via `<script nomodule>` and a capability canary
+`build.target` is `es2015`, so optional chaining and nullish coalescing are
+lowered at build time. They are a *parse error* below Chromium 80 — which is
+every television from roughly 2016 to 2021.
 
-`@vitejs/plugin-legacy` is configured with `targets: ['chrome >= 47']`, so the
-app reaches back towards 2016 Tizen sets instead of the 2024+ models a stock
-Next.js 15 build required (its runtime shipped optional chaining, which is a
-parse error on anything below Chromium 80). Older engines fall back to the
-legacy bundle on their own — nothing to configure on the TV.
+`core-js` supplies the runtime methods those engines lack — `Object.entries`,
+`Object.values`, `Object.fromEntries` and `Object.getOwnPropertyDescriptors` are
+all post-Chrome 53, and the app throws without them.
+
+The emitted bundle is verified with `acorn` (`npm run check:syntax`): it parses
+as ES2015 and contains zero optional-chaining, nullish-coalescing or class-field
+nodes.
 
 Known remaining limits:
 
-- CSS still uses `clamp()`, flexbox `gap`, `aspect-ratio` and `:where()`, which
-  need Chromium 79-88. On older engines these degrade (missing gaps, dropped
-  fluid type) rather than break, so the layout is not pixel-correct there.
+- CSS still uses `clamp()`, flexbox `gap` and `aspect-ratio`, which need
+  Chromium 79-88. On older engines these degrade (missing gaps, dropped fluid
+  type) rather than break, so layout is not pixel-correct there.
 - Speech narration uses the Web Speech API, which varies by TV model and firmware.
 - Progress is stored in `localStorage`, which some TV browsers restrict.
-
-Build output stays in `out/` and assets are referenced **relatively**, so the
-same build works from `file://` inside Tizen and webOS packages as well as from
-a web server.

@@ -1,3 +1,12 @@
+// Polyfills for the TV engines this app targets. Chrome 47 (Tizen 2016)
+// predates all four of these, and the app plus MUI call them directly, so
+// without this the app throws "Object.entries is not a function" on the
+// exact televisions it is meant to reach.
+import 'core-js/es/object/entries';
+import 'core-js/es/object/values';
+import 'core-js/es/object/from-entries';
+import 'core-js/es/object/get-own-property-descriptors';
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
