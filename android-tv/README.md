@@ -1,240 +1,85 @@
-# Android TV / Google TV Deployment
+# Android TV app (USB sideload)
 
-This folder packages Uni-Learn for **Android TV** and **Google TV** sticks and TVs (Sony, TCL, Hisense, Xiaomi, etc.).
+A signed APK that wraps the Uni-Learn web build in a full-screen WebView. It is
+the highest-reach *interactive* option for Kenya: the affordable smart TVs sold
+there (Vitron, Syinix and similar) run Android TV, and an APK can be installed
+from a USB stick with no store, no signing service, no developer mode and no
+internet connection.
 
-## Supported Devices
+## What it is
 
-- Google TV devices (Chromecast with Google TV, etc.)
-- Android TV boxes and dongles
-- Sony, TCL, Hisense, and other Android-based TVs
-- Amazon Fire TV (with modifications)
+`MainActivity` is a single WebView pointed at `file:///android_asset/index.html`.
+The whole web build — JS, CSS, fonts and 212 images — is bundled into `assets/`,
+so the app never touches the network.
 
-## Two Deployment Methods
+It deliberately does *not* use Gradle. The app is one Activity and a WebView, so
+building directly with `aapt2`, `javac`, `d8`, `zipalign` and `apksigner` avoids
+the Android Gradle Plugin's strict Java-version requirements entirely. All you
+need is an SDK and a JDK.
 
-### Method 1: Hosted URL (Easiest, Online Required)
-
-1. Build static export:
-   ```bash
-   npm run build
-   ```
-
-2. Deploy `out/` folder to free static host:
-   - Netlify
-   - Vercel
-   - Cloudflare Pages
-   - GitHub Pages
-
-3. On Android TV stick:
-   - Install "TV Bro" or similar browser
-   - Open your hosted URL
-   - Bookmark as Home
-
-**Pros:** No coding, works immediately  
-**Cons:** Requires internet after initial setup
-
----
-
-### Method 2: Offline APK (Recommended for Low-Income Users)
-
-Build a self-contained Android app that includes all lessons and runs completely offline.
-
-## Prerequisites
-
-- Android SDK (or Android Studio)
-- Node.js and npm
-- Gradle
-
-## Quick Setup (Using Android Studio)
-
-1. **Install Android Studio** from [developer.android.com](https://developer.android.com/studio)
-
-2. **Create a simple WebView app:**
-   - Open Android Studio → New Project
-   - Choose "Empty Views Activity"
-   - Name: `UniLearnTV`
-   - Package: `com.example.unilearn`
-   - Minimum API: 21 (Android 5.0)
-
-3. **Build your static assets:**
-   ```bash
-   npm run build
-   ```
-
-4. **Add assets to Android project:**
-   ```bash
-   # Copy built files to Android assets
-   cp -r out/* android-tv/app/src/main/assets/
-   ```
-
-5. **Create MainActivity.java** (WebView shell):
-
-   ```java
-   package com.example.unilearn;
-
-   import android.os.Bundle;
-   import android.webkit.WebSettings;
-   import android.webkit.WebView;
-   import android.view.KeyEvent;
-   import androidx.appcompat.app.AppCompatActivity;
-
-   public class MainActivity extends AppCompatActivity {
-       private WebView webView;
-
-       @Override
-       protected void onCreate(Bundle savedInstanceState) {
-           super.onCreate(savedInstanceState);
-           setContentView(R.layout.activity_main);
-
-           webView = findViewById(R.id.webview);
-           WebSettings settings = webView.getSettings();
-           settings.setJavaScriptEnabled(true);
-           settings.setDomStorageEnabled(true);
-           settings.setDatabaseEnabled(true);
-           settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-
-           // Load local HTML
-           webView.loadUrl("file:///android_asset/index.html");
-       }
-
-       @Override
-       public boolean onKeyDown(int keyCode, KeyEvent event) {
-           // Handle D-pad navigation
-           switch (keyCode) {
-               case KeyEvent.KEYCODE_DPAD_UP:
-               case KeyEvent.KEYCODE_DPAD_DOWN:
-               case KeyEvent.KEYCODE_DPAD_LEFT:
-               case KeyEvent.KEYCODE_DPAD_RIGHT:
-               case KeyEvent.KEYCODE_ENTER:
-               case KeyEvent.KEYCODE_BACK:
-                   return false; // Let JavaScript handle it
-           }
-           return super.onKeyDown(keyCode, event);
-       }
-   }
-   ```
-
-6. **Build APK:**
-   ```bash
-   # In Android Studio, go to Build → Build Bundle(s) / APK(s) → Build APK(s)
-   # Or from terminal:
-   ./gradlew assembleRelease
-   ```
-
-   Output: `app/build/outputs/apk/release/app-release.apk`
-
-7. **Sideload on Android TV:**
-
-   **Option A: USB connection**
-   ```bash
-   adb connect <TV_IP>:5555
-   adb install -r app-release.apk
-   ```
-
-   **Option B: Via USB drive**
-   - Copy `app-release.apk` to USB drive
-   - Insert USB into TV
-   - Go to Settings → About → Install from USB
-   - Select APK file
-
-## Alternative: Using Gradle (Command Line Only)
+## Build
 
 ```bash
-# From project root
-npm run build
-
-# Create Android project structure (one-time)
-mkdir -p android-tv/app/src/main/assets
-cp -r out/* android-tv/app/src/main/assets/
-
-# Build APK
+npm run build          # produces ../out
 cd android-tv
-./gradlew assembleRelease
-cd ..
-
-# APK output: android-tv/app/build/outputs/apk/release/app-release.apk
+ANDROID_HOME=/path/to/android-sdk ./build.sh
 ```
 
-## Sideloading on Android TV
+`build.sh` finds the newest `platforms/android-*` and `build-tools/*` under
+`$ANDROID_HOME` (it also checks `~/Library/Android/sdk` and `/tmp/android-sdk`).
+It needs platform 34 and build-tools 34.0.0 or newer.
 
-### Via ADB (Android Debug Bridge)
+Output: `android-tv/UniLearnTV.apk`.
 
-1. Enable Developer Options on TV:
-   - Settings → About → Press Build Number 7 times
-   - Go back to Settings → Developer Options
-   - Enable USB Debugging / Debug via WiFi
+The first run also creates `android-tv/keystore/unilearn.keystore`.
 
-2. Connect:
-   ```bash
-   adb connect <TV_IP>:5555
-   ```
+> **Keep that keystore.** Android refuses to update an installed app if the
+> signing key changes. It is gitignored on purpose — back it up somewhere safe.
+> Losing it means families must uninstall and reinstall.
 
-3. Install:
-   ```bash
-   adb install -r android-tv/app/build/outputs/apk/release/app-release.apk
-   ```
+## Install on a TV
 
-4. Launch:
-   ```bash
-   adb shell am start -n com.example.unilearn/.MainActivity
-   ```
+**From a USB stick (no computer, no internet):**
 
-### Via USB Drive (Easiest for Non-Technical Users)
+1. Copy `UniLearnTV.apk` to a USB flash drive.
+2. Plug it into the TV.
+3. Open the TV's file manager (or a file-manager app) and select the APK.
+4. Allow "install from unknown sources" when prompted.
+5. Launch **Uni-Learn** from the TV's apps row.
 
-1. Copy APK to USB drive
-2. Insert USB into Android TV USB port
-3. TV will prompt to install from USB
-4. Select file and install
-5. App appears in Apps menu
-
-## Testing
-
-After installation:
-1. Remote should control D-pad navigation
-2. OK/Enter selects items
-3. Back button returns to home
-4. App runs fully offline
-5. Progress saves to device storage
-
-## Troubleshooting
-
-- **App won't launch**: Check Developer Options → USB Debugging
-- **ADB not found**: Add Android SDK tools to PATH:
-  ```bash
-  export PATH="$PATH:$ANDROID_HOME/platform-tools"
-  ```
-- **APK installation fails**: Check device storage, try `adb install -r` (replace mode)
-- **WebView crashes**: Ensure JavaScript and DOM storage are enabled in MainActivity
-
-## Publishing to Play Store (Optional)
-
-To distribute officially:
-
-1. Sign APK:
-   ```bash
-   jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
-     -keystore ~/my-key.keystore app-release-unsigned.apk my-key-alias
-   ```
-
-2. Create Google Play Developer account
-3. Upload signed APK
-4. Mark as Android TV app
-5. Add screenshots for Android TV interface
-
-## Notes
-
-- All content bundled inside APK (~15–50 MB depending on assets)
-- No internet required after installation
-- Progress and settings stored in device's localStorage
-- App runs in fullscreen, optimized for TV remotes
-- Compatible with physical remote controls and air mice
-
-## Update Workflow
-
-To push a new version:
+**Over the network, if you have `adb`:**
 
 ```bash
-npm run build
-cp -r out/* android-tv/app/src/main/assets/
-cd android-tv && ./gradlew assembleRelease && cd ..
-adb install -r android-tv/app/build/outputs/apk/release/app-release.apk
+adb connect <TV_IP>:5555
+adb install -r UniLearnTV.apk
 ```
+
+## TV behaviour
+
+- **D-pad** — the web app handles arrow keys, so up/down/left/right and OK work
+  on the remote with no extra code.
+- **Back** — the remote's Back button is forwarded into the web app as
+  Backspace, which returns to the lesson menu instead of closing the app.
+- The screen is kept awake, the system UI is hidden, and the system font-size
+  setting is ignored so the layout stays predictable.
+- `leanback` is **not** marked required, so the same APK also installs on a
+  phone or tablet. `minSdkVersion` is 21 (Android 5.0).
+
+## Before publishing anywhere
+
+- The package name is still `com.example.unilearn`. Change it in
+  `app/src/main/AndroidManifest.xml` and in the `MainActivity` package
+  declaration before any store release.
+- Replace the signing key with a real, private one.
+
+## Files
+
+| Path | Purpose |
+| --- | --- |
+| `build.sh` | the whole build, no Gradle |
+| `app/src/main/AndroidManifest.xml` | package, launcher entries, TV banner |
+| `app/src/main/java/com/example/unilearn/MainActivity.java` | the WebView shell |
+| `app/src/main/res/` | icon, TV banner, theme, app name |
+| `app/src/main/assets/` | generated — the bundled web build |
+
+`app/src/main/assets/`, `build/`, `keystore/` and `*.apk` are gitignored.

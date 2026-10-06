@@ -20,3 +20,9 @@ yarn-error.log*
 # env files
 .env
 .env*.local
+
+# android build output
+/android-tv/build/
+/android-tv/app/src/main/assets/
+/android-tv/keystore/
+/android-tv/*.apk
