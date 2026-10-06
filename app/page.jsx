@@ -113,7 +113,10 @@ export default function Home() {
       component="main"
       aria-live="polite"
       sx={{
-        height: '100dvh',          // fill the full device viewport height
+        // `dvh` needs Chrome 108, which almost no TV engine has. Plain vh
+        // fills the screen everywhere; dvh is applied only where supported.
+        height: '100vh',
+        '@supports (height: 100dvh)': { height: '100dvh' },
         display: 'flex',
         flexDirection: 'column',
         background: 'linear-gradient(135deg, #d0eaf8 0%, #fef9e7 100%)',
