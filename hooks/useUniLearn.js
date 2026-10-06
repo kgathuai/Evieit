@@ -402,8 +402,8 @@ const GENERIC_MODULES = {
     title: 'A for Apple',
     hint: 'Left/Right: next letter. Click a tile. Backspace: menu.',
     getDisplay: (letter) => {
-      const { word, emoji } = LETTER_WORDS[letter];
-      return { prompt: `${letter} for ${word}`, display: emoji };
+      const { word, emoji, imageSrc } = LETTER_WORDS[letter];
+      return { prompt: `${letter} for ${word}`, display: emoji, imageSrc };
     },
   },
   fruits: {
@@ -418,21 +418,21 @@ const GENERIC_MODULES = {
     getLabel: (item) => item.name,
     title: 'Domestic Animals',
     hint: 'Left/Right: next animal. Click a tile. Backspace: menu.',
-    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji, imageSrc: item.imageSrc }),
   },
   'wild-animals': {
     data: WILD_ANIMALS,
     getLabel: (item) => item.name,
     title: 'Wild Animals',
     hint: 'Left/Right: next wild animal. Click a tile. Backspace: menu.',
-    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji, imageSrc: item.imageSrc }),
   },
   'animal-sounds': {
     data: ANIMAL_SOUNDS,
     getLabel: (item) => `${item.name} ${item.sound}`,
     title: 'Animal Sounds',
     hint: 'Left/Right: next animal. Click a tile. Backspace: menu.',
-    getDisplay: (item) => ({ prompt: item.name, display: item.emoji, sound: item.sound }),
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji, sound: item.sound, imageSrc: item.imageSrc }),
   },
   vowels: {
     data: VOWELS,
@@ -453,28 +453,28 @@ const GENERIC_MODULES = {
     getLabel: (item) => item.name,
     title: 'Colors',
     hint: 'Left/Right: next color. Click a tile. Backspace: menu.',
-    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji, imageSrc: item.imageSrc }),
   },
   vehicles: {
     data: VEHICLES,
     getLabel: (item) => item.name,
     title: 'Vehicles',
     hint: 'Left/Right: next vehicle. Click a tile. Backspace: menu.',
-    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji, imageSrc: item.imageSrc }),
   },
   foods: {
     data: FOODS,
     getLabel: (item) => item.name,
     title: 'Foods',
     hint: 'Left/Right: next food. Click a tile. Backspace: menu.',
-    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji, imageSrc: item.imageSrc }),
   },
   clothes: {
     data: CLOTHES,
     getLabel: (item) => item.name,
     title: 'Clothes',
     hint: 'Left/Right: next clothing item. Click a tile. Backspace: menu.',
-    getDisplay: (item) => ({ prompt: item.name, display: item.emoji }),
+    getDisplay: (item) => ({ prompt: item.name, display: item.emoji, imageSrc: item.imageSrc }),
   },
   'finger-count': {
     data: FINGER_COUNTS,
