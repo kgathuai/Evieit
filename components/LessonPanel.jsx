@@ -67,6 +67,9 @@ const ItemTile = memo(function ItemTile({ label, index, active, seen, activeRef,
         // Grid handles width — tile just fills its cell
         width: '100%',
         aspectRatio: '1 / 1',
+        // aspect-ratio needs Chromium 88. Without a fallback the tile
+        // collapses to the height of its text on older engines.
+        '@supports not (aspect-ratio: 1 / 1)': { height: '13vw', minHeight: '4rem' },
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -74,7 +77,7 @@ const ItemTile = memo(function ItemTile({ label, index, active, seen, activeRef,
         cursor: 'pointer',
         userSelect: 'none',
         fontWeight: active ? 900 : seen ? 800 : 700,
-        fontSize: 'clamp(3rem, 6vw, 7rem)',
+        fontSize: '3rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(3rem, 6vw, 7rem)' },
         lineHeight: 1,
         transition: 'all 0.18s ease',
         bgcolor: active
@@ -134,11 +137,14 @@ const WordTile = memo(function WordTile({ letter, index, active, activeRef, onIt
       sx={{
         width: '100%',
         aspectRatio: '1 / 1',
+        // aspect-ratio needs Chromium 88. Without a fallback the tile
+        // collapses to the height of its text on older engines.
+        '@supports not (aspect-ratio: 1 / 1)': { height: '13vw', minHeight: '4rem' },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 0.5,
+        gap: 0.5, '@supports not (gap: 1px)': { '& > *:not(:last-child)': { marginBottom: '0.25rem' } },
         borderRadius: 3,
         cursor: 'pointer',
         userSelect: 'none',
@@ -154,15 +160,15 @@ const WordTile = memo(function WordTile({ letter, index, active, activeRef, onIt
       }}
     >
       {/* emoji */}
-      <Typography sx={{ fontSize: 'clamp(1.2rem, 3vw, 3rem)', lineHeight: 1 }}>
+      <Typography sx={{ fontSize: '1.2rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(1.2rem, 3vw, 3rem)' }, lineHeight: 1 }}>
         {emoji}
       </Typography>
       {/* big letter */}
-      <Typography sx={{ fontSize: 'clamp(1rem, 2.5vw, 2.5rem)', fontWeight: 900, lineHeight: 1 }}>
+      <Typography sx={{ fontSize: '1rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(1rem, 2.5vw, 2.5rem)' }, fontWeight: 900, lineHeight: 1 }}>
         {letter}
       </Typography>
       {/* word */}
-      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.9rem)', fontWeight: 600, lineHeight: 1, opacity: 0.85 }}>
+      <Typography sx={{ fontSize: '0.5rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(0.5rem, 1vw, 0.9rem)' }, fontWeight: 600, lineHeight: 1, opacity: 0.85 }}>
         {word}
       </Typography>
     </Box>
@@ -194,8 +200,8 @@ function renderColorSwatch(item) {
   return (
     <Box
       sx={{
-        width: 'clamp(2.6rem, 5vw, 4.5rem)',
-        height: 'clamp(2.6rem, 5vw, 4.5rem)',
+        width: '2.6rem', '@supports (width: clamp(1px, 1vw, 2px))': { width: 'clamp(2.6rem, 5vw, 4.5rem)' },
+        height: '2.6rem', '@supports (height: clamp(1px, 1vw, 2px))': { height: 'clamp(2.6rem, 5vw, 4.5rem)' },
         borderRadius: '50%',
         bgcolor: item.swatch,
         border: '3px solid',
@@ -223,6 +229,9 @@ const SimpleTile = memo(function SimpleTile({ item, index, glyphField, labelFiel
       sx={{
         width: '100%',
         aspectRatio: '1 / 1',
+        // aspect-ratio needs Chromium 88. Without a fallback the tile
+        // collapses to the height of its text on older engines.
+        '@supports not (aspect-ratio: 1 / 1)': { height: '13vw', minHeight: '4rem' },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -250,19 +259,19 @@ const SimpleTile = memo(function SimpleTile({ item, index, glyphField, labelFiel
             src={item.imageSrc}
             alt={item[labelField]}
             sx={{
-              width: 'clamp(4.4rem, 9vw, 7rem)',
-              height: 'clamp(4.4rem, 9vw, 7rem)',
+              width: '4.4rem', '@supports (width: clamp(1px, 1vw, 2px))': { width: 'clamp(4.4rem, 9vw, 7rem)' },
+              height: '4.4rem', '@supports (height: clamp(1px, 1vw, 2px))': { height: 'clamp(4.4rem, 9vw, 7rem)' },
               objectFit: 'contain',
               filter: active ? 'drop-shadow(0 8px 12px rgba(0,0,0,0.18))' : 'none',
             }}
           />
         ) : (
-          <Typography sx={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1 }}>
+          <Typography sx={{ fontSize: '2.8rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(2.8rem, 7vw, 6rem)' }, lineHeight: 1 }}>
             {item[glyphField]}
           </Typography>
         )
       )}
-      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
+      <Typography sx={{ fontSize: '0.5rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(0.5rem, 1vw, 0.85rem)' }, fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
         {item[labelField]}
       </Typography>
     </Box>
@@ -307,11 +316,14 @@ const VowelTile = memo(function VowelTile({ item, index, active, activeRef, onIt
       sx={{
         width: '100%',
         aspectRatio: '1 / 1',
+        // aspect-ratio needs Chromium 88. Without a fallback the tile
+        // collapses to the height of its text on older engines.
+        '@supports not (aspect-ratio: 1 / 1)': { height: '13vw', minHeight: '4rem' },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 0.5,
+        gap: 0.5, '@supports not (gap: 1px)': { '& > *:not(:last-child)': { marginBottom: '0.25rem' } },
         borderRadius: 3,
         cursor: 'pointer',
         userSelect: 'none',
@@ -325,10 +337,10 @@ const VowelTile = memo(function VowelTile({ item, index, active, activeRef, onIt
         zIndex: active ? 1 : 0,
       }}
     >
-      <Typography sx={{ fontSize: 'clamp(1.8rem, 5vw, 5rem)', fontWeight: 900, lineHeight: 1 }}>
+      <Typography sx={{ fontSize: '1.8rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(1.8rem, 5vw, 5rem)' }, fontWeight: 900, lineHeight: 1 }}>
         {item.syllable}
       </Typography>
-      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.75rem)', fontWeight: 600, opacity: 0.65, lineHeight: 1 }}>
+      <Typography sx={{ fontSize: '0.5rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(0.5rem, 1vw, 0.75rem)' }, fontWeight: 600, opacity: 0.65, lineHeight: 1 }}>
         {item.consonant} + {item.vowel}
       </Typography>
     </Box>
@@ -369,11 +381,14 @@ const AnimalSoundTile = memo(function AnimalSoundTile({ item, index, active, act
       sx={{
         width: '100%',
         aspectRatio: '1 / 1',
+        // aspect-ratio needs Chromium 88. Without a fallback the tile
+        // collapses to the height of its text on older engines.
+        '@supports not (aspect-ratio: 1 / 1)': { height: '13vw', minHeight: '4rem' },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 0.25,
+        gap: 0.25, '@supports not (gap: 1px)': { '& > *:not(:last-child)': { marginBottom: '0.125rem' } },
         borderRadius: 3,
         cursor: 'pointer',
         userSelect: 'none',
@@ -388,13 +403,13 @@ const AnimalSoundTile = memo(function AnimalSoundTile({ item, index, active, act
         p: 0.5,
       }}
     >
-      <Typography sx={{ fontSize: 'clamp(2rem, 5vw, 4rem)', lineHeight: 1 }}>
+      <Typography sx={{ fontSize: '2rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(2rem, 5vw, 4rem)' }, lineHeight: 1 }}>
         {item.emoji}
       </Typography>
-      <Typography sx={{ fontSize: 'clamp(0.5rem, 1vw, 0.85rem)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
+      <Typography sx={{ fontSize: '0.5rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(0.5rem, 1vw, 0.85rem)' }, fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>
         {item.name}
       </Typography>
-      <Typography sx={{ fontSize: 'clamp(0.45rem, 0.9vw, 0.75rem)', fontWeight: 600, fontStyle: 'italic', opacity: 0.75, lineHeight: 1 }}>
+      <Typography sx={{ fontSize: '0.45rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(0.45rem, 0.9vw, 0.75rem)' }, fontWeight: 600, fontStyle: 'italic', opacity: 0.75, lineHeight: 1 }}>
         "{item.sound}"
       </Typography>
     </Box>
@@ -431,11 +446,14 @@ const FingerCountTile = memo(function FingerCountTile({ item, index, active, act
       sx={{
         width: '100%',
         aspectRatio: '1 / 1',
+        // aspect-ratio needs Chromium 88. Without a fallback the tile
+        // collapses to the height of its text on older engines.
+        '@supports not (aspect-ratio: 1 / 1)': { height: '13vw', minHeight: '4rem' },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 0.25,
+        gap: 0.25, '@supports not (gap: 1px)': { '& > *:not(:last-child)': { marginBottom: '0.125rem' } },
         borderRadius: 3,
         cursor: 'pointer',
         userSelect: 'none',
@@ -457,17 +475,17 @@ const FingerCountTile = memo(function FingerCountTile({ item, index, active, act
             src={item.imageSrc}
             alt={`Count ${item.count}`}
             sx={{
-              width: 'clamp(1.5rem, 3.6vw, 3rem)',
-              height: 'clamp(1.5rem, 3.6vw, 3rem)',
+              width: '1.5rem', '@supports (width: clamp(1px, 1vw, 2px))': { width: 'clamp(1.5rem, 3.6vw, 3rem)' },
+              height: '1.5rem', '@supports (height: clamp(1px, 1vw, 2px))': { height: 'clamp(1.5rem, 3.6vw, 3rem)' },
               objectFit: 'contain',
             }}
           />
         )}
-        <Typography sx={{ fontSize: 'clamp(1.65rem, 4vw, 3.4rem)', lineHeight: 1, textAlign: 'center' }}>
+        <Typography sx={{ fontSize: '1.65rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(1.65rem, 4vw, 3.4rem)' }, lineHeight: 1, textAlign: 'center' }}>
           {item.display}
         </Typography>
       </Box>
-      <Typography sx={{ fontSize: 'clamp(1.8rem, 4.5vw, 4rem)', fontWeight: 900, lineHeight: 0.95 }}>
+      <Typography sx={{ fontSize: '1.8rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(1.8rem, 4.5vw, 4rem)' }, fontWeight: 900, lineHeight: 0.95 }}>
         {item.count}
       </Typography>
     </Box>
@@ -531,13 +549,13 @@ function FractionPuzzleDisplay({ state, onPickPiece, onPlacePiece, onNextRound }
   const trayPiecePath = slicePath(theme.shape, 0, denominator);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2.5, height: '100%', p: 2 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2.5, '@supports not (gap: 1px)': { '& > *:not(:last-child)': { marginBottom: '1.25rem' } }, height: '100%', p: 2 }}>
       <Typography variant="h5" fontWeight={800} color="primary.dark" textAlign="center">
         Build the whole {theme.name}!
       </Typography>
 
       {/* Shape outline — denominator equal slots, dashed until filled */}
-      <Box sx={{ width: 'clamp(10rem, 24vw, 16rem)', height: 'clamp(10rem, 24vw, 16rem)' }}>
+      <Box sx={{ width: '10rem', '@supports (width: clamp(1px, 1vw, 2px))': { width: 'clamp(10rem, 24vw, 16rem)' }, height: '10rem', '@supports (height: clamp(1px, 1vw, 2px))': { height: 'clamp(10rem, 24vw, 16rem)' }, }}>
         <svg viewBox="0 0 200 200" width="100%" height="100%">
           {Array.from({ length: denominator }, (_, i) => {
             const filled = filledSlots[i];
@@ -578,8 +596,8 @@ function FractionPuzzleDisplay({ state, onPickPiece, onPlacePiece, onNextRound }
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onPickPiece(); }}
                 sx={{
-                  width: 'clamp(3.2rem, 7vw, 4.5rem)',
-                  height: 'clamp(3.2rem, 7vw, 4.5rem)',
+                  width: '3.2rem', '@supports (width: clamp(1px, 1vw, 2px))': { width: 'clamp(3.2rem, 7vw, 4.5rem)' },
+                  height: '3.2rem', '@supports (height: clamp(1px, 1vw, 2px))': { height: 'clamp(3.2rem, 7vw, 4.5rem)' },
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -613,7 +631,7 @@ function FractionPuzzleDisplay({ state, onPickPiece, onPlacePiece, onNextRound }
         onClose={onNextRound}
         PaperProps={{ sx: { borderRadius: 4, textAlign: 'center', px: 4, py: 3, minWidth: '16.25rem' } }}
       >
-        <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, p: 0 }}>
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, '@supports not (gap: 1px)': { '& > *:not(:last-child)': { marginBottom: '1rem' } }, p: 0 }}>
           <Typography sx={{ fontSize: '4rem', lineHeight: 1 }}>🎉</Typography>
           <Typography variant="h5" fontWeight={900} color="success.main" textAlign="center">
             You built the whole {theme.name}!
@@ -643,7 +661,7 @@ function GameDisplay({ options, selectedIndex, result, prompt, onOptionClick, on
   const isCorrect = result === 'Correct!' || result === 'Great job!';
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3, height: '100%' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3, '@supports not (gap: 1px)': { '& > *:not(:last-child)': { marginBottom: '1.5rem' } }, height: '100%' }}>
       <Typography variant="h4" fontWeight={800} color="primary.dark" textAlign="center">
         {prompt}
       </Typography>
@@ -659,13 +677,13 @@ function GameDisplay({ options, selectedIndex, result, prompt, onOptionClick, on
               tabIndex={0}
               onKeyDown={(e) => { if (!result && (e.key === 'Enter' || e.key === ' ')) onOptionClick?.(i); }}
               sx={{
-                width: 'clamp(5rem, 12vw, 9rem)',
-                height: 'clamp(5rem, 12vw, 9rem)',
+                width: '5rem', '@supports (width: clamp(1px, 1vw, 2px))': { width: 'clamp(5rem, 12vw, 9rem)' },
+                height: '5rem', '@supports (height: clamp(1px, 1vw, 2px))': { height: 'clamp(5rem, 12vw, 9rem)' },
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 3,
-                fontSize: 'clamp(2rem, 5vw, 4rem)',
+                fontSize: '2rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(2rem, 5vw, 4rem)' },
                 fontWeight: 900,
                 border: '3px solid',
                 borderColor: isSelected ? 'primary.main' : 'divider',
@@ -690,7 +708,7 @@ function GameDisplay({ options, selectedIndex, result, prompt, onOptionClick, on
         onClose={onNextRound}
         PaperProps={{ sx: { borderRadius: 4, textAlign: 'center', px: 4, py: 3, minWidth: '16.25rem' } }}
       >
-        <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, p: 0 }}>
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, '@supports not (gap: 1px)': { '& > *:not(:last-child)': { marginBottom: '1rem' } }, p: 0 }}>
           <Typography sx={{ fontSize: '4rem', lineHeight: 1 }}>
             {isCorrect ? '🎉' : '💪'}
           </Typography>
@@ -953,7 +971,7 @@ function LessonPanel({
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <Typography
               sx={{
-                fontSize: 'clamp(2rem, 10vw, 8rem)',
+                fontSize: '2rem', '@supports (font-size: clamp(1px, 1vw, 2px))': { fontSize: 'clamp(2rem, 10vw, 8rem)' },
                 fontWeight: 900,
                 color: 'primary.dark',
                 opacity: 0.25,

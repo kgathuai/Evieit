@@ -1,43 +1,40 @@
-:root {
-  --sky: #c9f1ff;
-  --blueberry: #24467a;
-  --ink: #1d2d44;
-  --card: #fffaf0;
-  --shadow: 0 14px 30px rgba(25, 40, 62, 0.18);
-
-  /* Televisions routinely crop a couple of percent off each edge (overscan),
-     and the setting varies by brand. Content is kept inside this inset so the
-     header, footer and side panels are never cut off. */
-  --safe-x: 2vw;
-  --safe-y: 1.5vh;
-}
-
 * {
   box-sizing: border-box;
 }
 
 /*
- * Everything in the app is sized in rem, so this single value scales the whole
- * interface with the panel:
+ * Root scale, written with media queries instead of clamp()/min()/max().
+ * Those functions need Chromium 79 and the televisions this app targets are
+ * far older, so the whole declaration would be dropped and every rem-based
+ * size would collapse to the default.
  *
- *   1280x720  -> ~11px   (720p TV)
- *   1920x1080 ->  16px   (1080p TV — the size the app was designed at)
- *   2560x1440 -> ~21px
- *   3840x2160 ->  32px   (4K TV reporting 3840 CSS pixels)
- *
- * Without this, a 4K television that reports a 3840px viewport renders the
- * entire app at half its intended physical size. The clamp bounds stop the
- * layout collapsing in a small desktop window or ballooning absurdly.
+ * 0.833333vw is 11px at 1320px wide, 16px at 1920px (a 1080p TV) and 42px at
+ * 5040px, so this is equivalent to clamp(11px, 100vw / 120, 42px).
  */
 html {
-  font-size: clamp(11px, calc(100vw / 120), 42px);
+  font-size: 11px;
+}
+@media (min-width: 1320px) {
+  html {
+    font-size: 0.833333vw;
+  }
+}
+@media (min-width: 5040px) {
+  html {
+    font-size: 42px;
+  }
 }
 
+/*
+ * Values are inlined rather than held in CSS custom properties: those need
+ * Chromium 49, and a 2016 Tizen set (Chromium 47) would ignore every
+ * `var(--x)` and lose its colours and padding entirely.
+ */
 body {
   margin: 0;
   min-height: 100vh;
   font-family: 'Nunito', 'Trebuchet MS', sans-serif;
-  color: var(--ink);
-  background: linear-gradient(165deg, var(--sky), #f8fcff 45%, #ffeeca 100%);
+  color: #1d2d44;
+  background: linear-gradient(165deg, #c9f1ff, #f8fcff 45%, #ffeeca 100%);
   overflow-x: hidden;
 }

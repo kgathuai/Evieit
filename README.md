@@ -67,10 +67,23 @@ The emitted bundle is verified with `acorn` (`npm run check:syntax`): it parses
 as ES2015 and contains zero optional-chaining, nullish-coalescing or class-field
 nodes.
 
-Known remaining limits:
+The CSS is downleveled as well. MUI/Emotion injects component styles at runtime
+from JavaScript, so PostCSS never sees them and this has to be done by hand:
 
-- CSS still uses `clamp()`, flexbox `gap` and `aspect-ratio`, which need
-  Chromium 79-88. On older engines these degrade (missing gaps, dropped fluid
-  type) rather than break, so layout is not pixel-correct there.
+- root scaling uses media queries instead of `clamp()`, `min()` or `max()`
+- every `clamp()` in `LessonPanel.jsx` declares a plain rem fallback first and
+  only upgrades inside `@supports (font-size: clamp(1px, 1vw, 2px))`
+- `aspect-ratio` (Chromium 88) gets an `@supports not` height fallback, because
+  without it the lesson tiles collapse to the height of their text
+- flexbox `gap` (Chromium 84) gets `@supports not` margin fallbacks
+- no CSS custom properties anywhere, since those need Chromium 49 — the app
+  originally set its overscan padding with `var(--safe-x)`, which a Chromium 47
+  television ignores completely
+
+Remaining limits:
+
+- MUI still emits a few `var(--…)` values (`--IconButton-hoverBg`,
+  `--Paper-shadow`) from its CSS-variables code path. That path is not enabled
+  by our theme, so they are inert on modern browsers too.
 - Speech narration uses the Web Speech API, which varies by TV model and firmware.
 - Progress is stored in `localStorage`, which some TV browsers restrict.

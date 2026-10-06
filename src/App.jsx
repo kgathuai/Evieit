@@ -125,12 +125,12 @@ export default function Home() {
       <Box
         component="header"
         sx={{
-          px: 'max(1rem, var(--safe-x))',
-          pt: 'max(0.5rem, var(--safe-y))',
+          px: '2vw',
+          pt: '1.5vh',
           pb: 2,
           display: 'flex',
           alignItems: 'baseline',
-          gap: 2,
+          gap: 2, '@supports not (gap: 1px)': { '& > *:not(:last-child)': { marginRight: '1rem' } },
           flexShrink: 0,
           background: 'linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%)',
         }}
@@ -150,7 +150,7 @@ export default function Home() {
           overflow: 'hidden',
           gap: 0,
           // keeps both columns clear of a television's overscan crop
-          px: 'var(--safe-x)',
+          px: '2vw',
         }}
       >
         {/* LEFT — lesson display, fills all available height */}
@@ -248,9 +248,9 @@ export default function Home() {
         justifyContent="center"
         aria-label="Remote controls"
         sx={{
-          px: 'max(1rem, var(--safe-x))',
+          px: '2vw',
           pt: 1.5,
-          pb: 'max(0.75rem, var(--safe-y))',
+          pb: '1.5vh',
           flexShrink: 0,
           bgcolor: 'rgba(255,107,107,0.05)',
         }}

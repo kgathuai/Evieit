@@ -70,7 +70,7 @@ const TileCard = memo(function TileCard({ tile, index, isFocused, onOpen, onHove
           sx={{
             display: 'flex',
             alignItems: 'center',
-            gap: 2,
+            gap: 2, '@supports not (gap: 1px)': { '& > *:not(:last-child)': { marginRight: '1rem' } },
             width: '100%',
             py: 2,
             px: 2.5,
@@ -111,7 +111,7 @@ function TileGrid({ focusedIndex, onOpen, onHover }) {
       component="section"
       id="tileGrid"
       aria-label="Learning modules"
-      sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, height: '100%' }}
+      sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, '@supports not (gap: 1px)': { '& > *:not(:last-child)': { marginBottom: '0.75rem' } }, height: '100%' }}
     >
       <Typography variant="overline" color="text.secondary" sx={{ letterSpacing: 2 }}>
         Choose a lesson
