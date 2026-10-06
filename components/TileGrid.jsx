@@ -55,7 +55,7 @@ const TileCard = memo(function TileCard({ tile, index, isFocused, onOpen, onHove
         borderColor: isFocused ? 'primary.main' : 'transparent',
         transition: 'all 0.2s ease',
         transform: isFocused ? 'translateX(6px) scale(1.02)' : 'translateX(0)',
-        minHeight: 96,
+        minHeight: '6rem',
         flex: '0 0 auto',
         display: 'flex',
         flexDirection: 'column',

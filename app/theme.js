@@ -27,8 +27,15 @@ const theme = createTheme({
       paper: '#ffffff',
     },
   },
+  /*
+   * MUI spacing drives every `sx` padding and gap in the app. It is expressed
+   * in rem so the layout keeps its current 8px-per-unit look at the 16px base
+   * size, but grows with the root font size on larger TV panels instead of
+   * staying pinned to fixed pixels.
+   */
+  spacing: (factor) => `${factor * 0.5}rem`,
   typography: {
-    fontFamily: '"Nunito", "Segoe UI", sans-serif',
+    fontFamily: 'var(--font-nunito), "Segoe UI", sans-serif',
     h1: { fontWeight: 900, fontSize: '3.5rem' },
     h2: { fontWeight: 800, fontSize: '2.2rem' },
     h5: { fontWeight: 800, fontSize: '1.8rem' },
@@ -45,8 +52,9 @@ const theme = createTheme({
           fontWeight: 800,
           fontSize: '1.1rem',
           borderRadius: 20,
-          padding: '14px 28px',
-          minHeight: '56px',
+          // rem rather than px, so TV panels enlarge the touch/remote target too
+          padding: '0.875rem 1.75rem',   // 14px / 28px at the 16px base
+          minHeight: '3.5rem',           // 56px
         },
       },
     },
@@ -57,13 +65,13 @@ const theme = createTheme({
     },
     MuiChip: {
       styleOverrides: {
-        root: { fontWeight: 700, fontSize: '0.95rem', padding: '8px 12px' },
+        root: { fontWeight: 700, fontSize: '0.95rem', padding: '0.5rem 0.75rem' },
       },
     },
     MuiIconButton: {
       styleOverrides: {
         root: {
-          padding: '14px',
+          padding: '0.875rem',
           fontSize: '1.8rem',
         },
       },

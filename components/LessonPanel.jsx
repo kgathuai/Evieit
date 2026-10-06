@@ -613,7 +613,7 @@ function FractionPuzzleDisplay({ state, onPickPiece, onPlacePiece, onNextRound }
       <Dialog
         open={isComplete}
         onClose={onNextRound}
-        PaperProps={{ sx: { borderRadius: 4, textAlign: 'center', px: 4, py: 3, minWidth: 260 } }}
+        PaperProps={{ sx: { borderRadius: 4, textAlign: 'center', px: 4, py: 3, minWidth: '16.25rem' } }}
       >
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, p: 0 }}>
           <Typography sx={{ fontSize: '4rem', lineHeight: 1 }}>🎉</Typography>
@@ -690,7 +690,7 @@ function GameDisplay({ options, selectedIndex, result, prompt, onOptionClick, on
       <Dialog
         open={!!result}
         onClose={onNextRound}
-        PaperProps={{ sx: { borderRadius: 4, textAlign: 'center', px: 4, py: 3, minWidth: 260 } }}
+        PaperProps={{ sx: { borderRadius: 4, textAlign: 'center', px: 4, py: 3, minWidth: '16.25rem' } }}
       >
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, p: 0 }}>
           <Typography sx={{ fontSize: '4rem', lineHeight: 1 }}>

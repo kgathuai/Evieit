@@ -124,8 +124,9 @@ export default function Home() {
       <Box
         component="header"
         sx={{
-          px: { xs: 2, sm: 4 },
-          py: 2,
+          px: 'max(1rem, var(--safe-x))',
+          pt: 'max(0.5rem, var(--safe-y))',
+          pb: 2,
           display: 'flex',
           alignItems: 'baseline',
           gap: 2,
@@ -147,6 +148,8 @@ export default function Home() {
           display: 'flex',
           overflow: 'hidden',
           gap: 0,
+          // keeps both columns clear of a television's overscan crop
+          px: 'var(--safe-x)',
         }}
       >
         {/* LEFT — lesson display, fills all available height */}
@@ -214,7 +217,7 @@ export default function Home() {
         {/* RIGHT — tile picker, fixed width */}
         <Box
           sx={{
-            width: { xs: 220, sm: 300, md: 340 },
+            width: { xs: '13.75rem', sm: '18.75rem', md: '21.25rem' },
             flexShrink: 0,
             display: 'flex',
             flexDirection: 'column',
@@ -243,7 +246,13 @@ export default function Home() {
         gap={1.5}
         justifyContent="center"
         aria-label="Remote controls"
-        sx={{ px: 2, py: 1.5, flexShrink: 0, bgcolor: 'rgba(255,107,107,0.05)' }}
+        sx={{
+          px: 'max(1rem, var(--safe-x))',
+          pt: 1.5,
+          pb: 'max(0.75rem, var(--safe-y))',
+          flexShrink: 0,
+          bgcolor: 'rgba(255,107,107,0.05)',
+        }}
       >
         {CONTROL_HINTS.map(({ icon, label }) => (
           <Chip
