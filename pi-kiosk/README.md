@@ -85,7 +85,7 @@ Pi. From this Mac:
 pi-kiosk/deploy.sh pi@totolearn.local
 ```
 
-This runs `next build` locally, then `rsync`s the static export to the Pi
+This runs `npm run build` (Vite) locally, then `rsync`s the static export to the Pi
 and restarts its server. Re-run this any time you make changes to the app
 — no need to redo steps 1–4.
 

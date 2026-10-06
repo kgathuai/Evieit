@@ -18,7 +18,7 @@ Deploy Uni-Learn to **Samsung Tizen**, **LG webOS**, and **Android TV** from a s
 
 ## Build Your App Once
 
-All platforms use the same Next.js source. Build once:
+All platforms use the same React source (built with Vite). Build once:
 
 ```bash
 npm install
@@ -175,7 +175,7 @@ Same APK as Android TV platform, deployed to the stick.
 
 ### 1. Update App
 
-Edit source code as usual (React, Next.js).
+Edit source code as usual (React + Vite).
 
 ### 2. Build
 

@@ -3,19 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "start": "python3 -m http.server 3000 --directory out",
-    "package-tizen": "next build && tizen/package-tizen.sh"
+    "package-tizen": "vite build && tizen/package-tizen.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@fontsource/nunito": "^5.3.0",
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
-    "next": "15.5.18",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "yarn": "^1.22.22"
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-legacy": "^8.2.3",
+    "@vitejs/plugin-react": "^6.1.2",
+    "terser": "^5.51.2",
+    "vite": "^8.3.3"
   }
 }

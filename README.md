@@ -46,3 +46,29 @@ This project includes a **specific platform package path** for Samsung Tizen TVs
 ## Notes
 
 This version is intentionally offline and dependency-free so it can run in low-connectivity environments.
+
+## Browser & TV Compatibility
+
+The app is built with **Vite** (`vite.config.js`) and ships two bundles:
+
+- a modern bundle for current browsers
+- an **ES2015 bundle plus core-js polyfills**, selected automatically on older
+  engines via `<script nomodule>` and a capability canary
+
+`@vitejs/plugin-legacy` is configured with `targets: ['chrome >= 47']`, so the
+app reaches back towards 2016 Tizen sets instead of the 2024+ models a stock
+Next.js 15 build required (its runtime shipped optional chaining, which is a
+parse error on anything below Chromium 80). Older engines fall back to the
+legacy bundle on their own — nothing to configure on the TV.
+
+Known remaining limits:
+
+- CSS still uses `clamp()`, flexbox `gap`, `aspect-ratio` and `:where()`, which
+  need Chromium 79-88. On older engines these degrade (missing gaps, dropped
+  fluid type) rather than break, so the layout is not pixel-correct there.
+- Speech narration uses the Web Speech API, which varies by TV model and firmware.
+- Progress is stored in `localStorage`, which some TV browsers restrict.
+
+Build output stays in `out/` and assets are referenced **relatively**, so the
+same build works from `file://` inside Tizen and webOS packages as well as from
+a web server.

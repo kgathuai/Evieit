@@ -1,5 +1,3 @@
-'use client';
-
 import { useRef, useEffect, useCallback, memo } from 'react';
 import {
   Box, Typography, Paper, Stack, IconButton, Switch,

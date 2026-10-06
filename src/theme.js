@@ -1,5 +1,3 @@
-'use client';
-
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -35,7 +33,7 @@ const theme = createTheme({
    */
   spacing: (factor) => `${factor * 0.5}rem`,
   typography: {
-    fontFamily: 'var(--font-nunito), "Segoe UI", sans-serif',
+    fontFamily: '"Nunito", "Segoe UI", sans-serif',
     h1: { fontWeight: 900, fontSize: '3.5rem' },
     h2: { fontWeight: 800, fontSize: '2.2rem' },
     h5: { fontWeight: 800, fontSize: '1.8rem' },

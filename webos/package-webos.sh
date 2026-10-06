@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # LG webOS Packaging Script
-# Builds Next.js static export and packages for webOS deployment
+# Builds the Vite static export and packages for webOS deployment
 
 set -e
 
-echo "Building Next.js app..."
+echo "Building app..."
 npm run build
 
 echo "Preparing webOS build directory..."

@@ -1,5 +1,3 @@
-'use client';
-
 import { memo } from 'react';
 import { Box, Card, CardActionArea, CardContent, Typography, Stack } from '@mui/material';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
